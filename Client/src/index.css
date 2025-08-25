@@ -1,0 +1,219 @@
+@import "tailwindcss";
+
+@theme {
+  --font-title: "Merriweather", serif !important;
+  --font-body: "Arial", sans-serif;
+  --color-primary: #222222;
+  --color-hover: #c4302e;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-body);
+    color: var(--color-primary);
+    font-size: 14px;
+  }
+
+  .scroll-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .scroll-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .font-title {
+    font-family: var(--font-title);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
+
+  .text-color {
+    color: var(--color-primary);
+  }
+
+  .hover-color:hover {
+    color: var(--color-hover);
+  }
+
+  .active-color {
+    color: var(--color-hover);
+  }
+}
+
+@layer components {
+  /* Custom cho Component Ant Design */
+  .ant-typography,
+  .ant-input,
+  .ant-select,
+  .ant-form,
+  .ant-modal,
+  .ant-table,
+  .ant-menu,
+  .ant-tabs,
+  .ant-dropdown,
+  .ant-pagination,
+  .ant-checkbox-wrapper,
+  .ant-radio-wrapper,
+  .ant-btn {
+    font-family: "Arial", sans-serif !important;
+  }
+}
+
+/* Custom Search AntDesign */
+.search-user input {
+  height: 45px !important;
+  border-radius: 6px !important;
+}
+
+.search-user .ant-input-search-button,
+.custom-search .ant-input-search-button {
+  display: none !important;
+}
+
+.custom-search .ant-input-group {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.custom-search .ant-input {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.custom-search .ant-input-group-addon {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Input Search trong page Search */
+.custom-input-search {
+  display: flex;
+  align-items: center;
+  border: 1px solid #d9d9d9;
+  border-radius: 0;
+  height: 40px;
+  transition: all 0.2s ease-in-out;
+}
+
+.custom-input-search .ant-input {
+  height: 40px;
+  border-radius: 0px;
+  outline: none;
+  box-shadow: none;
+  border-right: none;
+}
+
+.custom-input-search .ant-btn {
+  height: 40px;
+  margin: 0;
+  padding: 0 20px;
+  border-radius: 0;
+  border: 1px solid #e5e5e5;
+  border-left: none;
+  transition: all 0.3s;
+}
+
+.custom-input-search:focus-within {
+  border-color: #222222;
+}
+
+.custom-input-search .ant-input,
+.custom-input-search .ant-btn {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  height: 100%;
+  border-radius: 0 !important;
+}
+
+.custom-select .ant-select-selector {
+  display: flex;
+  color: #222222;
+  align-items: center;
+  font-size: 14px;
+  border-radius: 0;
+}
+
+/* Pagination */
+.custom-pagination .ant-pagination-item,
+.custom-pagination .ant-pagination-prev,
+.custom-pagination .ant-pagination-next {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #d9d9d9;
+  border-radius: 0;
+  color: #4f4f4f;
+  font-weight: 500;
+}
+
+.custom-pagination .ant-pagination-item-active {
+  border-color: #c4302e;
+  font-weight: 600;
+}
+
+.custom-pagination .ant-pagination-item-active a {
+  color: #c4302e !important;
+  font-weight: 600;
+}
+
+.custom-pagination .ant-pagination-item-active:hover {
+  border-color: #c4302e;
+  color: #c4302e !important;
+  font-weight: 600;
+}
+
+.custom-pagination .ant-pagination-disabled {
+  background-color: #f5f5f5;
+  color: #ccc !important;
+  border-color: #eee;
+  cursor: not-allowed;
+
+  .font-title {
+    font-family: var(--font-title);
+  }
+
+  .text-color {
+    color: var(--color-primary);
+  }
+
+  .hover-color:hover {
+    color: var(--color-hover);
+  }
+
+  .active-color {
+    color: var(--color-hover);
+  }
+}
+
+/* Anchor */
+.ant-anchor-link {
+  padding: 0 !important;
+}
+
+.ant-anchor-ink {
+  padding: 0 !important;
+  display: none !important;
+}
+
+.ant-anchor::before,
+.ant-anchor-link::before,
+.ant-anchor-ink::before {
+  display: none !important;
+  background: none !important;
+}
+
+.my-custom-sidebar,
+.ant-card,
+.ant-layout-sider {
+  border-left: none !important;
+  box-shadow: none !important;
+}
