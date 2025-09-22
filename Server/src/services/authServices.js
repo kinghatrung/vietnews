@@ -1,11 +1,11 @@
-const { generateToken, verifyToken } = require('../providers/JwtProvider');
-const axios = require('axios');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+import axios from 'axios';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
-const { User } = require('../models/User');
-const { Role } = require('../models/Role');
-const { Otp } = require('../models/Otp');
+import { generateToken, verifyToken } from '../providers/JwtProvider.js';
+import { User } from '../models/User.js';
+import { Role } from '../models/Role.js';
+import { Otp } from '../models/Otp.js';
 
 const authServices = {
   // REGISTER USER
@@ -333,4 +333,4 @@ const authServices = {
   },
 };
 
-module.exports = authServices;
+export default authServices;

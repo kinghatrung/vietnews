@@ -1,14 +1,20 @@
-const router = require('express').Router();
-const statusController = require('../controllers/statusController');
-const authMiddleware = require('../middleware/authMiddleware');
+import { Router } from 'express';
+import statusController from '../controllers/statusController.js';
+import authMiddleware from '../middleware/authMiddleware.js';
+
+const statusRouter = Router();
 
 // GET ALL STATUSES
-router.get('/', statusController.getAllStatuses);
+statusRouter.get('/', statusController.getAllStatuses);
 
 // GET STATUS BY ID
-router.get('/:id', statusController.getStatusById);
+statusRouter.get('/:id', statusController.getStatusById);
 
 // ADD STATUS
-router.post('/post', authMiddleware.isAuthorized, statusController.addStatus);
+statusRouter.post(
+  '/post',
+  authMiddleware.isAuthorized,
+  statusController.addStatus
+);
 
-module.exports = router;
+export default statusRouter;

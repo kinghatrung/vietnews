@@ -1,4 +1,4 @@
-const { Notification } = require('../models/Notification');
+import { Notification } from '../models/Notification.js';
 
 const notificationServices = {
   getByUser: async (userId) => {
@@ -14,4 +14,4 @@ const notificationServices = {
   },
 };
 
-module.exports = notificationServices;
+export default notificationServices;

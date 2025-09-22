@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const newsSchema = new mongoose.Schema(
   {
@@ -42,6 +42,4 @@ const newsSchema = new mongoose.Schema(
 );
 newsSchema.index({ title: 'text', describe: 'text' });
 
-const News = mongoose.model('News', newsSchema);
-
-module.exports = { News };
+export const News = mongoose.model('News', newsSchema);

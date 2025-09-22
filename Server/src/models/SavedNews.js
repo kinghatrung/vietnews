@@ -1,11 +1,9 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
 const savedNewsSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  news: { type: mongoose.Schema.Types.ObjectId, ref: "News" },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  news: { type: mongoose.Schema.Types.ObjectId, ref: 'News' },
   saved_at: { type: Date, default: Date.now },
 });
 
-const SaveNews = mongoose.model("SaveNews", savedNewsSchema);
-
-module.exports = { SaveNews };
+export const SaveNews = mongoose.model('SaveNews', savedNewsSchema);

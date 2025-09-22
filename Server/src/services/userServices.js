@@ -1,9 +1,10 @@
-const { User } = require('../models/User');
-const { Role } = require('../models/Role');
-const { Otp } = require('../models/Otp');
-const { sendBanNotification } = require('../services/emailService');
-const bcrypt = require('bcrypt');
-const { Comment } = require('../models/Comment');
+import bcrypt from 'bcrypt';
+
+import { User } from '../models/User.js';
+import { Role } from '../models/Role.js';
+import { Otp } from '../models/Otp.js';
+import { sendBanNotification } from '../services/emailService.js';
+import { Comment } from '../models/Comment.js';
 
 const userServices = {
   // ADD USER
@@ -419,4 +420,4 @@ const userServices = {
   },
 };
 
-module.exports = userServices;
+export default userServices;

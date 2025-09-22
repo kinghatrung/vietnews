@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
-const generateToken = async (userInfo, secretSignature, tokenLife) => {
+export const generateToken = async (userInfo, secretSignature, tokenLife) => {
   try {
     // Hàm sign() của jwt và thuật toán HS256
     return jwt.sign(userInfo, secretSignature, {
@@ -12,7 +12,7 @@ const generateToken = async (userInfo, secretSignature, tokenLife) => {
   }
 };
 
-const verifyToken = async (token, secretSignature) => {
+export const verifyToken = async (token, secretSignature) => {
   try {
     // Hàm verify() của jwt
     return jwt.verify(token, secretSignature);
@@ -20,5 +20,3 @@ const verifyToken = async (token, secretSignature) => {
     throw new Error(err);
   }
 };
-
-module.exports = { generateToken, verifyToken };

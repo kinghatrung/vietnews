@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
 const categorySchema = new mongoose.Schema(
   {
@@ -13,19 +13,17 @@ const categorySchema = new mongoose.Schema(
     articles: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Article",
+        ref: 'Article',
       },
     ],
     news: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "News",
+        ref: 'News',
       },
     ],
   },
   { timestamps: true }
 );
 
-const Category = mongoose.model("Category", categorySchema);
-
-module.exports = { Category };
+export const Category = mongoose.model('Category', categorySchema);

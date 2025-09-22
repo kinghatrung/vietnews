@@ -1,4 +1,4 @@
-const { generateToken, verifyToken } = require('../providers/JwtProvider');
+import { generateToken, verifyToken } from '../providers/JwtProvider.js';
 
 const authMiddleware = {
   isAuthorized: async (req, res, next) => {
@@ -31,4 +31,4 @@ const authMiddleware = {
   },
 };
 
-module.exports = authMiddleware;
+export default authMiddleware;

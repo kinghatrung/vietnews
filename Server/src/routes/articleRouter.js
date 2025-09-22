@@ -1,19 +1,25 @@
-const router = require('express').Router();
-const articleController = require('../controllers/articleController');
-const roleMiddleware = require('../middleware/roleMiddleware');
-const authMiddleware = require('../middleware/authMiddleware');
+import { Router } from 'express';
+import articleController from '../controllers/articleController.js';
+import roleMiddleware from '../middleware/roleMiddleware.js';
+import authMiddleware from '../middleware/authMiddleware.js';
+
+const articleRouter = Router();
 
 // GET ALL ARTICLES
-router.get('/', articleController.getAllArticles);
+articleRouter.get('/', articleController.getAllArticles);
 
 // GET ARTICLE BY ID
-router.get('/:id', roleMiddleware.isNotUser, articleController.getArticleById);
+articleRouter.get(
+  '/:id',
+  roleMiddleware.isNotUser,
+  articleController.getArticleById
+);
 
 // GET ARTICLE BY ROLE
-router.post('/get/by_role', articleController.getArticleByRole);
+articleRouter.post('/get/by_role', articleController.getArticleByRole);
 
 // ADD ARTICLE
-router.post(
+articleRouter.post(
   '/post',
   authMiddleware.isAuthorized,
   roleMiddleware.isReporter,
@@ -21,21 +27,21 @@ router.post(
 );
 
 // CHANGE STATUS
-router.put(
-  '/change_status/:id/',
+articleRouter.put(
+  '/change_status/:id',
   authMiddleware.isAuthorized,
   articleController.changeStatusArticle
 );
 
 // CHECK CONTENT ARTICLE
-router.post(
+articleRouter.post(
   '/check_content',
   authMiddleware.isAuthorized,
   articleController.checkContentArticle
 );
 
 // DELETE ARTICLE
-router.delete(
+articleRouter.delete(
   '/del/:id',
   authMiddleware.isAuthorized,
   // roleMiddleware.isAdminAndReporter,
@@ -43,11 +49,11 @@ router.delete(
 );
 
 // UPDATE ARTICLE
-router.put(
+articleRouter.put(
   '/put/:id',
   authMiddleware.isAuthorized,
   // roleMiddleware.isEditorAndReporter,
   articleController.updateArticle
 );
 
-module.exports = router;
+export default articleRouter;

@@ -1,4 +1,4 @@
-const userServices = require('../services/userServices');
+import userServices from '../services/userServices.js';
 
 const userController = {
   // ADD USER
@@ -237,4 +237,4 @@ const userController = {
   },
 };
 
-module.exports = userController;
+export default userController;

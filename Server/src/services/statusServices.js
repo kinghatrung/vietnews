@@ -1,4 +1,4 @@
-const { Status } = require('../models/Status');
+import { Status } from '../models/Status.js';
 
 const statusServices = {
   // GET ALL STATUSES
@@ -37,4 +37,4 @@ const statusServices = {
   },
 };
 
-module.exports = statusServices;
+export default statusServices;

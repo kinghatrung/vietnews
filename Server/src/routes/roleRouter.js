@@ -1,32 +1,34 @@
-const router = require('express').Router();
-const roleController = require('../controllers/roleController');
-const authMiddleware = require('../middleware/authMiddleware');
+import { Router } from 'express';
+import roleController from '../controllers/roleController.js';
+import authMiddleware from '../middleware/authMiddleware.js';
+
+const roleRouter = Router();
 
 // CREATE ROLE
-router.post(
+roleRouter.post(
   '/createRole',
   authMiddleware.isAuthorized,
   roleController.createRole
 );
 
 // GET ALL ROLE
-router.get('/', roleController.getAllRole);
+roleRouter.get('/', roleController.getAllRole);
 
 // GET ROLE BY ID
-router.get('/:id', roleController.getRoleById);
+roleRouter.get('/:id', roleController.getRoleById);
 
 // DELETE ROLE
-router.delete(
+roleRouter.delete(
   '/del/:id',
   authMiddleware.isAuthorized,
   roleController.deleteRole
 );
 
 // UPDATE ROLE
-router.put(
+roleRouter.put(
   '/update/:id',
   authMiddleware.isAuthorized,
   roleController.updateRole
 );
 
-module.exports = router;
+export default roleRouter;

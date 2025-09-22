@@ -1,36 +1,38 @@
-const router = require('express').Router();
-const categoryController = require('../controllers/categoryController');
-const roleMiddleware = require('../middleware/roleMiddleware');
-const authMiddleware = require('../middleware/authMiddleware');
+import { Router } from 'express';
+import categoryController from '../controllers/categoryController.js';
+import roleMiddleware from '../middleware/roleMiddleware.js';
+import authMiddleware from '../middleware/authMiddleware.js';
+
+const categoryRouter = Router();
 
 // ADD CATEGORY
-router.post(
+categoryRouter.post(
   '/new',
   authMiddleware.isAuthorized,
   categoryController.addCategory
 );
 
 // UPDATE CATEGORY
-router.put(
+categoryRouter.put(
   '/:id',
   authMiddleware.isAuthorized,
   categoryController.updateCategory
 );
 
 // GET ALL CATEGORIES
-router.get('/', categoryController.getAllCategories);
+categoryRouter.get('/', categoryController.getAllCategories);
 
 // POST ALL CATEGORIES
-router.post('/post', categoryController.postAllCategories);
+categoryRouter.post('/post', categoryController.postAllCategories);
 
 // GET CATEGORY BY ID
-router.get('/:id', categoryController.getCategoryById);
+categoryRouter.get('/:id', categoryController.getCategoryById);
 
 // DELETE CATEGORY
-router.delete(
+categoryRouter.delete(
   '/:id',
   authMiddleware.isAuthorized,
   categoryController.deleteCategory
 );
 
-module.exports = router;
+export default categoryRouter;

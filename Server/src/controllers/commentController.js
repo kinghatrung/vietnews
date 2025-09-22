@@ -1,4 +1,4 @@
-const commentServices = require('../services/commentServices');
+import commentServices from '../services/commentServices.js';
 
 const commentController = {
   // GET ALL COMMENT BY STATUS
@@ -62,4 +62,4 @@ const commentController = {
   },
 };
 
-module.exports = commentController;
+export default commentController;

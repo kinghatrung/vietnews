@@ -1,11 +1,10 @@
-const {
+import {
   sendVerificationEmail,
   sendForgotPasswordEmail,
   sendUpdateEmail,
-} = require('../services/emailService');
-
-const { Otp } = require('../models/Otp');
-const { User } = require('../models/User');
+} from '../services/emailService.js';
+import { Otp } from '../models/Otp.js';
+import { User } from '../models/User.js';
 
 const sendOtpService = {
   sendOtpRegister: async (req, res) => {
@@ -91,4 +90,4 @@ const sendOtpService = {
   },
 };
 
-module.exports = sendOtpService;
+export default sendOtpService;

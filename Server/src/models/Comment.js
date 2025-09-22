@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
 const commentSchema = new mongoose.Schema(
   {
@@ -6,13 +6,11 @@ const commentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    news: { type: mongoose.Schema.Types.ObjectId, ref: "News" },
-    status: { type: mongoose.Schema.Types.ObjectId, ref: "Status" },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    news: { type: mongoose.Schema.Types.ObjectId, ref: 'News' },
+    status: { type: mongoose.Schema.Types.ObjectId, ref: 'Status' },
   },
   { timestamps: true }
 );
 
-const Comment = mongoose.model("Comment", commentSchema);
-
-module.exports = { Comment };
+export const Comment = mongoose.model('Comment', commentSchema);

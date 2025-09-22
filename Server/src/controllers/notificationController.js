@@ -1,4 +1,4 @@
-const notificationServices = require('../services/notificationServices');
+import notificationServices from '../services/notificationServices.js';
 
 const notificationController = {
   getByUser: async (req, res) => {
@@ -11,4 +11,4 @@ const notificationController = {
   },
 };
 
-module.exports = notificationController;
+export default notificationController;

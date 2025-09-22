@@ -1,4 +1,4 @@
-const articleService = require('../services/articleServices');
+import articleService from '../services/articleServices.js';
 
 const articleController = {
   // GET ALL ARTICLES
@@ -106,4 +106,4 @@ const articleController = {
   },
 };
 
-module.exports = articleController;
+export default articleController;

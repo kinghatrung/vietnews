@@ -1,6 +1,7 @@
-const cloudinary = require('../config/cloudinary');
-const multer = require('multer');
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import multer from 'multer';
+
+import cloudinary from '../config/cloudinary.js';
 
 // Cấu hình storage multer để upload lên Cloudinary
 const storage = new CloudinaryStorage({
@@ -31,4 +32,4 @@ const uploadController = {
   ],
 };
 
-module.exports = uploadController;
+export default uploadController;

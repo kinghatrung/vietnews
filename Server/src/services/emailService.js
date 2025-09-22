@@ -1,5 +1,7 @@
-const nodemailer = require('nodemailer');
-require('dotenv').config();
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -9,7 +11,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendVerificationEmail = async (email, otp) => {
+export const sendVerificationEmail = async (email, otp) => {
   await transporter.sendMail({
     from: `"VietNews - Tin Tức 24h" <no-reply@vietnews.vn>`,
     to: email,
@@ -54,7 +56,7 @@ const sendVerificationEmail = async (email, otp) => {
   });
 };
 
-const sendForgotPasswordEmail = async (email, otp) => {
+export const sendForgotPasswordEmail = async (email, otp) => {
   await transporter.sendMail({
     from: `"VietNews - Tin Tức 24h" <no-reply@vietnews.vn>`,
     to: email,
@@ -99,7 +101,7 @@ const sendForgotPasswordEmail = async (email, otp) => {
   });
 };
 
-const sendUpdateEmail = async (email, otp) => {
+export const sendUpdateEmail = async (email, otp) => {
   await transporter.sendMail({
     from: `"VietNews - Tin Tức 24h" <no-reply@vietnews.vn>`,
     to: email,
@@ -142,7 +144,7 @@ const sendUpdateEmail = async (email, otp) => {
   });
 };
 
-const sendBanNotification = async (to, fullName, banUntil, reason) => {
+export const sendBanNotification = async (to, fullName, banUntil, reason) => {
   await transporter.sendMail({
     from: '"VietNews Support" <your_email@gmail.com>',
     to,
@@ -185,11 +187,4 @@ const sendBanNotification = async (to, fullName, banUntil, reason) => {
       </div>
     `,
   });
-};
-
-module.exports = {
-  sendVerificationEmail,
-  sendForgotPasswordEmail,
-  sendUpdateEmail,
-  sendBanNotification,
 };

@@ -1,4 +1,4 @@
-const recommendServices = require('../services/recommendServices');
+import recommendServices from '../services/recommendServices.js';
 
 const recommendController = {
   // GET ALL RECOMMEND
@@ -57,4 +57,4 @@ const recommendController = {
   },
 };
 
-module.exports = recommendController;
+export default recommendController;

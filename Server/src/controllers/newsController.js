@@ -1,4 +1,4 @@
-const newsServices = require('../services/newsServices');
+import newsServices from '../services/newsServices.js';
 
 const newsController = {
   // GET ALL NEWS
@@ -109,4 +109,4 @@ const newsController = {
   },
 };
 
-module.exports = newsController;
+export default newsController;

@@ -1,11 +1,11 @@
-const { Article } = require('../models/Article');
-const { Status } = require('../models/Status');
-const { News } = require('../models/News');
-const { Category } = require('../models/Category');
+import { htmlToText } from 'html-to-text';
+import axios from 'axios';
+import he from 'he';
 
-const { htmlToText } = require('html-to-text');
-const axios = require('axios');
-const he = require('he');
+import { Article } from '../models/Article.js';
+import { Status } from '../models/Status.js';
+import { News } from '../models/News.js';
+import { Category } from '../models/Category.js';
 
 const articleServices = {
   // GET ALL ARTICLES
@@ -343,4 +343,4 @@ const articleServices = {
   },
 };
 
-module.exports = articleServices;
+export default articleServices;

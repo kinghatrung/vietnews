@@ -1,6 +1,6 @@
-const { Comment } = require('../models/Comment');
-const { Status } = require('../models/Status');
-const { News } = require('../models/News');
+import { Comment } from '../models/Comment.js';
+import { Status } from '../models/Status.js';
+import { News } from '../models/News.js';
 
 const commentServices = {
   // GET ALL COMMENT BY STATUS
@@ -112,4 +112,4 @@ const commentServices = {
   },
 };
 
-module.exports = commentServices;
+export default commentServices;

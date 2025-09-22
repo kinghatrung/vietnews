@@ -1,7 +1,7 @@
-const { Status } = require('../models/Status');
-const { Recommend } = require('../models/Recommend');
-const { Notification } = require('../models/Notification');
-const { Category } = require('../models/Category');
+import { Status } from '../models/Status.js';
+import { Recommend } from '../models/Recommend.js';
+import { Notification } from '../models/Notification.js';
+import { Category } from '../models/Category.js';
 
 const recommendServices = {
   // GET ALL RECOMMEND
@@ -105,5 +105,4 @@ const recommendServices = {
     }
   },
 };
-
-module.exports = recommendServices;
+export default recommendServices;

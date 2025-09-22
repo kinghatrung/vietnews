@@ -1,0 +1,13 @@
+{
+  "name": "vietnews",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install --prefix Server && npm install --prefix Client && npm run build --prefix Client",
+    "start": "npm run start --prefix Server && python app.py"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

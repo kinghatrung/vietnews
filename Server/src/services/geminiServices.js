@@ -1,6 +1,7 @@
-const { News } = require('../models/News');
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-const { htmlToText } = require('html-to-text');
+import { htmlToText } from 'html-to-text';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+
+import { News } from '../models/News.js';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const modelAI = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
@@ -197,4 +198,4 @@ const geminiController = {
   },
 };
 
-module.exports = geminiController;
+export default geminiController;

@@ -1,5 +1,6 @@
-const ms = require('ms');
-const authServices = require('../services/authServices');
+import ms from 'ms';
+
+import authServices from '../services/authServices.js';
 
 const authController = {
   // REGISTER USER
@@ -148,5 +149,4 @@ const authController = {
     }
   },
 };
-
-module.exports = authController;
+export default authController;

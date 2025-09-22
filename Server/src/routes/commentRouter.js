@@ -1,32 +1,34 @@
-const router = require('express').Router();
-const commentController = require('../controllers/commentController');
-const authMiddleware = require('../middleware/authMiddleware');
+import { Router } from 'express';
+import commentController from '../controllers/commentController.js';
+import authMiddleware from '../middleware/authMiddleware.js';
+
+const commentRouter = Router();
 
 // CREATE COMMENT
-router.post(
+commentRouter.post(
   '/send',
   authMiddleware.isAuthorized,
   commentController.createComment
 );
 
 // GET ALL COMMENT
-router.get('/', commentController.getPendingComments);
+commentRouter.get('/', commentController.getPendingComments);
 
 // DELETE COMMENT
-router.delete(
+commentRouter.delete(
   '/del/:id',
   authMiddleware.isAuthorized,
   commentController.deleteCommentPending
 );
 
 // GET COMMENT
-router.get('/news/:newsId', commentController.getCommentByNews);
+commentRouter.get('/news/:newsId', commentController.getCommentByNews);
 
 // APPROVE COMMENT
-router.put(
+commentRouter.put(
   '/approve/:id',
   authMiddleware.isAuthorized,
   commentController.approveComment
 );
 
-module.exports = router;
+export default commentRouter;

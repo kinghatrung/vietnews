@@ -1,4 +1,4 @@
-const statusServices = require('../services/statusServices');
+import statusServices from '../services/statusServices.js';
 
 const statusController = {
   // GET ALL STATUSES
@@ -35,4 +35,4 @@ const statusController = {
   },
 };
 
-module.exports = statusController;
+export default statusController;

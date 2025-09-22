@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
 const roleMiddleware = {
   isAdminAndReporter: async (req, res, next) => {
@@ -98,4 +98,4 @@ const roleMiddleware = {
   },
 };
 
-module.exports = roleMiddleware;
+export default roleMiddleware;

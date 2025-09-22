@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
 const RecommendSchema = new mongoose.Schema(
   {
@@ -6,12 +6,10 @@ const RecommendSchema = new mongoose.Schema(
       type: String,
     },
     description: String,
-    editor: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    status: { type: mongoose.Schema.Types.ObjectId, ref: "Status" },
+    editor: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    status: { type: mongoose.Schema.Types.ObjectId, ref: 'Status' },
   },
   { timestamps: true }
 );
 
-const Recommend = mongoose.model("Recommend", RecommendSchema);
-
-module.exports = { Recommend };
+export const Recommend = mongoose.model('Recommend', RecommendSchema);

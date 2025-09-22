@@ -1,4 +1,4 @@
-const geminiServices = require('../services/geminiServices');
+import geminiServices from '../services/geminiServices.js';
 
 const geminiController = {
   chatBotGemini: async (req, res) => {
@@ -13,4 +13,4 @@ const geminiController = {
   },
 };
 
-module.exports = geminiController;
+export default geminiController;

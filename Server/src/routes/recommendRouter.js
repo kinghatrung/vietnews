@@ -1,29 +1,31 @@
-const router = require('express').Router();
-const recommendController = require('../controllers/recommendController');
-const authMiddleware = require('../middleware/authMiddleware');
+import { Router } from 'express';
+import recommendController from '../controllers/recommendController.js';
+import authMiddleware from '../middleware/authMiddleware.js';
+
+const recommendRouter = Router();
 
 // GET ALL RECOMMEND
-router.get('/', recommendController.getAllRecommend);
+recommendRouter.get('/', recommendController.getAllRecommend);
 
 // ADD RECOMMEND
-router.post(
+recommendRouter.post(
   '/post',
   authMiddleware.isAuthorized,
   recommendController.addRecommend
 );
 
 // ADD RECOMMEND TO CATEGORY
-router.post(
+recommendRouter.post(
   '/category/:id',
   authMiddleware.isAuthorized,
   recommendController.addRecommendToCategory
 );
 
 // DELETE NEWS
-router.delete(
+recommendRouter.delete(
   '/:id',
   authMiddleware.isAuthorized,
   recommendController.deleteRecommend
 );
 
-module.exports = router;
+export default recommendRouter;

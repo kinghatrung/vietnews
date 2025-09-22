@@ -1,4 +1,4 @@
-const categoryServices = require('../services/categoryServices');
+import categoryServices from '../services/categoryServices.js';
 
 const categoryController = {
   // ADD CATEGORY
@@ -83,5 +83,4 @@ const categoryController = {
     }
   },
 };
-
-module.exports = categoryController;
+export default categoryController;

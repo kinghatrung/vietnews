@@ -1,7 +1,7 @@
-const { News } = require('../models/News');
-const { Article } = require('../models/Article');
-const { Category } = require('../models/Category');
-const { Comment } = require('../models/Comment');
+import { News } from '../models/News.js';
+import { Article } from '../models/Article.js';
+import { Category } from '../models/Category.js';
+import { Comment } from '../models/Comment.js';
 
 const newsServices = {
   // GET ALL NEWS
@@ -273,4 +273,5 @@ const newsServices = {
     }
   },
 };
-module.exports = newsServices;
+
+export default newsServices;

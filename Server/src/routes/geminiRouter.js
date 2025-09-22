@@ -1,6 +1,9 @@
-const router = require("express").Router();
-const geminiController = require("../controllers/geminiController");
+import { Router } from 'express';
 
-router.post("/chat", geminiController.chatBotGemini);
+import geminiController from '../controllers/geminiController.js';
 
-module.exports = router;
+const geminiRouter = Router();
+
+geminiRouter.post('/chat', geminiController.chatBotGemini);
+
+export default geminiRouter;

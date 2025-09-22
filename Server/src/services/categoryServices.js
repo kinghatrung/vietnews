@@ -1,6 +1,6 @@
-const { Category } = require('../models/Category');
-const { Article } = require('../models/Article');
-const { News } = require('../models/News');
+import { Category } from '../models/Category.js';
+import { Article } from '../models/Article.js';
+import { News } from '../models/News.js';
 
 const categoryServices = {
   // ADD CATEGORY
@@ -127,4 +127,4 @@ const categoryServices = {
   },
 };
 
-module.exports = categoryServices;
+export default categoryServices;
