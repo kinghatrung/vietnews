@@ -1,0 +1,47 @@
+{
+  "name": "client",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@react-oauth/google": "^0.12.2",
+    "@reduxjs/toolkit": "^2.8.1",
+    "@tailwindcss/vite": "^4.0.17",
+    "antd": "^5.25.4",
+    "axios": "^1.9.0",
+    "clsx": "^2.1.1",
+    "cross-env": "^7.0.3",
+    "dayjs": "^1.11.13",
+    "framer-motion": "^12.6.3",
+    "froala-editor": "^4.5.2",
+    "js-cookie": "^3.0.5",
+    "prop-types": "^15.8.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-facebook-login": "^4.1.1",
+    "react-froala-wysiwyg": "^4.5.2",
+    "react-lazyload": "^3.2.1",
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.4.0",
+    "react-window": "^1.8.11",
+    "redux-persist": "^6.0.0",
+    "tailwindcss": "^4.0.17"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "@vitejs/plugin-react-swc": "^3.8.0",
+    "eslint": "^9.21.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^15.15.0",
+    "less": "^4.2.2",
+    "less-loader": "^12.2.0",
+    "vite": "^6.2.0"
+  }
+}
