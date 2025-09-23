@@ -27,10 +27,7 @@ import {
   getAllReporters,
 } from "~/api";
 import { startLoading, stopLoading } from "~/redux/loadingSlice";
-const API_URL =
-  import.meta.env.MODE === "development"
-    ? import.meta.env.VITE_APP_API_URL
-    : "/";
+const API_URL = import.meta.env.VITE_APP_API_URL;
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;

@@ -39,10 +39,7 @@ import {
   getArticleByIdAPI,
 } from "~/api";
 import { startLoading, stopLoading } from "~/redux/loadingSlice";
-const API_URL =
-  import.meta.env.MODE === "development"
-    ? import.meta.env.VITE_APP_API_URL
-    : "/";
+const API_URL = import.meta.env.VITE_APP_API_URL;
 
 dayjs.extend(relativeTime);
 dayjs.locale("vi");
