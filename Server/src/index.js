@@ -45,7 +45,7 @@ if (process.env.NODE_ENV !== 'production') {
 // ROUTES
 app.use('/api/article', articleRouter);
 app.use('/api/category', categoryRouter);
-app.use('/api/comment', commentRouter);
+app.use('/api/comments', commentRouter);
 app.use('/api/news', newsRouter);
 app.use('/api/roles', roleRouter);
 app.use('/api/users', userRouter);
