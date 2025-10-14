@@ -2,14 +2,6 @@ import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { Fragment, Suspense } from "react";
 import { useSelector } from "react-redux";
 
-import {
-  publicRouters,
-  privateRouters,
-  adminRouters,
-  reporterRouters,
-  editorRouters,
-  moderatorRouters,
-} from "~/routers";
 import DefaultLayout from "~/layouts/DefaultLayout";
 import AdminLayout from "~/layouts/AdminLayout";
 import ReporterLayout from "~/layouts/ReporterLayout";
@@ -17,38 +9,41 @@ import EditorLayout from "~/layouts/EditorLayout";
 import ModeratorLayout from "~/layouts/ModeratorLayout";
 import NotFound from "~/pages/PublicPages/NotFound";
 import ScrollToTop from "~/components/ScrollToTop";
+import config from "~/config";
+import AccessDenied from "~/pages/PublicPages/AccessDenied";
+import RbacRouter from "~/components/core/RbacRouter";
 
-const ProtectedRoute = () => {
-  const user = useSelector((state) => state.auth.login.currentUser);
-  if (!user) {
-    return <Navigate to="/" replace />;
-  }
+// Import Public Page
+import Home from "~/pages/PublicPages/Home";
+import NewsContent from "~/pages/PublicPages/NewsContent";
+import SearchNews from "~/pages/PublicPages/SearchNews";
+import Genre from "~/pages/PublicPages/Genre";
+import LatestNews from "~/pages/PublicPages/LatestNews";
+
+// Import Admin Page
+import UserMange from "~/pages/PrivatePages/AdminPages/UserMange";
+import CategoryMange from "~/pages/PrivatePages/AdminPages/CategoryMange";
+import NewsMange from "~/pages/PrivatePages/AdminPages/NewsMange";
+
+// Import Private Page
+import Profile from "~/pages/PrivatePages/Profile";
+import NewsMangeReporter from "~/pages/PrivatePages/ReporterPages/NewsMangeReporter";
+import ArticleCommon from "~/pages/PrivatePages/ArticleCommon";
+import CommentMange from "~/pages/PrivatePages/ModeratorPages/CommentMange/CommentMange";
+import ProposeMange from "~/pages/PrivatePages/EditorPages/ProposeMange/ProposeMange";
+
+const ProtectedRoute = ({ user }) => {
+  if (!user) return <Navigate to="/" replace />;
   return <Outlet />;
 };
 
-const RenderRoutes = ({ routes, Layout }) => {
-  return routes.map((route, index) => {
-    const Page = route.component;
-    let LayoutComponent = Layout;
-
-    if (route.layout) {
-      LayoutComponent = route.layout;
-    } else if (route.layout === null) {
-      LayoutComponent = Fragment;
-    }
-
-    return (
-      <Route
-        key={index}
-        path={route.path}
-        element={
-          <LayoutComponent>
-            <Page />
-          </LayoutComponent>
-        }
-      />
-    );
-  });
+const Wrapper = ({ layout }) => {
+  const Component = layout || Fragment;
+  return (
+    <Component>
+      <Outlet />
+    </Component>
+  );
 };
 
 function App() {
@@ -58,116 +53,87 @@ function App() {
     <div className="App">
       <ScrollToTop />
       <Suspense>
-        {!user ? (
-          <Routes>
-            {publicRouters.map((route, index) => {
-              const Page = route.component;
-              let LayoutPublic = DefaultLayout;
+        <Routes>
+          {/* Public */}
+          <Route element={<Wrapper layout={DefaultLayout} />}>
+            <Route path={config.routes.home} element={<Home />} />
+            <Route path={config.routes.news} element={<NewsContent />} />
+            <Route path={config.routes.search} element={<SearchNews />} />
+            <Route path={config.routes.genre} element={<Genre />} />
+            <Route path={config.routes.latest} element={<LatestNews />} />
+          </Route>
 
-              if (route.layout) {
-                LayoutPublic = route.layout;
-              } else if (route.layout === null) {
-                LayoutPublic = Fragment;
-              }
+          {/* Private */}
 
-              return (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    <LayoutPublic>
-                      <Page />
-                    </LayoutPublic>
-                  }
-                />
-              );
-            })}
+          <Route element={<ProtectedRoute user={user} />}>
+            <Route path={config.routes.profile} element={<Profile />} />
 
-            <Route element={<ProtectedRoute />}>
-              {privateRouters.map((route, index) => {
-                const Page = route.component;
-                let LayoutPrivate = DefaultLayout;
-
-                if (route.layout) {
-                  LayoutPrivate = route.layout;
-                } else if (route.layout === null) {
-                  LayoutPrivate = Fragment;
-                }
-
-                return (
-                  <Route
-                    key={index}
-                    path={route.path}
-                    element={
-                      <LayoutPrivate>
-                        <Page />
-                      </LayoutPrivate>
+            <Route element={<Wrapper layout={ReporterLayout} user={user} />}>
+              <Route
+                element={
+                  <RbacRouter
+                    requiredPermission={
+                      config.permissions.VIEW_DASHBOARD_REPORTER
                     }
                   />
-                );
-              })}
+                }
+              >
+                <Route path="/reporter/dashboard" element={<ArticleCommon />} />
+                <Route
+                  path="/reporter/article"
+                  element={<NewsMangeReporter />}
+                />
+              </Route>
             </Route>
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        ) : (
-          <>
-            {user.role?.role_name === "admin" && (
-              <Routes element={<ProtectedRoute />}>
-                {RenderRoutes({
-                  routes: adminRouters,
-                  Layout: AdminLayout,
-                })}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            )}
 
-            {user.role?.role_name === "reporter" && (
-              <>
-                <Routes element={<ProtectedRoute />}>
-                  {RenderRoutes({
-                    routes: reporterRouters,
-                    Layout: ReporterLayout,
-                  })}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </>
-            )}
+            <Route element={<Wrapper layout={AdminLayout} user={user} />}>
+              <Route
+                element={
+                  <RbacRouter
+                    requiredPermission={config.permissions.VIEW_DASHBOARD_ADMIN}
+                  />
+                }
+              >
+                <Route path="/admin/dashboard" element={<UserMange />} />
+                <Route path="/admin/article" element={<ArticleCommon />} />
+                <Route path="/admin/category" element={<CategoryMange />} />
+                <Route path="/admin/newsMange" element={<NewsMange />} />
+              </Route>
+            </Route>
 
-            {user.role?.role_name === "editor" && (
-              <Routes element={<ProtectedRoute />}>
-                {RenderRoutes({
-                  routes: editorRouters,
-                  Layout: EditorLayout,
-                })}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            )}
+            <Route element={<Wrapper layout={EditorLayout} user={user} />}>
+              <Route
+                element={
+                  <RbacRouter
+                    requiredPermission={
+                      config.permissions.VIEW_DASHBOARD_EDITOR
+                    }
+                  />
+                }
+              >
+                <Route path="/editor/propose" element={<ProposeMange />} />
+                <Route path="/editor/article" element={<ArticleCommon />} />
+              </Route>
+            </Route>
 
-            {user.role?.role_name === "moderator" && (
-              <Routes element={<ProtectedRoute />}>
-                {RenderRoutes({
-                  routes: moderatorRouters,
-                  Layout: ModeratorLayout,
-                })}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            )}
+            <Route element={<Wrapper layout={ModeratorLayout} user={user} />}>
+              <Route
+                element={
+                  <RbacRouter
+                    requiredPermission={
+                      config.permissions.VIEW_DASHBOARD_MODERATOR
+                    }
+                  />
+                }
+              >
+                <Route path="/moderator/comment" element={<CommentMange />} />
+              </Route>
+            </Route>
+          </Route>
 
-            {user.role?.role_name === "user" && (
-              <Routes element={<ProtectedRoute />}>
-                {RenderRoutes({
-                  routes: privateRouters,
-                  Layout: DefaultLayout,
-                })}
-                {RenderRoutes({
-                  routes: publicRouters,
-                  Layout: DefaultLayout,
-                })}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            )}
-          </>
-        )}
+          <Route path="/access-denied" element={<AccessDenied />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </Suspense>
     </div>
   );
