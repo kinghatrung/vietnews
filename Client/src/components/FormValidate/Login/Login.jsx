@@ -4,14 +4,8 @@ import { useDispatch } from "react-redux";
 import { Button, Form, Input, notification } from "antd";
 
 import { loginUser } from "~/redux/apiRequest";
-import Loading from "~/components/Loading";
 
-function Login({
-  isChangeForm,
-  setIsChangeForm,
-  isFormForgotPassword,
-  setIsFormForgotPassword,
-}) {
+function Login({ isChangeForm, setIsChangeForm, isFormForgotPassword, setIsFormForgotPassword }) {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
@@ -27,9 +21,7 @@ function Login({
 
   return (
     <>
-      <h1 className="text-[22px] mb-[24px] font-title text-center font-bold">
-        Đăng Nhập
-      </h1>
+      <h1 className="text-[22px] mb-[24px] font-title text-center font-bold">Đăng Nhập</h1>
       <Form name="login" layout="vertical" onFinish={handleLogin}>
         <Form.Item
           layout="vertical"
@@ -72,12 +64,7 @@ function Login({
         </Form.Item>
 
         <Form.Item className="!m-0">
-          <Button
-            block
-            type="primary"
-            htmlType="submit"
-            className="!rounded-none !p-[22px] !bg-[#757575] !font-bold"
-          >
+          <Button block type="primary" htmlType="submit" className="!rounded-none !p-[22px] !bg-[#757575] !font-bold">
             Đăng nhập
           </Button>
         </Form.Item>

@@ -48,11 +48,7 @@ export const loginUser = async (user, dispatch, navigate) => {
   }
 };
 
-export const loginUserWithGoogle = async (
-  credentialResponse,
-  dispatch,
-  navigate
-) => {
+export const loginUserWithGoogle = async (credentialResponse, dispatch, navigate) => {
   dispatch(loginStart());
   try {
     const res = await loginWithGoogleAPI(credentialResponse.credential);
@@ -73,11 +69,7 @@ export const loginUserWithGoogle = async (
   }
 };
 
-export const loginUserWithFacebook = async (
-  accessToken,
-  dispatch,
-  navigate
-) => {
+export const loginUserWithFacebook = async (accessToken, dispatch, navigate) => {
   dispatch(loginStart());
   try {
     const res = await loginWithFacebookAPI(accessToken);
@@ -119,11 +111,7 @@ export const registerUser = async (user, dispatch, navigate) => {
   }
 };
 
-export const restPassword = async (
-  { email, password, otp },
-  dispatch,
-  navigate
-) => {
+export const restPassword = async ({ email, password, otp }, dispatch, navigate) => {
   dispatch(resetPasswordStart());
   try {
     await resetPasswordAPI({ email, password, otp });
@@ -165,11 +153,12 @@ export const logoutUser = async (dispatch, navigate) => {
     });
   }
 };
+
 export const logoutFromInterceptor = async () => {
   try {
     await handleLogoutAPI();
     store.dispatch(logoutSuccess());
-    persistor.purge();
+    await persistor.purge();
     notification.error({
       message: "Phiên đăng nhập đã hết hạn",
       description: "Vui lòng đăng nhập lại!",
