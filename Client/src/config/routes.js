@@ -1,6 +1,6 @@
 const routes = {
   // public route
-  home: "home",
+  home: "",
   dashboard: "dashboard",
   latest: "latest",
   newsMange: "newsMange",

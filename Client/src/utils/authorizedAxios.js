@@ -2,7 +2,7 @@ import axios from "axios";
 import { notification } from "antd";
 
 import { logoutFromInterceptor } from "~/redux/apiRequest";
-import { handleLogoutAPI, refreshTokenAPI } from "~/api";
+import { refreshTokenAPI } from "~/api";
 
 let authorizedAxiosInstance = axios.create();
 
@@ -52,8 +52,7 @@ authorizedAxiosInstance.interceptors.response.use(
     if (error.response?.status === 403) {
       notification.error({
         message: "Tài khoản bị khóa",
-        description:
-          error.response.data.message || "Tài khoản của bạn đã bị khóa.",
+        description: error.response.data.message || "Tài khoản của bạn đã bị khóa.",
         duration: 5,
       });
     }

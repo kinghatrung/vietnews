@@ -26,6 +26,8 @@ function LatestNews() {
     };
 
     fetchNews();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const oneDay = 24 * 60 * 60 * 1000;
