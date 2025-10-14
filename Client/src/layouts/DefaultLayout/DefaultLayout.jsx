@@ -9,14 +9,14 @@ import Footer from "~/layouts/DefaultLayout/components/Footer";
 import Loading from "~/components/Loading";
 
 function DefaultLayout({ children }) {
-  const isLoading = useSelector((state) => state.loading.isLoading);
+  // const isLoading = useSelector((state) => state.loading.isLoading);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen">  
       <Navbar />
       <Category />
       <div className="max-w-[1130px] px-4 mx-auto pt-[20px] pb-[100px]">
-        {isLoading && <Loading />}
+        {/* {isLoading && <Loading />} */}
         {children}
       </div>
       <Footer />

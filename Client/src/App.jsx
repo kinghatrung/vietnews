@@ -7,6 +7,7 @@ import NotFound from "~/pages/PublicPages/NotFound";
 import AccessDenied from "~/pages/PublicPages/AccessDenied";
 import ScrollToTop from "~/components/ScrollToTop";
 import RbacRouter from "~/components/core/RbacRouter";
+import { selectCurrentUser } from "~/redux/slices/authSlice";
 
 // Layout
 import DefaultLayout from "~/layouts/DefaultLayout";
@@ -49,7 +50,8 @@ const Wrapper = ({ layout }) => {
 };
 
 function App() {
-  const user = useSelector((state) => state.auth.login.currentUser);
+  const user = useSelector(selectCurrentUser);
+  console.log(user);
 
   return (
     <div className="App">

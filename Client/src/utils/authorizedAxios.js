@@ -1,7 +1,5 @@
 import axios from "axios";
 import { notification } from "antd";
-
-import { logoutFromInterceptor } from "~/redux/apiRequest";
 import { refreshTokenAPI } from "~/api";
 
 let authorizedAxiosInstance = axios.create();
@@ -28,7 +26,7 @@ authorizedAxiosInstance.interceptors.response.use(
     const originalRequest = error.config;
 
     if (error.response?.status === 401) {
-      await logoutFromInterceptor();
+      // await logoutFromInterceptor();
       return Promise.reject(error);
     }
 
@@ -39,7 +37,7 @@ authorizedAxiosInstance.interceptors.response.use(
           return authorizedAxiosInstance(originalRequest);
         })
         .catch((err) => {
-          logoutFromInterceptor();
+          // logoutFromInterceptor();
           return Promise.reject(err);
         });
     }
