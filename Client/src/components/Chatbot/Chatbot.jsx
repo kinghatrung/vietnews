@@ -56,7 +56,7 @@ const Chatbot = React.memo(function Chatbot() {
         onClick={() => setVisible(!visible)}
         className="cursor-pointer fixed bottom-12 left-8 bg-blue-400 text-white w-16 h-16 rounded-full shadow-md hover:bg-blue-500 hover:scale-110 transition-all duration-300 flex items-center justify-center z-50"
       >
-        <span class="sr-only">Chat với chúng tôi</span>
+        <span className="sr-only">Chat với chúng tôi</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="w-7 h-7"
