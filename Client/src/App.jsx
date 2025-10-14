@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
-import { Fragment, lazy, Suspense } from "react";
+import { Fragment, Suspense } from "react";
 import { useSelector } from "react-redux";
 
 import {
@@ -16,6 +16,7 @@ import ReporterLayout from "~/layouts/ReporterLayout";
 import EditorLayout from "~/layouts/EditorLayout";
 import ModeratorLayout from "~/layouts/ModeratorLayout";
 import NotFound from "~/pages/PublicPages/NotFound";
+import ScrollToTop from "~/components/ScrollToTop";
 
 const ProtectedRoute = () => {
   const user = useSelector((state) => state.auth.login.currentUser);
@@ -55,6 +56,7 @@ function App() {
 
   return (
     <div className="App">
+      <ScrollToTop />
       <Suspense>
         {!user ? (
           <Routes>
