@@ -44,16 +44,13 @@ const NewsContent = React.memo(function NewsContent() {
     const fetchAllData = async () => {
       try {
         dispatch(startLoading());
-        const [newsRes, categoryRes, newsByIdRes, commentsRes, savedNewsRes] =
-          await Promise.all([
-            getNewsAPI(),
-            getCategoryAPI(),
-            getNewsByIdAPI(id),
-            getAllCommentByNews(id),
-            user?._id
-              ? getSaveNewsAPI(user._id)
-              : Promise.resolve({ data: [] }),
-          ]);
+        const [newsRes, categoryRes, newsByIdRes, commentsRes, savedNewsRes] = await Promise.all([
+          getNewsAPI(),
+          getCategoryAPI(),
+          getNewsByIdAPI(id),
+          getAllCommentByNews(id),
+          user?._id ? getSaveNewsAPI(user._id) : Promise.resolve({ data: [] }),
+        ]);
         setNews(newsRes.data);
         setCategories(categoryRes.data);
         setNewsById(newsByIdRes.data);
@@ -81,9 +78,7 @@ const NewsContent = React.memo(function NewsContent() {
   }, [news]);
 
   const filteredCategories = useMemo(() => {
-    return categories.filter(
-      (category) => category.category_name === newsById.category?.category_name
-    );
+    return categories.filter((category) => category.category_name === newsById.category?.category_name);
   }, [categories, newsById.category?.category_name]);
 
   const handleLikeOrUnlikeNews = useCallback(
@@ -100,9 +95,7 @@ const NewsContent = React.memo(function NewsContent() {
           let updatedLikedUsers;
 
           if (userHasLiked) {
-            updatedLikedUsers = prev.likedUsers.filter(
-              (uid) => uid !== user._id
-            );
+            updatedLikedUsers = prev.likedUsers.filter((uid) => uid !== user._id);
           } else {
             updatedLikedUsers = [...prev.likedUsers, user._id];
           }
@@ -159,6 +152,8 @@ const NewsContent = React.memo(function NewsContent() {
         dispatch(stopLoading());
       }
     },
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [dispatch, isLoggedIn, user, id]
   );
 
@@ -166,20 +161,13 @@ const NewsContent = React.memo(function NewsContent() {
     <section className="grid grid-cols-1 lg:grid-cols-12 gap-[50px]">
       <div className="col-span-8">
         <div className="flex justify-between mb-3">
-          <Link
-            to={`/genre/${newsById.category?._id}`}
-            className="active-color"
-          >
+          <Link to={`/genre/${newsById.category?._id}`} className="active-color">
             {newsById.category?.category_name}
           </Link>
-          <p className="text-[#757575]">
-            {dayjs(newsById.createdAt).add(1, "day").format("dddd, DD/MM/YYYY")}
-          </p>
+          <p className="text-[#757575]">{dayjs(newsById.createdAt).add(1, "day").format("dddd, DD/MM/YYYY")}</p>
         </div>
         <div className="mb-[20px]">
-          <h1 className="text-[22px] md:text-[32px] font-title font-bold text-[#222]">
-            {newsById.title}
-          </h1>
+          <h1 className="text-[22px] md:text-[32px] font-title font-bold text-[#222]">{newsById.title}</h1>
           <br />
           <article>
             <p className="text-[18px] text-[#222]">{newsById.describe}</p>
@@ -199,34 +187,18 @@ const NewsContent = React.memo(function NewsContent() {
             </a>
             <div className="border border-[#e5e5e5] p-[15px] mt-[20px]">
               {mostLikedNews.slice(0, 1).map((item) => (
-                <News
-                  key={item._id}
-                  {...item}
-                  heading={item.title}
-                  small
-                  title
-                  noTime
-                  sizeSmall
-                />
+                <News key={item._id} {...item} heading={item.title} small title noTime sizeSmall />
               ))}
               <Divider className="!my-[13px]" />
               {mostLikedNews.slice(1, 2).map((item) => (
-                <News
-                  key={item._id}
-                  {...item}
-                  heading={item.title}
-                  small
-                  title
-                  noTime
-                  sizeSmall
-                />
+                <News key={item._id} {...item} heading={item.title} small title noTime sizeSmall />
               ))}
             </div>
           </article>
         </div>
         <div className="flex justify-between items-center border-b border-[#E5E5E5] pb-[20px] mb-[20px]">
           <div className="flex items-center gap-[10px]">
-            <Link className="!text-[16px]" to={config.routes.home}>
+            <Link className="!text-[16px]" to={`/${config.routes.home}`}>
               <Button className="!rounded-[3px] !py-[20px] !px-[20px] lg:!py-[12px] lg:!px-[20px] !text-[16px] !text-[#4f4f4f]">
                 <ArrowLeftOutlined />
               </Button>
@@ -252,9 +224,7 @@ const NewsContent = React.memo(function NewsContent() {
               >
                 <LikeFilled
                   style={{
-                    color: newsById?.likedUsers?.some((id) => id === user?._id)
-                      ? "#c4302e"
-                      : "#000",
+                    color: newsById?.likedUsers?.some((id) => id === user?._id) ? "#c4302e" : "#000",
                   }}
                 />
               </Button>
@@ -262,9 +232,7 @@ const NewsContent = React.memo(function NewsContent() {
           </div>
         </div>
         <div className="my-[20px]">
-          <h1 className="text-[20px] font-title font-bold text-[#222] mb-[16px]">
-            Bình luận
-          </h1>
+          <h1 className="text-[20px] font-title font-bold text-[#222] mb-[16px]">Bình luận</h1>
           <Form form={form} layout="vertical" onFinish={handleSendComment}>
             <Form.Item
               layout="vertical"
@@ -299,10 +267,7 @@ const NewsContent = React.memo(function NewsContent() {
         <div className="py-[20px]">
           {filteredCategories.map((category) => (
             <div key={category._id} className="flex flex-col">
-              <CategoryList
-                category={category.category_name}
-                categoryId={category._id}
-              />
+              <CategoryList category={category.category_name} categoryId={category._id} />
               <div className="flex flex-col">
                 {category.news
                   .filter((newsItem) => newsItem._id !== id)
@@ -329,15 +294,7 @@ const NewsContent = React.memo(function NewsContent() {
           <div className="flex flex-col gap-[20px]">
             {mostViewedNews.map((itemNews) => (
               <div key={itemNews._id} className="flex flex-col">
-                <News
-                  {...itemNews}
-                  heading={itemNews.title}
-                  semiSmall
-                  sizeDefault
-                  noTime
-                  title
-                  noSubTitle
-                />
+                <News {...itemNews} heading={itemNews.title} semiSmall sizeDefault noTime title noSubTitle />
               </div>
             ))}
           </div>

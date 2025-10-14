@@ -45,11 +45,7 @@ const AdminLayout = React.memo(function AdminLayout({ children }) {
         <LazyLoad height={40} offset={40} once>
           <picture>
             <source srcSet="/image/NEWS.webp" type="image/webp" />
-            <img
-              alt="Logo"
-              src="/image/NEWS.png"
-              className="demo-logo-vertical"
-            />
+            <img alt="Logo" src="/image/NEWS.png" className="demo-logo-vertical" />
           </picture>
         </LazyLoad>
         <Menu
@@ -59,27 +55,27 @@ const AdminLayout = React.memo(function AdminLayout({ children }) {
           defaultSelectedKeys={[config.routes.user]}
           items={[
             {
-              key: config.routes.home,
+              key: `/admin/${config.routes.dashboard}`,
               icon: <UserOutlined />,
               label: "Người dùng",
             },
             {
-              key: config.routes.article,
+              key: `/admin/${config.routes.article}`,
               icon: <FormOutlined />,
               label: "Bài viết",
             },
             {
-              key: config.routes.category,
+              key: `/admin/${config.routes.category}`,
               icon: <OrderedListOutlined />,
               label: "Danh mục tin tức",
             },
             {
-              key: config.routes.newsMange,
+              key: `/admin/${config.routes.newsMange}`,
               icon: <FileTextOutlined />,
               label: "Tin tức",
             },
             {
-              key: config.routes.profile,
+              key: `/${config.routes.profile}`,
               icon: <SettingOutlined />,
               label: "Thông tin tài khoản",
             },

@@ -2,12 +2,7 @@ import React, { useCallback, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { Divider, Button, notification, Input, Dropdown } from "antd";
-import {
-  SearchOutlined,
-  UserOutlined,
-  CaretDownOutlined,
-  LogoutOutlined,
-} from "@ant-design/icons";
+import { SearchOutlined, UserOutlined, CaretDownOutlined, LogoutOutlined } from "@ant-design/icons";
 import { AnimatePresence, motion } from "framer-motion";
 import LazyLoad from "react-lazyload";
 
@@ -64,25 +59,15 @@ const Navbar = React.memo(function Navbar() {
     <div className="border-b border-[#E5E5E5] text-[#757575]">
       <div className="max-w-[1130px] px-4 mx-auto h-[50px] flex justify-between items-center">
         <div className="flex items-center">
-          <Link to={config.routes.home}>
+          <Link to={`/${config.routes.home}`}>
             <LazyLoad height={40} offset={40} once>
               <picture>
                 <source srcSet="/image/NEWS.webp" type="image/webp" />
-                <img
-                  className="h-[40px] w-auto"
-                  src="/image/NEWS.png"
-                  alt="Logo"
-                  width="121"
-                  height="40"
-                />
+                <img className="h-[40px] w-auto" src="/image/NEWS.png" alt="Logo" width="121" height="40" />
               </picture>
             </LazyLoad>
           </Link>
-          <Divider
-            className="!hidden md:!block"
-            style={{ height: 26 }}
-            type="vertical"
-          />
+          <Divider className="!hidden md:!block" style={{ height: 26 }} type="vertical" />
           <p className="hidden md:block">
             {currentDate.toLocaleDateString("vi-VN", {
               weekday: "long",
@@ -94,25 +79,17 @@ const Navbar = React.memo(function Navbar() {
         </div>
         <div className="flex items-center">
           <NavLink
-            to={config.routes.latest}
+            to={`/${config.routes.latest}`}
             className={({ isActive }) =>
-              isActive
-                ? "hover-color active-color hidden md:block"
-                : "hover-color hidden md:block"
+              isActive ? "hover-color active-color hidden md:block" : "hover-color hidden md:block"
             }
           >
             Mới nhất
           </NavLink>
-          <Divider
-            className="!hidden md:!block"
-            style={{ height: 26 }}
-            type="vertical"
-          />
+          <Divider className="!hidden md:!block" style={{ height: 26 }} type="vertical" />
           <div
             className={
-              !isOpenSearch
-                ? "flex items-center"
-                : "flex items-center border border-[#E5E5E5] rounded-4xl px-3"
+              !isOpenSearch ? "flex items-center" : "flex items-center border border-[#E5E5E5] rounded-4xl px-3"
             }
           >
             <Button
@@ -131,20 +108,12 @@ const Navbar = React.memo(function Navbar() {
                   exit={{ opacity: 0, width: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Input.Search
-                    className="custom-search"
-                    placeholder="Tìm kiếm"
-                    onSearch={handleSearch}
-                  />
+                  <Input.Search className="custom-search" placeholder="Tìm kiếm" onSearch={handleSearch} />
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
-          <Divider
-            className="!hidden md:!block"
-            style={{ height: 26 }}
-            type="vertical"
-          />
+          <Divider className="!hidden md:!block" style={{ height: 26 }} type="vertical" />
           {user ? (
             <Dropdown
               arrow
@@ -153,13 +122,13 @@ const Navbar = React.memo(function Navbar() {
                 <div className="min-w-[200px] bg-[#fff] border border-[#E5E5E5] flex flex-col rounded-[6px] px-[15px]">
                   <Link
                     className="py-[10px] block text-[15px] !text-[#4f4f4f] hover:!text-[#c4302e]"
-                    to={config.routes.profile}
+                    to={`/${config.routes.profile}`}
                   >
                     Thông tin chung
                   </Link>
                   <Link
                     className="py-[10px] block text-[15px] !text-[#4f4f4f] hover:!text-[#c4302e]"
-                    to={config.routes.profile}
+                    to={`/${config.routes.profile}`}
                   >
                     Tin đã lưu
                   </Link>

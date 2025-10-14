@@ -1,21 +1,22 @@
 const routes = {
   // public route
-  home: "/",
-  latest: "/latest",
-  newsMange: "/newsMange",
-  search: "/search",
-  genre: "/genre/:id",
-  news: "/news/:id",
+  home: "home",
+  dashboard: "dashboard",
+  latest: "latest",
+  newsMange: "newsMange",
+  search: "search",
+  genre: "genre/:id",
+  news: "news/:id",
 
   // Private route
-  profile: "/profile",
+  profile: "profile",
 
   // Admin router
-  article: "/article",
-  category: "/category",
+  article: "article",
+  category: "category",
 
   // Editor router
-  propose: "/propose",
+  propose: "propose",
 };
 
 export default routes;

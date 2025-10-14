@@ -47,8 +47,7 @@ const News = React.memo(function News({
           horizontal,
         "flex flex-col": author,
         "flex-1": noImageAndSubTitle,
-        "sm:flex gap-[20px] border-b border-[#E5E5E5] pb-[20px] mb-[20px]":
-          large,
+        "sm:flex gap-[20px] border-b border-[#E5E5E5] pb-[20px] mb-[20px]": large,
         "flex flex-col-reverse justify-between": reverse,
         "flex flex-col md:flex-row gap-[10px] md:gap-[20px] border-b border-[#E5E5E5] last:border-b-0 pb-[20px] mb-[20px] last:p-0 last:m-0":
           semiMedium,
@@ -64,12 +63,10 @@ const News = React.memo(function News({
               className={clsx("object-cover", {
                 "aspect-[5/3]": vertical,
                 "lg:w-[225px] lg:h-[135px] aspect-[5/3]": horizontal,
-                "xl:w-[520px] xl:h-[312px] lg:w-[440px] lg:h-[264px] md:w-[440px] md:h-[264px] aspect-[5/3]":
-                  large,
+                "xl:w-[520px] xl:h-[312px] lg:w-[440px] lg:h-[264px] md:w-[440px] md:h-[264px] aspect-[5/3]": large,
                 "lg:w-[250px] lg:h-[150px] aspect-[5/3]": medium,
                 "sm:w-[240px] sm:h-[144px] aspect-[5/3]": semiMedium,
-                "md:w-[145px] md:h-[87px] w-[120px] h-[72px] aspect-[5/3]":
-                  small,
+                "md:w-[145px] md:h-[87px] w-[120px] h-[72px] aspect-[5/3]": small,
                 "w-[110px] h-[66px] aspect-[5/3] hidden lg:block": semiSmall,
               })}
             >
@@ -79,40 +76,19 @@ const News = React.memo(function News({
                 className="size-full object-cover"
                 src={
                   vertical
-                    ? image.replace(
-                        "/upload/",
-                        "/upload/w_520,h_312,c_fill,f_auto,q_auto/"
-                      )
+                    ? image.replace("/upload/", "/upload/w_520,h_312,c_fill,f_auto,q_auto/")
                     : horizontal
-                    ? image.replace(
-                        "/upload/",
-                        "/upload/w_225,h_135,c_fill,f_auto,q_auto/"
-                      )
+                    ? image.replace("/upload/", "/upload/w_225,h_135,c_fill,f_auto,q_auto/")
                     : large
-                    ? image.replace(
-                        "/upload/",
-                        "/upload/w_520,h_312,c_fill,f_auto,q_auto/"
-                      )
+                    ? image.replace("/upload/", "/upload/w_520,h_312,c_fill,f_auto,q_auto/")
                     : medium
-                    ? image.replace(
-                        "/upload/",
-                        "/upload/w_250,h_150,c_fill,f_auto,q_auto/"
-                      )
+                    ? image.replace("/upload/", "/upload/w_250,h_150,c_fill,f_auto,q_auto/")
                     : semiMedium
-                    ? image.replace(
-                        "/upload/",
-                        "/upload/w_240,h_144,c_fill,f_auto,q_auto/"
-                      )
+                    ? image.replace("/upload/", "/upload/w_240,h_144,c_fill,f_auto,q_auto/")
                     : small
-                    ? image.replace(
-                        "/upload/",
-                        "/upload/w_145,h_87,c_fill,f_auto,q_auto/"
-                      )
+                    ? image.replace("/upload/", "/upload/w_145,h_87,c_fill,f_auto,q_auto/")
                     : semiSmall
-                    ? image.replace(
-                        "/upload/",
-                        "/upload/w_110,h_66,c_fill,f_auto,q_auto/"
-                      )
+                    ? image.replace("/upload/", "/upload/w_110,h_66,c_fill,f_auto,q_auto/")
                     : image
                 }
               />
@@ -131,16 +107,12 @@ const News = React.memo(function News({
             className={clsx({
               "text-[18px] md:text-[15px] lg:line-clamp-2": sizeDefault,
               "text-[20px]": sizeLarge,
-              "sm:text-[18px] text-[15px] mb-2 ms:mb-0 line-clamp-3 sm:line-clamp-none":
-                sizeSmall,
+              "sm:text-[18px] text-[15px] mb-2 ms:mb-0 line-clamp-3 sm:line-clamp-none": sizeSmall,
               "text-[18px] mb-2": sizeSemiSmall,
               "text-[20px] sm:text-[15px] mb-1 lg:line-clamp-2": sizeAuthor,
             })}
           >
-            <Link
-              to={`/news/${_id}`}
-              className="hover-color text-color font-title font-bold"
-            >
+            <Link to={`/news/${_id}`} className="hover-color text-color font-title font-bold">
               {heading}
             </Link>
           </h3>
@@ -171,7 +143,7 @@ const News = React.memo(function News({
           <div className="flex justify-between mt-5">
             <div className="flex flex-col">
               <h3 className="italic font-title text-[16px] sm:text-[14px]">
-                <Link style={{ color: "#757575" }} to={config.routes.home}>
+                <Link style={{ color: "#757575" }} to={`/${config.routes.home}`}>
                   {reporter?.full_name}
                 </Link>
               </h3>

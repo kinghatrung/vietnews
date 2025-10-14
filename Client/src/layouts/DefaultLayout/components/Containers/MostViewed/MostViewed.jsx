@@ -22,10 +22,7 @@ function MostViewed() {
   return (
     <section>
       <h3 className="text-[18px] font-title font-bold mb-[12px]">
-        <Link
-          to={config.routes.home}
-          className="hover-color text-color font-title font-bold"
-        >
+        <Link to={`/${config.routes.home}`} className="hover-color text-color font-title font-bold">
           Xem nhiều
         </Link>
       </h3>
@@ -34,16 +31,10 @@ function MostViewed() {
           .sort((a, b) => b.like - a.like)
           .slice(0, 6)
           .map((itemNews, index) => (
-            <article
-              key={itemNews._id}
-              className="flex items-center gap-[20px]"
-            >
+            <article key={itemNews._id} className="flex items-center gap-[20px]">
               <span className="text-[48px] font-title">#{index + 1}</span>
               <h3 className="text-[18px] lg:text-[14px] font-title font-bold">
-                <Link
-                  to={`/news/${itemNews._id}`}
-                  className="hover-color text-color font-title font-light"
-                >
+                <Link to={`/news/${itemNews._id}`} className="hover-color text-color font-title font-light">
                   {itemNews.title}
                 </Link>
               </h3>

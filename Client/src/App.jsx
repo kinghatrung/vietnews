@@ -2,16 +2,18 @@ import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { Fragment, Suspense } from "react";
 import { useSelector } from "react-redux";
 
+import config from "~/config";
+import NotFound from "~/pages/PublicPages/NotFound";
+import AccessDenied from "~/pages/PublicPages/AccessDenied";
+import ScrollToTop from "~/components/ScrollToTop";
+import RbacRouter from "~/components/core/RbacRouter";
+
+// Layout
 import DefaultLayout from "~/layouts/DefaultLayout";
 import AdminLayout from "~/layouts/AdminLayout";
 import ReporterLayout from "~/layouts/ReporterLayout";
 import EditorLayout from "~/layouts/EditorLayout";
 import ModeratorLayout from "~/layouts/ModeratorLayout";
-import NotFound from "~/pages/PublicPages/NotFound";
-import ScrollToTop from "~/components/ScrollToTop";
-import config from "~/config";
-import AccessDenied from "~/pages/PublicPages/AccessDenied";
-import RbacRouter from "~/components/core/RbacRouter";
 
 // Import Public Page
 import Home from "~/pages/PublicPages/Home";
@@ -56,44 +58,26 @@ function App() {
         <Routes>
           {/* Public */}
           <Route element={<Wrapper layout={DefaultLayout} />}>
-            <Route path={config.routes.home} element={<Home />} />
-            <Route path={config.routes.news} element={<NewsContent />} />
-            <Route path={config.routes.search} element={<SearchNews />} />
-            <Route path={config.routes.genre} element={<Genre />} />
-            <Route path={config.routes.latest} element={<LatestNews />} />
+            <Route path={`/${config.routes.home}`} element={<Home />} />
+            <Route path={`/${config.routes.news}`} element={<NewsContent />} />
+            <Route path={`/${config.routes.search}`} element={<SearchNews />} />
+            <Route path={`/${config.routes.genre}`} element={<Genre />} />
+            <Route path={`/${config.routes.latest}`} element={<LatestNews />} />
           </Route>
 
           {/* Private */}
-
           <Route element={<ProtectedRoute user={user} />}>
-            <Route path={config.routes.profile} element={<Profile />} />
+            <Route path={`/${config.routes.profile}`} element={<Profile />} />
 
             <Route element={<Wrapper layout={ReporterLayout} user={user} />}>
-              <Route
-                element={
-                  <RbacRouter
-                    requiredPermission={
-                      config.permissions.VIEW_DASHBOARD_REPORTER
-                    }
-                  />
-                }
-              >
+              <Route element={<RbacRouter requiredPermission={config.permissions.VIEW_DASHBOARD_REPORTER} />}>
                 <Route path="/reporter/dashboard" element={<ArticleCommon />} />
-                <Route
-                  path="/reporter/article"
-                  element={<NewsMangeReporter />}
-                />
+                <Route path="/reporter/article" element={<NewsMangeReporter />} />
               </Route>
             </Route>
 
             <Route element={<Wrapper layout={AdminLayout} user={user} />}>
-              <Route
-                element={
-                  <RbacRouter
-                    requiredPermission={config.permissions.VIEW_DASHBOARD_ADMIN}
-                  />
-                }
-              >
+              <Route element={<RbacRouter requiredPermission={config.permissions.VIEW_DASHBOARD_ADMIN} />}>
                 <Route path="/admin/dashboard" element={<UserMange />} />
                 <Route path="/admin/article" element={<ArticleCommon />} />
                 <Route path="/admin/category" element={<CategoryMange />} />
@@ -102,30 +86,14 @@ function App() {
             </Route>
 
             <Route element={<Wrapper layout={EditorLayout} user={user} />}>
-              <Route
-                element={
-                  <RbacRouter
-                    requiredPermission={
-                      config.permissions.VIEW_DASHBOARD_EDITOR
-                    }
-                  />
-                }
-              >
+              <Route element={<RbacRouter requiredPermission={config.permissions.VIEW_DASHBOARD_EDITOR} />}>
                 <Route path="/editor/propose" element={<ProposeMange />} />
                 <Route path="/editor/article" element={<ArticleCommon />} />
               </Route>
             </Route>
 
             <Route element={<Wrapper layout={ModeratorLayout} user={user} />}>
-              <Route
-                element={
-                  <RbacRouter
-                    requiredPermission={
-                      config.permissions.VIEW_DASHBOARD_MODERATOR
-                    }
-                  />
-                }
-              >
+              <Route element={<RbacRouter requiredPermission={config.permissions.VIEW_DASHBOARD_MODERATOR} />}>
                 <Route path="/moderator/comment" element={<CommentMange />} />
               </Route>
             </Route>
