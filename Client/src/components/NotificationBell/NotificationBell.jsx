@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, memo, useState } from "react";
 import { Button, Badge, Dropdown, Menu, Empty } from "antd";
 import { BellOutlined } from "@ant-design/icons";
 import { getNotificationAPI } from "~/api";
 
-const NotificationBell = React.memo(function NotificationBell({ id }) {
+function NotificationBell({ id }) {
   const [notifications, setNotifications] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -40,9 +40,7 @@ const NotificationBell = React.memo(function NotificationBell({ id }) {
           <Menu.Item key={noti._id} style={{ padding: "12px 16px" }}>
             <div>
               <div style={{ fontSize: "14px" }}>{noti.message}</div>
-              <div
-                style={{ fontSize: "12px", color: "#8c8c8c", marginTop: "4px" }}
-              >
+              <div style={{ fontSize: "12px", color: "#8c8c8c", marginTop: "4px" }}>
                 {new Date(noti.createdAt).toLocaleString()}
               </div>
             </div>
@@ -61,14 +59,10 @@ const NotificationBell = React.memo(function NotificationBell({ id }) {
       trigger={["click"]}
     >
       <Badge count={unreadCount} offset={[-4, 4]}>
-        <Button
-          icon={<BellOutlined />}
-          shape="circle"
-          onClick={() => setShowDropdown(!showDropdown)}
-        />
+        <Button icon={<BellOutlined />} shape="circle" onClick={() => setShowDropdown(!showDropdown)} />
       </Badge>
     </Dropdown>
   );
-});
+}
 
-export default NotificationBell;
+export default memo(NotificationBell);

@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { startLoading, stopLoading } from "~/redux/loadingSlice";
 import { getCategoryAPI } from "~/api";
 
-const Footer = React.memo(function Footer() {
+function Footer() {
   const dispatch = useDispatch();
   const [categories, setCategories] = useState([]);
   const currentYear = new Date().getFullYear();
@@ -73,6 +73,6 @@ const Footer = React.memo(function Footer() {
       </div>
     </footer>
   );
-});
+}
 
-export default Footer;
+export default memo(Footer);

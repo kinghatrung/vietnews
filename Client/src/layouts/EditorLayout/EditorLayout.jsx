@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState, memo } from "react";
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { Button, Layout, Menu, theme, notification, Dropdown } from "antd";
+import { useNavigate } from "react-router-dom";
+import { Button, Layout, Menu, theme } from "antd";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -16,7 +16,7 @@ import config from "~/config/";
 
 const { Header, Sider, Content } = Layout;
 
-const EditorLayout = React.memo(function EditorLayout({ children }) {
+function EditorLayout({ children }) {
   const navigate = useNavigate();
 
   const isLoading = useSelector((state) => state.loading.isLoading);
@@ -42,11 +42,7 @@ const EditorLayout = React.memo(function EditorLayout({ children }) {
         <LazyLoad height={40} offset={40} once>
           <picture>
             <source srcSet="/image/NEWS.webp" type="image/webp" />
-            <img
-              alt="Logo"
-              src="/image/NEWS.png"
-              className="demo-logo-vertical"
-            />
+            <img alt="Logo" src="/image/NEWS.png" className="demo-logo-vertical" />
           </picture>
         </LazyLoad>
         <Menu
@@ -102,6 +98,6 @@ const EditorLayout = React.memo(function EditorLayout({ children }) {
       </Layout>
     </Layout>
   );
-});
+}
 
-export default EditorLayout;
+export default memo(EditorLayout);

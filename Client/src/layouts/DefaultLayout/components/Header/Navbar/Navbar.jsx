@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import { useCallback, memo, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { Divider, Button, notification, Input, Dropdown } from "antd";
@@ -12,7 +12,7 @@ import { logoutUser } from "~/redux/apiRequest";
 import ForgotPassword from "~/components/FormValidate/ForgotPassword";
 import { showLoginModal, hideLoginModal } from "~/redux/modalSlice";
 
-const Navbar = React.memo(function Navbar() {
+function Navbar() {
   const user = useSelector((state) => {
     return state.auth.login.currentUser;
   });
@@ -191,6 +191,5 @@ const Navbar = React.memo(function Navbar() {
       </div>
     </div>
   );
-});
-
-export default Navbar;
+}
+export default memo(Navbar);

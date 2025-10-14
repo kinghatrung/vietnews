@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 import { useSelector } from "react-redux";
 import { FloatButton } from "antd";
 
@@ -8,7 +8,7 @@ import Chatbot from "~/components/Chatbot";
 import Footer from "~/layouts/DefaultLayout/components/Footer";
 import Loading from "~/components/Loading";
 
-const DefaultLayout = React.memo(function DefaultLayout({ children }) {
+function DefaultLayout({ children }) {
   const isLoading = useSelector((state) => state.loading.isLoading);
 
   return (
@@ -24,6 +24,6 @@ const DefaultLayout = React.memo(function DefaultLayout({ children }) {
       <Chatbot />
     </div>
   );
-});
+}
 
-export default DefaultLayout;
+export default memo(DefaultLayout);

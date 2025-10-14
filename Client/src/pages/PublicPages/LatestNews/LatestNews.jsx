@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { memo, useState, useEffect } from "react";
 import { Empty, Pagination } from "antd";
 import { useDispatch } from "react-redux";
 import { startLoading, stopLoading } from "~/redux/loadingSlice";
@@ -6,7 +6,7 @@ import { startLoading, stopLoading } from "~/redux/loadingSlice";
 import { getNewsAPI } from "~/api";
 import News from "~/components/News";
 
-const LatestNews = React.memo(function LatestNews() {
+function LatestNews() {
   const dispatch = useDispatch();
   const [news, setNews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -41,24 +41,12 @@ const LatestNews = React.memo(function LatestNews() {
   return (
     <section>
       <div className="border-b border-[#E5E5E5] mb-[24px]">
-        <h3 className="font-title font-[600] text-[32px] !mb-0">
-          Tin tức mới nhất
-        </h3>
-        <p className="text-[#4f4f4f] text-[14px] pb-[20px]">
-          Tin tức được cập nhật 24h
-        </p>
+        <h3 className="font-title font-[600] text-[32px] !mb-0">Tin tức mới nhất</h3>
+        <p className="text-[#4f4f4f] text-[14px] pb-[20px]">Tin tức được cập nhật 24h</p>
       </div>
       <div className="flex flex-col">
         {currentNews.map((newsItem) => (
-          <News
-            key={newsItem._id}
-            {...newsItem}
-            heading={newsItem.title}
-            title
-            semiMedium
-            sizeSemiSmall
-            time
-          />
+          <News key={newsItem._id} {...newsItem} heading={newsItem.title} title semiMedium sizeSemiSmall time />
         ))}
 
         {currentNews.length > 0 ? (
@@ -81,6 +69,6 @@ const LatestNews = React.memo(function LatestNews() {
       </div>
     </section>
   );
-});
+}
 
-export default LatestNews;
+export default memo(LatestNews);

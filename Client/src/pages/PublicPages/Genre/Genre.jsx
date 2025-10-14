@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 import { Empty, Pagination } from "antd";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -8,7 +8,7 @@ import { startLoading, stopLoading } from "~/redux/loadingSlice";
 import { getNewsAPI, getCategoryByIdAPI } from "~/api";
 import News from "~/components/News";
 
-const Genre = React.memo(function Genre() {
+function Genre() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const [news, setNews] = useState([]);
@@ -54,24 +54,12 @@ const Genre = React.memo(function Genre() {
 
   return (
     <section>
-      <h3 className="font-title font-[600] text-[32px] mb-1">
-        {categories.category_name}
-      </h3>
-      <p className="text-[#4f4f4f] text-[18px] mb-[30px]">
-        {categories.description}
-      </p>
+      <h3 className="font-title font-[600] text-[32px] mb-1">{categories.category_name}</h3>
+      <p className="text-[#4f4f4f] text-[18px] mb-[30px]">{categories.description}</p>
       {categories.news?.length > 0 ? (
         <div className="flex flex-col">
           {currentNews.map((newsItem) => (
-            <News
-              key={newsItem._id}
-              {...newsItem}
-              heading={newsItem.title}
-              title
-              semiMedium
-              sizeSemiSmall
-              noTime
-            />
+            <News key={newsItem._id} {...newsItem} heading={newsItem.title} title semiMedium sizeSemiSmall noTime />
           ))}
           {currentNews.length > pageSize && (
             <Pagination
@@ -94,6 +82,6 @@ const Genre = React.memo(function Genre() {
       )}
     </section>
   );
-});
+}
 
-export default Genre;
+export default memo(Genre);

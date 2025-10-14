@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import React, { useState, useCallback } from "react";
+import React, { useState, memo, useCallback } from "react";
 import { Button, Select, Upload, Modal, Form, Input, Dropdown, Menu, Divider, Tag, message } from "antd";
 import {
   ClockCircleOutlined,
@@ -33,7 +33,7 @@ dayjs.extend(relativeTime);
 dayjs.locale("vi");
 const { Option } = Select;
 
-const ArticleItem = React.memo(function ArticleItem({
+function ArticleItem({
   articles,
   categories,
   editors,
@@ -580,6 +580,6 @@ const ArticleItem = React.memo(function ArticleItem({
       ))}
     </>
   );
-});
+}
 
-export default ArticleItem;
+export default memo(ArticleItem);

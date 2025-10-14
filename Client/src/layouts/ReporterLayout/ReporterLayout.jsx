@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, memo } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Button, Layout, Menu, theme } from "antd";
@@ -16,7 +16,7 @@ import Loading from "~/components/Loading";
 
 const { Header, Sider, Content } = Layout;
 
-const ReporterLayout = React.memo(function ReporterLayout({ children }) {
+function ReporterLayout({ children }) {
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
   const {
@@ -42,11 +42,7 @@ const ReporterLayout = React.memo(function ReporterLayout({ children }) {
         <LazyLoad height={40} offset={40} once>
           <picture>
             <source srcSet="/image/NEWS.webp" type="image/webp" />
-            <img
-              alt="Logo"
-              src="/image/NEWS.png"
-              className="demo-logo-vertical"
-            />
+            <img alt="Logo" src="/image/NEWS.png" className="demo-logo-vertical" />
           </picture>
         </LazyLoad>
         <Menu
@@ -102,6 +98,6 @@ const ReporterLayout = React.memo(function ReporterLayout({ children }) {
       </Layout>
     </Layout>
   );
-});
+}
 
-export default ReporterLayout;
+export default memo(ReporterLayout);

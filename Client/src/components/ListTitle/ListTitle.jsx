@@ -1,7 +1,7 @@
-import React from "react";
+import { memo } from "react";
 import News from "~/components/News";
 
-const ListTitle = React.memo(function ListTitle() {
+function ListTitle() {
   return (
     <div className="list-disc pl-[20px] pt-[20px]">
       <ul className="flex flex-col lg:flex-row justify-between list-disc gap-[20px] lg:gap-[40px]">
@@ -17,6 +17,6 @@ const ListTitle = React.memo(function ListTitle() {
       </ul>
     </div>
   );
-});
+}
 
-export default ListTitle;
+export default memo(ListTitle);

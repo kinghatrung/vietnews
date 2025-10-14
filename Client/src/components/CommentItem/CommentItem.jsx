@@ -1,20 +1,14 @@
 import { useDispatch } from "react-redux";
-import React, { useState, useCallback } from "react";
+import { useState, memo, useCallback } from "react";
 import { Button, message, Popconfirm, Modal, Divider } from "antd";
 import { ClockCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import "dayjs/locale/vi";
 
 import { startLoading, stopLoading } from "~/redux/loadingSlice";
-import {
-  deleteComment,
-  approveComment,
-  banUserAPI,
-  unbanUserAPI,
-  checkContentArticleAPI,
-} from "~/api";
+import { deleteComment, approveComment, banUserAPI, unbanUserAPI, checkContentArticleAPI } from "~/api";
 
-const CommentItem = React.memo(function CommentItem({ comments, setComments }) {
+function CommentItem({ comments, setComments }) {
   const dispatch = useDispatch();
   const [isToxic, setIsToxic] = useState(false);
   const [toxic, setToxic] = useState([]);
@@ -111,10 +105,7 @@ const CommentItem = React.memo(function CommentItem({ comments, setComments }) {
         message.success("Nội dung bài viết hợp lệ!");
       } else {
         setIsToxic(true);
-        message.error(
-          "Tổng số câu có chứa từ toxic trong bài viết: " +
-            response.data.totalToxic
-        );
+        message.error("Tổng số câu có chứa từ toxic trong bài viết: " + response.data.totalToxic);
       }
     } catch (err) {
       message.error("Lỗi kiểm tra nội dung!");
@@ -137,12 +128,8 @@ const CommentItem = React.memo(function CommentItem({ comments, setComments }) {
             />
             <div className="max-w-[500px] w-full">
               <div className="flex items-baseline gap-2 mb-1">
-                <p className="text-[#222222] font-[600] text-[16px]">
-                  {comment.user?.full_name}
-                </p>
-                <p className="text-[#757575] font-[500] text-[12px]">
-                  {comment.user?.email}
-                </p>
+                <p className="text-[#222222] font-[600] text-[16px]">{comment.user?.full_name}</p>
+                <p className="text-[#757575] font-[500] text-[12px]">{comment.user?.email}</p>
               </div>
               <div>
                 <p className="mb-1 truncate w-full">
@@ -154,8 +141,7 @@ const CommentItem = React.memo(function CommentItem({ comments, setComments }) {
               </div>
 
               <p className="text-[12px] text-[#757575]">
-                <ClockCircleOutlined /> Tham gia:{" "}
-                {dayjs(comment.user?.createdAt).format("MM/YYYY")}
+                <ClockCircleOutlined /> Tham gia: {dayjs(comment.user?.createdAt).format("MM/YYYY")}
               </p>
             </div>
           </div>
@@ -167,17 +153,10 @@ const CommentItem = React.memo(function CommentItem({ comments, setComments }) {
               onConfirm={() => handleAddCommentByNews(comment._id)}
               icon={<QuestionCircleOutlined style={{ color: "red" }} />}
             >
-              <Button
-                style={{ height: 30, color: "#52c41a", borderColor: "#52c41a" }}
-              >
-                Phê duyệt
-              </Button>
+              <Button style={{ height: 30, color: "#52c41a", borderColor: "#52c41a" }}>Phê duyệt</Button>
             </Popconfirm>
             <>
-              <Button
-                onClick={() => setIsModalOpen(comment._id)}
-                style={{ height: 30 }}
-              >
+              <Button onClick={() => setIsModalOpen(comment._id)} style={{ height: 30 }}>
                 Chi tiết
               </Button>
               <Modal
@@ -187,19 +166,13 @@ const CommentItem = React.memo(function CommentItem({ comments, setComments }) {
                 width={900}
                 footer={null}
               >
-                <h2 className="text-[#222222] font-[700] text-[24px] mb-[10px]">
-                  Chi tiết bình luận
-                </h2>
+                <h2 className="text-[#222222] font-[700] text-[24px] mb-[10px]">Chi tiết bình luận</h2>
                 <div className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="col-span-1 border border-[#e5e5e5] rounded-[8px] p-[10px]">
                       <div className="flex flex-col items-center">
-                        <h2 className="text-[20px] text-[#333] font-[600]">
-                          Thông tin người dùng
-                        </h2>
-                        <p className="text-[#71717A] text-[14px] mb-[10px]">
-                          Chi tiết về người gửi bình luận
-                        </p>
+                        <h2 className="text-[20px] text-[#333] font-[600]">Thông tin người dùng</h2>
+                        <p className="text-[#71717A] text-[14px] mb-[10px]">Chi tiết về người gửi bình luận</p>
                         <img
                           alt="Avatar"
                           loading="lazy"
@@ -208,35 +181,24 @@ const CommentItem = React.memo(function CommentItem({ comments, setComments }) {
                         />
                         <p className="mb-1 text-[14px]">
                           <strong>Họ tên:</strong>{" "}
-                          {comment.user?.full_name
-                            ? comment.user?.full_name
-                            : "Chưa có thông tin"}
+                          {comment.user?.full_name ? comment.user?.full_name : "Chưa có thông tin"}
                         </p>
                         <p className="mb-1 text-[14px]">
-                          <strong>Email:</strong>{" "}
-                          {comment.user?.email
-                            ? comment.user?.email
-                            : "Chưa có thông tin"}
+                          <strong>Email:</strong> {comment.user?.email ? comment.user?.email : "Chưa có thông tin"}
                         </p>
                         <p className="mb-1 text-[14px]">
                           <strong>Địa chỉ:</strong>{" "}
-                          {comment.user?.address
-                            ? comment.user?.address
-                            : "Chưa có thông tin"}
+                          {comment.user?.address ? comment.user?.address : "Chưa có thông tin"}
                         </p>
                         <p className="mb-1 truncate">
                           <strong>Số điện thoại:</strong>{" "}
-                          {comment.user?.phone
-                            ? comment.user?.phone
-                            : "Chưa có thông tin"}
+                          {comment.user?.phone ? comment.user?.phone : "Chưa có thông tin"}
                         </p>
                         <Divider />
                         <p className="mb-[10px]">Hành động với người dùng</p>
                         {comment.user?.isActive ? (
                           <Button
-                            onClick={() =>
-                              handleBanUser(comment.user?._id, comment._id)
-                            }
+                            onClick={() => handleBanUser(comment.user?._id, comment._id)}
                             danger
                             className="mb-[20px]"
                           >
@@ -257,18 +219,14 @@ const CommentItem = React.memo(function CommentItem({ comments, setComments }) {
                       </div>
                     </div>
                     <div className="col-span-2 border border-[#e5e5e5] rounded-[8px] p-[24px]">
-                      <h2 className="text-[20px] text-[#333] font-[600]">
-                        Nội dung bình luận
-                      </h2>
+                      <h2 className="text-[20px] text-[#333] font-[600]">Nội dung bình luận</h2>
                       <p className="mb-1 text-[14px]">
-                        <strong>Bình luận trên bài viết:</strong>{" "}
-                        {comment.news?.title}
+                        <strong>Bình luận trên bài viết:</strong> {comment.news?.title}
                       </p>
                       <div className="border border-[#e5e5e5] rounded-[8px] p-[12px]">
                         <p className="mb-1 text-[14px]">{comment.content}</p>
                         <p>
-                          <ClockCircleOutlined />{" "}
-                          {dayjs(comment.createdAt).fromNow()}
+                          <ClockCircleOutlined /> {dayjs(comment.createdAt).fromNow()}
                         </p>
                       </div>
                       {/* <Button
@@ -277,21 +235,13 @@ const CommentItem = React.memo(function CommentItem({ comments, setComments }) {
                       >
                         Kiểm tra nội dung
                       </Button> */}
-                      <h2 className="text-[20px] text-[#333] font-[600] mt-[16px]">
-                        Chi tiết tin tức
-                      </h2>
+                      <h2 className="text-[20px] text-[#333] font-[600] mt-[16px]">Chi tiết tin tức</h2>
                       <div className="border border-[#e5e5e5] rounded-[8px] p-[12px]">
-                        <p className="mb-1 text-[14px]">
-                          {comment.news?.describe}
-                        </p>
+                        <p className="mb-1 text-[14px]">{comment.news?.describe}</p>
                         <p>{dayjs(comment.news?.createdAt).fromNow()}</p>
                       </div>
                       <div className="flex gap-[12px] mt-[12px]">
-                        <Button
-                          style={{ height: 30 }}
-                          danger
-                          onClick={() => handleDeleteUComment(comment._id)}
-                        >
+                        <Button style={{ height: 30 }} danger onClick={() => handleDeleteUComment(comment._id)}>
                           Từ chối
                         </Button>
                         <Button
@@ -326,6 +276,6 @@ const CommentItem = React.memo(function CommentItem({ comments, setComments }) {
       ))}
     </>
   );
-});
+}
 
-export default CommentItem;
+export default memo(CommentItem);

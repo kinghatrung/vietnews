@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 import { Link } from "react-router-dom";
 import { LikeOutlined } from "@ant-design/icons";
 import clsx from "clsx";
@@ -8,7 +8,7 @@ import LazyLoad from "react-lazyload";
 
 import config from "~/config";
 
-const News = React.memo(function News({
+function News({
   vertical = false,
   horizontal = false,
   author = false,
@@ -162,6 +162,6 @@ const News = React.memo(function News({
       </div>
     </article>
   );
-});
+}
 
-export default News;
+export default memo(News);

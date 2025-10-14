@@ -1,11 +1,11 @@
-import { useSelector, useDispatch } from "react-redux";
-import React, { useCallback, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { memo, useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
 import { startLoading, stopLoading } from "~/redux/loadingSlice";
 import { getCategoryAPI } from "~/api";
 
-const Category = React.memo(function Category() {
+function Category() {
   const dispatch = useDispatch();
   const [categories, setCategories] = useState([]);
 
@@ -33,9 +33,7 @@ const Category = React.memo(function Category() {
             <li key={category._id} className="item-link mx-[10px]">
               <NavLink
                 to={`/genre/${category._id}`}
-                className={({ isActive }) =>
-                  isActive ? "active-color hover-color" : "hover-color"
-                }
+                className={({ isActive }) => (isActive ? "active-color hover-color" : "hover-color")}
               >
                 {category.category_name}
               </NavLink>
@@ -45,6 +43,6 @@ const Category = React.memo(function Category() {
       </div>
     </div>
   );
-});
+}
 
-export default Category;
+export default memo(Category);

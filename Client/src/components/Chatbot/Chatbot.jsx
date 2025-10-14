@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
+import { memo, useState, useRef, useEffect } from "react";
 import { Button, Input, List } from "antd";
 import { chatBotGeminiAPI } from "~/api";
 import { Link } from "react-router-dom";
 
-const Chatbot = React.memo(function Chatbot() {
+function Chatbot() {
   const [visible, setVisible] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -76,15 +76,11 @@ const Chatbot = React.memo(function Chatbot() {
       {visible && (
         <div
           className={`fixed bottom-20 left-6 w-96 bg-white rounded-2xl shadow-xl flex flex-col h-[500px] transition-all duration-500 transform ${
-            visible
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-10 pointer-events-none"
+            visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"
           } z-50`}
         >
           <div className="bg-gray-100 text-gray-800 p-4 rounded-t-2xl flex items-center justify-between border-b border-gray-200">
-            <h3 className="text-lg font-semibold tracking-tight">
-              VietNews Chatbot
-            </h3>
+            <h3 className="text-lg font-semibold tracking-tight">VietNews Chatbot</h3>
             <button
               onClick={() => setVisible(false)}
               className="text-gray-600 hover:text-gray-800 text-lg font-medium cursor-pointer"
@@ -97,20 +93,13 @@ const Chatbot = React.memo(function Chatbot() {
             <List
               dataSource={messages}
               locale={{
-                emptyText:
-                  "Xin chào! Tôi là VietNews Chatbot, sẵn sàng hỗ trợ bạn!",
+                emptyText: "Xin chào! Tôi là VietNews Chatbot, sẵn sàng hỗ trợ bạn!",
               }}
               renderItem={(item) => (
-                <List.Item
-                  className={`flex ${
-                    item.sender === "user" ? "justify-end" : "justify-start"
-                  } mb-4`}
-                >
+                <List.Item className={`flex ${item.sender === "user" ? "justify-end" : "justify-start"} mb-4`}>
                   <div
                     className={`max-w-[75%] p-3 rounded-xl shadow-sm ${
-                      item.sender === "user"
-                        ? "bg-blue-100 text-gray-800"
-                        : "bg-gray-100 text-gray-700"
+                      item.sender === "user" ? "bg-blue-100 text-gray-800" : "bg-gray-100 text-gray-700"
                     } transition-all duration-200`}
                   >
                     <p className="break-words whitespace-normal">{item.text}</p>
@@ -118,10 +107,7 @@ const Chatbot = React.memo(function Chatbot() {
                       <ul className="list-disc pl-5 space-y-1 text-sm text-blue-600 mt-[12px]">
                         {item.relatedNews.map((news, idx) => (
                           <li key={idx} className="text-[14px]">
-                            <Link
-                              to={news.routePath || `/news/${news._id}`}
-                              className="hover:underline"
-                            >
+                            <Link to={news.routePath || `/news/${news._id}`} className="hover:underline">
                               {news.title}
                             </Link>
                           </li>
@@ -158,6 +144,6 @@ const Chatbot = React.memo(function Chatbot() {
       )}
     </>
   );
-});
+}
 
-export default Chatbot;
+export default memo(Chatbot);

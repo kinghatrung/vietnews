@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import React, { useState, useEffect } from "react";
+import React, { useState, memo } from "react";
 import { Button, Divider, message, Modal, Form, Input, Dropdown, Menu } from "antd";
 import { DeleteOutlined, WarningOutlined, SettingOutlined, EditOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
@@ -8,7 +8,7 @@ import "dayjs/locale/vi";
 import { deleteCategoryAPI, updateCategoryAPI, getCategoryAPI } from "~/api";
 import { startLoading, stopLoading } from "~/redux/loadingSlice";
 
-const CategoryItem = React.memo(function CategoryItem({ categories, setCategories, setListCategories }) {
+function CategoryItem({ categories, setCategories, setListCategories }) {
   const dispatch = useDispatch();
   const [modalContent, setModalContent] = useState(null);
   const [modalVisible, setModalVisible] = useState(null);
@@ -208,6 +208,6 @@ const CategoryItem = React.memo(function CategoryItem({ categories, setCategorie
       ))}
     </>
   );
-});
+}
 
-export default CategoryItem;
+export default memo(CategoryItem);

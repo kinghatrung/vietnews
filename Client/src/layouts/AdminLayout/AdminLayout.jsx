@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, memo } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Button, Layout, Menu, theme } from "antd";
@@ -18,7 +18,7 @@ import Loading from "~/components/Loading";
 
 const { Header, Sider, Content } = Layout;
 
-const AdminLayout = React.memo(function AdminLayout({ children }) {
+function AdminLayout({ children }) {
   const navigate = useNavigate();
 
   const [collapsed, setCollapsed] = useState(false);
@@ -111,6 +111,6 @@ const AdminLayout = React.memo(function AdminLayout({ children }) {
       </Layout>
     </Layout>
   );
-});
+}
 
-export default AdminLayout;
+export default memo(AdminLayout);

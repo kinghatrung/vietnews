@@ -1,10 +1,10 @@
-import React from "react";
+import { memo } from "react";
 import TopStory from "~/layouts/DefaultLayout/components/Containers/TopStory";
 import ContentDaily from "~/layouts/DefaultLayout/components/Containers/ContentDaily";
 import MostViewed from "~/layouts/DefaultLayout/components/Containers/MostViewed";
 import ContentVertical from "~/layouts/DefaultLayout/components/Containers/ContentVertical";
 
-const Home = React.memo(function Home() {
+function Home() {
   return (
     <>
       <TopStory />
@@ -13,6 +13,6 @@ const Home = React.memo(function Home() {
       <MostViewed />
     </>
   );
-});
+}
 
-export default Home;
+export default memo(Home);

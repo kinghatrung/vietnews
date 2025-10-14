@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect, useMemo } from "react";
+import React, { useCallback, useState, memo, useEffect, useMemo } from "react";
 import { Button, Divider, Input, Form, message } from "antd";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,7 +25,7 @@ import { showLoginModal } from "~/redux/modalSlice";
 
 dayjs.locale("vi");
 
-const NewsContent = React.memo(function NewsContent() {
+function NewsContent() {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const { id } = useParams();
@@ -302,6 +302,6 @@ const NewsContent = React.memo(function NewsContent() {
       </div>
     </section>
   );
-});
+}
 
-export default NewsContent;
+export default memo(NewsContent);

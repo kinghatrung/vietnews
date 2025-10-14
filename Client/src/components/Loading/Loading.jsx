@@ -1,8 +1,8 @@
-import React from "react";
+import { memo } from "react";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 
-const Loading = React.memo(function Loading() {
+function Loading() {
   return (
     <div className="fixed inset-0 z-[99999999999999999999999] bg-white/30 flex items-center justify-center">
       <Spin
@@ -18,6 +18,6 @@ const Loading = React.memo(function Loading() {
       />
     </div>
   );
-});
+}
 
-export default Loading;
+export default memo(Loading);

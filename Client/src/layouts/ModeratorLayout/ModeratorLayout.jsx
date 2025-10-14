@@ -1,13 +1,8 @@
-import React, { useState } from "react";
+import { useState, memo } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Button, Layout, Menu, theme } from "antd";
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  FormOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
+import { MenuFoldOutlined, MenuUnfoldOutlined, FormOutlined, SettingOutlined } from "@ant-design/icons";
 import LazyLoad from "react-lazyload";
 
 import Loading from "~/components/Loading";
@@ -15,7 +10,7 @@ import config from "~/config/";
 
 const { Header, Sider, Content } = Layout;
 
-const ModeratorLayout = React.memo(function ModeratorLayout({ children }) {
+function ModeratorLayout({ children }) {
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
   const {
@@ -40,11 +35,7 @@ const ModeratorLayout = React.memo(function ModeratorLayout({ children }) {
         <LazyLoad height={40} offset={40} once>
           <picture>
             <source srcSet="/image/NEWS.webp" type="image/webp" />
-            <img
-              alt="Logo"
-              src="/image/NEWS.png"
-              className="demo-logo-vertical"
-            />
+            <img alt="Logo" src="/image/NEWS.png" className="demo-logo-vertical" />
           </picture>
         </LazyLoad>
         <Menu
@@ -95,6 +86,6 @@ const ModeratorLayout = React.memo(function ModeratorLayout({ children }) {
       </Layout>
     </Layout>
   );
-});
+}
 
-export default ModeratorLayout;
+export default memo(ModeratorLayout);

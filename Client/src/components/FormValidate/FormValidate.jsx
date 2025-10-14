@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Divider, Button, Modal, notification } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ const fadeSlide = {
 
 const appFacebookId = import.meta.env.VITE_FB_CLIENT_ID;
 
-const FormValidate = React.memo(function FormValidate({
+function FormValidate({
   isModalOpen,
   setIsModalOpen,
   isChangeForm,
@@ -54,14 +54,7 @@ const FormValidate = React.memo(function FormValidate({
         <div className="flex justify-center items-center border-b border-[#E5E5E5]">
           <picture>
             <source srcSet="/image/NEWS.webp" type="image/webp" />
-            <img
-              alt="Logo"
-              loading="lazy"
-              className="h-[50px] w-auto"
-              src="/image/NEWS.png"
-              width="150"
-              height="50"
-            />
+            <img alt="Logo" loading="lazy" className="h-[50px] w-auto" src="/image/NEWS.png" width="150" height="50" />
           </picture>
         </div>
       }
@@ -89,10 +82,7 @@ const FormValidate = React.memo(function FormValidate({
               </motion.div>
             ) : (
               <motion.div key="register" {...fadeSlide}>
-                <Register
-                  isChangeForm={isChangeForm}
-                  setIsChangeForm={setIsChangeForm}
-                />
+                <Register isChangeForm={isChangeForm} setIsChangeForm={setIsChangeForm} />
               </motion.div>
             )}
           </motion.div>
@@ -118,14 +108,11 @@ const FormValidate = React.memo(function FormValidate({
               </Button>
             )}
           />
-          <GoogleLogin
-            onSuccess={handleGoogleSuccess}
-            onError={handleGoogleError}
-          />
+          <GoogleLogin onSuccess={handleGoogleSuccess} onError={handleGoogleError} />
         </div>
       </div>
     </Modal>
   );
-});
+}
 
-export default FormValidate;
+export default memo(FormValidate);

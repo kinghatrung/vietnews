@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, memo, useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Input, Form, Select, Empty } from "antd";
 import { useDispatch } from "react-redux";
@@ -10,7 +10,7 @@ import { getSearchNewsAPI } from "~/api";
 const { Search } = Input;
 const { Option } = Select;
 
-const SearchNews = React.memo(function SearchNews() {
+function SearchNews() {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [newsResults, setNewsResults] = useState([]);
@@ -76,30 +76,15 @@ const SearchNews = React.memo(function SearchNews() {
     <section>
       <div className="grid grid-cols-1 lg:grid-cols-24">
         <div className="col-span-16 pr-0  lg:pr-[20px] border-0  lg:border-r border-[#E5E5E5]">
-          <h1 className="text-[24px] text-[#222] font-title font-bold mb-[15px]">
-            Tìm kiếm
-          </h1>
+          <h1 className="text-[24px] text-[#222] font-title font-bold mb-[15px]">Tìm kiếm</h1>
           <div className="border-b border-[#E5E5E5]">
             <Form form={form} name="search" layout="vertical">
               <Form.Item layout="vertical" name="search">
-                <Search
-                  className="custom-input-search"
-                  placeholder="Tìm kiếm"
-                  onSearch={onSearch}
-                />
+                <Search className="custom-input-search" placeholder="Tìm kiếm" onSearch={onSearch} />
               </Form.Item>
               <div className="flex gap-[10px]">
-                <Form.Item
-                  className="w-full"
-                  layout="vertical"
-                  name="time"
-                  label="Thời gian"
-                >
-                  <Select
-                    style={{ height: "40px" }}
-                    className="custom-select"
-                    placeholder="Chọn"
-                  >
+                <Form.Item className="w-full" layout="vertical" name="time" label="Thời gian">
+                  <Select style={{ height: "40px" }} className="custom-select" placeholder="Chọn">
                     <Option value="">Chọn thời gian</Option>
                     <Option value="1d">1 ngày qua</Option>
                     <Option value="1w">1 tuần qua</Option>
@@ -118,15 +103,7 @@ const SearchNews = React.memo(function SearchNews() {
           {newsResults.length > 0 ? (
             <div className="pt-[24px]">
               {newsResults?.map((result) => (
-                <News
-                  key={result._id}
-                  {...result}
-                  heading={result.title}
-                  title
-                  semiMedium
-                  noTime
-                  sizeLarge
-                />
+                <News key={result._id} {...result} heading={result.title} title semiMedium noTime sizeLarge />
               ))}
             </div>
           ) : (
@@ -150,6 +127,6 @@ const SearchNews = React.memo(function SearchNews() {
       )} */}
     </section>
   );
-});
+}
 
-export default SearchNews;
+export default memo(SearchNews);
