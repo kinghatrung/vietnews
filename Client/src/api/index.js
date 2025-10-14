@@ -7,10 +7,7 @@ export const loginAPI = async (user) => {
 };
 
 export const handleRegisterAPI = async (user) => {
-  return await authorizedAxiosInstance.post(
-    `${API_URL}/api/auth/register`,
-    user
-  );
+  return await authorizedAxiosInstance.post(`${API_URL}/api/auth/register`, user);
 };
 
 export const resetPasswordAPI = async ({ email, password, otp }) => {
@@ -22,17 +19,11 @@ export const resetPasswordAPI = async ({ email, password, otp }) => {
 };
 
 export const sendOtpAPI = async (email) => {
-  return await authorizedAxiosInstance.post(
-    `${API_URL}/api/auth/send_otp/register`,
-    { email }
-  );
+  return await authorizedAxiosInstance.post(`${API_URL}/api/auth/send_otp/register`, { email });
 };
 
 export const sendOtpForgotPasswordAPI = async (email) => {
-  return await authorizedAxiosInstance.post(
-    `${API_URL}/api/auth/send_otp/forgot_pass`,
-    { email }
-  );
+  return await authorizedAxiosInstance.post(`${API_URL}/api/auth/send_otp/forgot_pass`, { email });
 };
 
 export const loginWithGoogleAPI = async (tokenGoogle) => {
@@ -67,56 +58,37 @@ export const getAllEditors = async () => {
 };
 
 export const getAllReporters = async () => {
-  return await authorizedAxiosInstance.get(
-    `${API_URL}/api/users/get/reporters`
-  );
+  return await authorizedAxiosInstance.get(`${API_URL}/api/users/get/reporters`);
 };
 
 export const getSaveNewsAPI = async (id) => {
-  return await authorizedAxiosInstance.get(
-    `${API_URL}/api/users/${id}/saved-news`
-  );
+  return await authorizedAxiosInstance.get(`${API_URL}/api/users/${id}/saved-news`);
 };
 
 export const createComment = async (payload) => {
-  return await authorizedAxiosInstance.post(
-    `${API_URL}/api/comments/send`,
-    payload
-  );
+  return await authorizedAxiosInstance.post(`${API_URL}/api/comments/send`, payload);
 };
 
 export const deleteComment = async (id) => {
-  return await authorizedAxiosInstance.delete(
-    `${API_URL}/api/comments/del/${id}`
-  );
+  return await authorizedAxiosInstance.delete(`${API_URL}/api/comments/del/${id}`);
 };
 
 export const approveComment = async (id) => {
-  return await authorizedAxiosInstance.put(
-    `${API_URL}/api/comments/approve/${id}`
-  );
+  return await authorizedAxiosInstance.put(`${API_URL}/api/comments/approve/${id}`);
 };
 
 export const searchUsers = async (params) => {
-  return await authorizedAxiosInstance.get(
-    `${API_URL}/api/users/get/search-user`,
-    {
-      params,
-    }
-  );
+  return await authorizedAxiosInstance.get(`${API_URL}/api/users/get/search-user`, {
+    params,
+  });
 };
 
 export const updateRoleUser = async (id, payload) => {
-  return await authorizedAxiosInstance.put(
-    `${API_URL}/api/users/role/${id}`,
-    payload
-  );
+  return await authorizedAxiosInstance.put(`${API_URL}/api/users/role/${id}`, payload);
 };
 
 export const getAllCommentByNews = async (id) => {
-  return await authorizedAxiosInstance.get(
-    `${API_URL}/api/comments/news/${id}`
-  );
+  return await authorizedAxiosInstance.get(`${API_URL}/api/comments/news/${id}`);
 };
 
 export const getAllComment = async () => {
@@ -124,43 +96,27 @@ export const getAllComment = async () => {
 };
 
 export const banUserAPI = async (userId, payload) => {
-  return await authorizedAxiosInstance.post(
-    `${API_URL}/api/users/ban-user/${userId}`,
-    payload
-  );
+  return await authorizedAxiosInstance.post(`${API_URL}/api/users/ban-user/${userId}`, payload);
 };
 
 export const unbanUserAPI = async (userId) => {
-  return await authorizedAxiosInstance.put(
-    `${API_URL}/api/users/unban/${userId}`
-  );
+  return await authorizedAxiosInstance.put(`${API_URL}/api/users/unban/${userId}`);
 };
 
 export const saveNewsAPI = async (userId, newsId) => {
-  return await authorizedAxiosInstance.post(
-    `${API_URL}/api/users/${userId}/toggle_save/${newsId}`
-  );
+  return await authorizedAxiosInstance.post(`${API_URL}/api/users/${userId}/toggle_save/${newsId}`);
 };
 
 export const updateUserAPI = async (userId, payload) => {
-  return await authorizedAxiosInstance.put(
-    `${API_URL}/api/users/put/nor/${userId}`,
-    payload
-  );
+  return await authorizedAxiosInstance.put(`${API_URL}/api/users/put/nor/${userId}`, payload);
 };
 
 export const updatePasswordUserAPI = async (userId, payload) => {
-  return await authorizedAxiosInstance.put(
-    `${API_URL}/api/users/put/pass/${userId}`,
-    payload
-  );
+  return await authorizedAxiosInstance.put(`${API_URL}/api/users/put/pass/${userId}`, payload);
 };
 
 export const updateEmailUserAPI = async (userId, payload) => {
-  return await authorizedAxiosInstance.put(
-    `${API_URL}/api/users/put/email/${userId}`,
-    payload
-  );
+  return await authorizedAxiosInstance.put(`${API_URL}/api/users/put/email/${userId}`, payload);
 };
 
 export const getAllUsersWithoutAuth = async (
@@ -171,17 +127,14 @@ export const getAllUsersWithoutAuth = async (
   searchKey = "",
   status = ""
 ) => {
-  return await authorizedAxiosInstance.post(
-    `${API_URL}/api/users/without_auth`,
-    {
-      _id,
-      roles,
-      startDate,
-      endDate,
-      searchKey,
-      status,
-    }
-  );
+  return await authorizedAxiosInstance.post(`${API_URL}/api/users/without_auth`, {
+    _id,
+    roles,
+    startDate,
+    endDate,
+    searchKey,
+    status,
+  });
 };
 
 // DELETE USER
@@ -191,23 +144,15 @@ export const deleteUser = async (id) => {
 
 // ARTICLE API
 export const postArticleAPI = async (payload) => {
-  return await authorizedAxiosInstance.post(
-    `${API_URL}/api/article/post`,
-    payload
-  );
+  return await authorizedAxiosInstance.post(`${API_URL}/api/article/post`, payload);
 };
 
 export const changeStatusArticleAPI = async (id, payload) => {
-  return await authorizedAxiosInstance.put(
-    `${API_URL}/api/article/change_status/${id}`,
-    payload
-  );
+  return await authorizedAxiosInstance.put(`${API_URL}/api/article/change_status/${id}`, payload);
 };
 
 export const deleteArticleAPI = async (id) => {
-  return await authorizedAxiosInstance.delete(
-    `${API_URL}/api/article/del/${id}`
-  );
+  return await authorizedAxiosInstance.delete(`${API_URL}/api/article/del/${id}`);
 };
 
 export const getArticleAPI = async () => {
@@ -215,10 +160,7 @@ export const getArticleAPI = async () => {
 };
 
 export const putArticleAPI = async (id, payload) => {
-  return await authorizedAxiosInstance.put(
-    `${API_URL}/api/article/put/${id}`,
-    payload
-  );
+  return await authorizedAxiosInstance.put(`${API_URL}/api/article/put/${id}`, payload);
 };
 
 export const getArticleByIdAPI = async (
@@ -230,10 +172,15 @@ export const getArticleByIdAPI = async (
   status = "",
   authorId = ""
 ) => {
-  return await authorizedAxiosInstance.post(
-    `${API_URL}/api/article/get/by_role`,
-    { role, userId, searchKey, startDate, endDate, status, authorId }
-  );
+  return await authorizedAxiosInstance.post(`${API_URL}/api/article/get/by_role`, {
+    role,
+    userId,
+    searchKey,
+    startDate,
+    endDate,
+    status,
+    authorId,
+  });
 };
 
 // NEWS API
@@ -241,13 +188,7 @@ export const getNewsAPI = async () => {
   return await authorizedAxiosInstance.get(`${API_URL}/api/news`);
 };
 
-export const postNewsAPI = async (
-  searchKey = "",
-  startDate = "",
-  endDate = "",
-  categoryIds = [],
-  authorId = ""
-) => {
+export const postNewsAPI = async (searchKey = "", startDate = "", endDate = "", categoryIds = [], authorId = "") => {
   return await authorizedAxiosInstance.post(`${API_URL}/api/news/post`, {
     searchKey,
     startDate,
@@ -257,13 +198,7 @@ export const postNewsAPI = async (
   });
 };
 
-export const postNewsForReporter = async (
-  id,
-  searchKey = "",
-  startDate = "",
-  endDate = "",
-  categoryIds = []
-) => {
+export const postNewsForReporter = async (id, searchKey = "", startDate = "", endDate = "", categoryIds = []) => {
   return await authorizedAxiosInstance.post(`${API_URL}/api/news/post/${id}`, {
     searchKey,
     startDate,
@@ -299,11 +234,7 @@ export const getCategoryAPI = async () => {
   return await authorizedAxiosInstance.get(`${API_URL}/api/category`);
 };
 
-export const postCategoriesAPI = async (
-  searchKey = "",
-  startDate = "",
-  endDate = ""
-) => {
+export const postCategoriesAPI = async (searchKey = "", startDate = "", endDate = "") => {
   return await authorizedAxiosInstance.post(`${API_URL}/api/category/post`, {
     searchKey,
     startDate,
@@ -316,17 +247,11 @@ export const getCategoryByIdAPI = async (id) => {
 };
 
 export const addCategoryAPI = async (payload) => {
-  return await authorizedAxiosInstance.post(
-    `${API_URL}/api/category/new`,
-    payload
-  );
+  return await authorizedAxiosInstance.post(`${API_URL}/api/category/new`, payload);
 };
 
 export const updateCategoryAPI = async (id, payload) => {
-  return await authorizedAxiosInstance.put(
-    `${API_URL}/api/category/${id}`,
-    payload
-  );
+  return await authorizedAxiosInstance.put(`${API_URL}/api/category/${id}`, payload);
 };
 
 // STATUS API
@@ -340,10 +265,7 @@ export const getRecommendAPI = async () => {
 };
 
 export const addRecommendAPI = async (payload) => {
-  return await authorizedAxiosInstance.post(
-    `${API_URL}/api/recommend/post`,
-    payload
-  );
+  return await authorizedAxiosInstance.post(`${API_URL}/api/recommend/post`, payload);
 };
 
 export const deleteRecommendAPI = async (id) => {
@@ -351,9 +273,7 @@ export const deleteRecommendAPI = async (id) => {
 };
 
 export const addRecommendToCategoryAPI = async (id) => {
-  return await authorizedAxiosInstance.post(
-    `${API_URL}/api/recommend/category/${id}`
-  );
+  return await authorizedAxiosInstance.post(`${API_URL}/api/recommend/category/${id}`);
 };
 
 // NOTIFICATION
@@ -363,15 +283,11 @@ export const getNotificationAPI = async (id) => {
 
 // UPLOAD IMAGE
 export const imageUploadAPI = async (formData) => {
-  return await authorizedAxiosInstance.post(
-    `${API_URL}/api/upload/image_upload`,
-    formData,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }
-  );
+  return await authorizedAxiosInstance.post(`${API_URL}/api/upload/image_upload`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
 // CHATBOT GEMINI
@@ -383,8 +299,5 @@ export const chatBotGeminiAPI = async (payload) => {
 
 // CHECK CONTENT ARTICLE
 export const checkContentArticleAPI = async (payload) => {
-  return await authorizedAxiosInstance.post(
-    `${API_URL}/api/article/check_content`,
-    payload
-  );
+  return await authorizedAxiosInstance.post(`${API_URL}/api/article/check_content`, payload);
 };

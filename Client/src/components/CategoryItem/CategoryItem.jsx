@@ -1,32 +1,14 @@
 import { useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Divider,
-  message,
-  Modal,
-  Form,
-  Input,
-  Dropdown,
-  Menu,
-} from "antd";
-import {
-  DeleteOutlined,
-  WarningOutlined,
-  SettingOutlined,
-  EditOutlined,
-} from "@ant-design/icons";
+import { Button, Divider, message, Modal, Form, Input, Dropdown, Menu } from "antd";
+import { DeleteOutlined, WarningOutlined, SettingOutlined, EditOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import "dayjs/locale/vi";
 
 import { deleteCategoryAPI, updateCategoryAPI, getCategoryAPI } from "~/api";
 import { startLoading, stopLoading } from "~/redux/loadingSlice";
 
-const CategoryItem = React.memo(function CategoryItem({
-  categories,
-  setCategories,
-  setListCategories,
-}) {
+const CategoryItem = React.memo(function CategoryItem({ categories, setCategories, setListCategories }) {
   const dispatch = useDispatch();
   const [modalContent, setModalContent] = useState(null);
   const [modalVisible, setModalVisible] = useState(null);
@@ -108,11 +90,7 @@ const CategoryItem = React.memo(function CategoryItem({
                 <Menu>
                   <Menu.Item
                     key="delete"
-                    icon={
-                      <EditOutlined
-                        style={{ fontSize: "16px", paddingRight: 8 }}
-                      />
-                    }
+                    icon={<EditOutlined style={{ fontSize: "16px", paddingRight: 8 }} />}
                     onClick={() =>
                       showModal(
                         <h3 className="text-[#222222] font-[600] text-[18px] mb-[10px]">
@@ -124,10 +102,8 @@ const CategoryItem = React.memo(function CategoryItem({
                         <div className="flex flex-col gap-4">
                           <p className="text-[#71717A] text-[14px]">
                             Cập nhật thông tin cá nhân của người dùng{" "}
-                            <strong className="text-[#333]">
-                              "{category.category_name}"
-                            </strong>{" "}
-                            .Nhấn cập nhập để hoàn tất.
+                            <strong className="text-[#333]">"{category.category_name}"</strong> .Nhấn cập nhập để hoàn
+                            tất.
                           </p>
                           <Form
                             form={form}
@@ -147,11 +123,7 @@ const CategoryItem = React.memo(function CategoryItem({
                                 },
                               ]}
                             >
-                              <Input
-                                style={{ height: 40 }}
-                                type="text"
-                                placeholder="Nhập thể loại"
-                              />
+                              <Input style={{ height: 40 }} type="text" placeholder="Nhập thể loại" />
                             </Form.Item>
 
                             <Form.Item
@@ -165,20 +137,11 @@ const CategoryItem = React.memo(function CategoryItem({
                                 },
                               ]}
                             >
-                              <Input
-                                style={{ height: 40 }}
-                                type="text"
-                                placeholder="Nhập mô tả"
-                              />
+                              <Input style={{ height: 40 }} type="text" placeholder="Nhập mô tả" />
                             </Form.Item>
 
                             <Form.Item className="!m-0">
-                              <Button
-                                block
-                                type="primary"
-                                htmlType="submit"
-                                style={{ height: 50 }}
-                              >
+                              <Button block type="primary" htmlType="submit" style={{ height: 50 }}>
                                 Sửa thể loại
                               </Button>
                             </Form.Item>
@@ -193,11 +156,7 @@ const CategoryItem = React.memo(function CategoryItem({
                   <Divider className="!my-1" />
                   <Menu.Item
                     key="delete"
-                    icon={
-                      <DeleteOutlined
-                        style={{ fontSize: "16px", paddingRight: 8 }}
-                      />
-                    }
+                    icon={<DeleteOutlined style={{ fontSize: "16px", paddingRight: 8 }} />}
                     danger
                     onClick={() =>
                       showModal(
@@ -208,22 +167,15 @@ const CategoryItem = React.memo(function CategoryItem({
                           Xóa danh mục tin tức
                         </h3>,
                         <div className="flex flex-col gap-4">
-                          <p className="text-[#71717A] text-[14px]">
-                            Bạn có chắc chắn muốn xóa danh mục?
-                          </p>
+                          <p className="text-[#71717A] text-[14px]">Bạn có chắc chắn muốn xóa danh mục?</p>
                           <div className="border border-[#E5E5E5] p-[14px] rounded-[8px]">
                             <WarningOutlined style={{ marginRight: 8 }} />
-                            <strong>Cảnh báo:</strong> Hành động này không thể
-                            hoàn tác. Tất cả dữ liệu của danh mục tin tức sẽ bị
-                            xóa vĩnh viễn.
+                            <strong>Cảnh báo:</strong> Hành động này không thể hoàn tác. Tất cả dữ liệu của danh mục tin
+                            tức sẽ bị xóa vĩnh viễn.
                           </div>
                           <div className="flex gap-3 justify-end">
                             <Button onClick={handleCancel}>Hủy</Button>
-                            <Button
-                              variant="solid"
-                              color="danger"
-                              onClick={() => handleDeleteCategory(category._id)}
-                            >
+                            <Button variant="solid" color="danger" onClick={() => handleDeleteCategory(category._id)}>
                               Xóa danh mục
                             </Button>
                           </div>
@@ -237,11 +189,7 @@ const CategoryItem = React.memo(function CategoryItem({
                 </Menu>
               }
             >
-              <Button
-                type="text"
-                icon={<SettingOutlined />}
-                className="border-none shadow-none hover:bg-transparent"
-              />
+              <Button type="text" icon={<SettingOutlined />} className="border-none shadow-none hover:bg-transparent" />
             </Dropdown>
             <Modal
               width={600}

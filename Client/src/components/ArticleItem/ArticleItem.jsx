@@ -1,18 +1,6 @@
 import { useDispatch } from "react-redux";
-import React, { useState, useEffect, useCallback } from "react";
-import {
-  Button,
-  Select,
-  Upload,
-  Modal,
-  Form,
-  Input,
-  Dropdown,
-  Menu,
-  Divider,
-  Tag,
-  message,
-} from "antd";
+import React, { useState, useCallback } from "react";
+import { Button, Select, Upload, Modal, Form, Input, Dropdown, Menu, Divider, Tag, message } from "antd";
 import {
   ClockCircleOutlined,
   InboxOutlined,
@@ -122,14 +110,7 @@ const ArticleItem = React.memo(function ArticleItem({
       try {
         dispatch(startLoading());
         await deleteArticleAPI(id);
-        const res = await getArticleByIdAPI(
-          user.role.role_name,
-          user._id,
-          searchKey,
-          startDate,
-          endDate,
-          status
-        );
+        const res = await getArticleByIdAPI(user.role.role_name, user._id, searchKey, startDate, endDate, status);
         setArticles(res.data.reverse());
         message.success("Xóa bài viết thành công!");
         dispatch(stopLoading());
@@ -151,14 +132,7 @@ const ArticleItem = React.memo(function ArticleItem({
           content: content || values.content,
         };
         await putArticleAPI(id, payload);
-        const res = await getArticleByIdAPI(
-          user.role.role_name,
-          user._id,
-          searchKey,
-          startDate,
-          endDate,
-          status
-        );
+        const res = await getArticleByIdAPI(user.role.role_name, user._id, searchKey, startDate, endDate, status);
         setArticles(res.data.reverse());
         form.resetFields();
         message.success("Sửa bài viết thành công!");
@@ -197,10 +171,7 @@ const ArticleItem = React.memo(function ArticleItem({
         message.success("Nội dung bài viết hợp lệ!");
       } else {
         setIsToxic(true);
-        message.error(
-          "Tổng số câu có chứa từ toxic trong bài viết: " +
-            response.data.totalToxic
-        );
+        message.error("Tổng số câu có chứa từ toxic trong bài viết: " + response.data.totalToxic);
       }
     } catch (err) {
       dispatch(stopLoading());
@@ -217,26 +188,15 @@ const ArticleItem = React.memo(function ArticleItem({
         >
           <div className="flex gap-[20px]">
             <LazyLoad height={100} offset={100} once>
-              <img
-                alt="Ảnh bài viết"
-                loading="lazy"
-                src={article.image}
-                className="w-[180px] h-[100px] object-cover"
-              />
+              <img alt="Ảnh bài viết" loading="lazy" src={article.image} className="w-[180px] h-[100px] object-cover" />
             </LazyLoad>
             <div className="max-w-[400px]">
               <div className="flex items-baseline gap-2 mb-1">
-                <p className="text-[#222222] font-[600] text-[16px]">
-                  {article.reporter?.full_name}
-                </p>
-                <p className="text-[#757575] font-[500] text-[12px]">
-                  {article.reporter?.email}
-                </p>
+                <p className="text-[#222222] font-[600] text-[16px]">{article.reporter?.full_name}</p>
+                <p className="text-[#757575] font-[500] text-[12px]">{article.reporter?.email}</p>
               </div>
               <h2 className="mb-1 text-[14px] truncate">{article.title}</h2>
-              <p className="mb-1 truncate w-full text-[#757575]">
-                {article.describe}
-              </p>
+              <p className="mb-1 truncate w-full text-[#757575]">{article.describe}</p>
               <p className="text-[12px] text-[#757575] ">
                 <ClockCircleOutlined /> {dayjs(article.createdAt).fromNow()}
               </p>
@@ -299,13 +259,7 @@ const ArticleItem = React.memo(function ArticleItem({
           >
             {statusSlice.map((status) => (
               <Option
-                disabled={
-                  !isStatusAllowed(
-                    user.role?.role_name,
-                    status.status_name,
-                    article.status.status_name
-                  )
-                }
+                disabled={!isStatusAllowed(user.role?.role_name, status.status_name, article.status.status_name)}
                 key={status._id}
                 value={status._id}
               >
@@ -321,18 +275,12 @@ const ArticleItem = React.memo(function ArticleItem({
               <Menu>
                 <Menu.Item
                   key="view"
-                  icon={
-                    <EyeOutlined
-                      style={{ fontSize: "16px", paddingRight: 8 }}
-                    />
-                  }
+                  icon={<EyeOutlined style={{ fontSize: "16px", paddingRight: 8 }} />}
                   onClick={() =>
                     showModal(
                       null,
                       <div className="flex flex-col gap-4">
-                        <h2 className="font-[600] text-[24px]">
-                          {article.title}
-                        </h2>
+                        <h2 className="font-[600] text-[24px]">{article.title}</h2>
                         <div className="flex gap-5 mb-[12px]">
                           <Tag className="!px-2 !rounded-full" color="green">
                             {article.category?.category_name}
@@ -351,23 +299,15 @@ const ArticleItem = React.memo(function ArticleItem({
                             {dayjs(article.createdAt).format("DD/MM/YYYY")}
                           </p>
                         </div>
-                        {user.role.role_name === "editor" &&
-                          article.status.status_name === "Đang chỉnh sửa" && (
-                            <Button
-                              type="primary"
-                              onClick={() =>
-                                handleCheckContent(article.content)
-                              }
-                            >
-                              Kiểm tra nội dung
-                            </Button>
-                          )}
+                        {user.role.role_name === "editor" && article.status.status_name === "Đang chỉnh sửa" && (
+                          <Button type="primary" onClick={() => handleCheckContent(article.content)}>
+                            Kiểm tra nội dung
+                          </Button>
+                        )}
 
                         {isToxic && (
                           <div className="border border-[#E5E5E5] p-[16px] rounded-[8px]">
-                            <h3 className="font-[600] text-[20px] mb-[12px]">
-                              Các câu có thể chứa các từ toxic
-                            </h3>
+                            <h3 className="font-[600] text-[20px] mb-[12px]">Các câu có thể chứa các từ toxic</h3>
                             {toxic.map((item, index) => (
                               <p key={index} className="text-[14px]">
                                 <strong>Câu {index + 1}: </strong>
@@ -378,9 +318,7 @@ const ArticleItem = React.memo(function ArticleItem({
                         )}
 
                         <div className="border border-[#E5E5E5] p-[16px] rounded-[8px]">
-                          <p className="text-[16px] font-[600]">
-                            {article.describe}
-                          </p>
+                          <p className="text-[16px] font-[600]">{article.describe}</p>
 
                           <div
                             className="mb-[20px]"
@@ -405,17 +343,11 @@ const ArticleItem = React.memo(function ArticleItem({
                 >
                   Xem chi tiết
                 </Menu.Item>
-                {(user.role.role_name === "reporter" &&
-                  article.status?.status_name === "Đang chờ") ||
-                (user.role.role_name === "editor" &&
-                  article.status?.status_name === "Đang chỉnh sửa") ? (
+                {(user.role.role_name === "reporter" && article.status?.status_name === "Đang chờ") ||
+                (user.role.role_name === "editor" && article.status?.status_name === "Đang chỉnh sửa") ? (
                   <Menu.Item
                     key="update"
-                    icon={
-                      <EditOutlined
-                        style={{ fontSize: "16px", paddingRight: 8 }}
-                      />
-                    }
+                    icon={<EditOutlined style={{ fontSize: "16px", paddingRight: 8 }} />}
                     onClick={() => {
                       setContent(article.content);
                       form.setFieldsValue({
@@ -437,10 +369,8 @@ const ArticleItem = React.memo(function ArticleItem({
                         <div className="flex flex-col gap-4">
                           <p className="text-[#71717A] text-[14px]">
                             Sửa thông tin bài viết của phóng viên{" "}
-                            <strong className="text-[#333]">
-                              "{article.reporter?.full_name}"
-                            </strong>{" "}
-                            .Nhấn cập nhập để hoàn tất.
+                            <strong className="text-[#333]">"{article.reporter?.full_name}"</strong> .Nhấn cập nhập để
+                            hoàn tất.
                           </p>
                           <Form
                             form={form}
@@ -549,10 +479,7 @@ const ArticleItem = React.memo(function ArticleItem({
                               >
                                 {categories &&
                                   categories.map((category) => (
-                                    <Option
-                                      key={category._id}
-                                      value={category._id}
-                                    >
+                                    <Option key={category._id} value={category._id}>
                                       {category.category_name}
                                     </Option>
                                   ))}
@@ -560,11 +487,7 @@ const ArticleItem = React.memo(function ArticleItem({
                             </Form.Item>
 
                             <Form.Item label="Lời nhắc (Nếu có)" name="note">
-                              <Input
-                                style={{ height: 40 }}
-                                name="note"
-                                label="Để lại lời nhắc cần thiết"
-                              />
+                              <Input style={{ height: 40 }} name="note" label="Để lại lời nhắc cần thiết" />
                             </Form.Item>
 
                             <Form.Item label="Thêm ảnh bìa" name="image">
@@ -577,22 +500,13 @@ const ArticleItem = React.memo(function ArticleItem({
                                 <p className="ant-upload-drag-icon">
                                   <InboxOutlined />
                                 </p>
-                                <p className="ant-upload-text">
-                                  Nhấp hoặc kéo tệp vào khu vực này để tải lên
-                                </p>
-                                <p className="ant-upload-hint">
-                                  Hỗ trợ tải lên một lần hoặc hàng loạt.
-                                </p>
+                                <p className="ant-upload-text">Nhấp hoặc kéo tệp vào khu vực này để tải lên</p>
+                                <p className="ant-upload-hint">Hỗ trợ tải lên một lần hoặc hàng loạt.</p>
                               </Upload.Dragger>
                             </Form.Item>
 
                             <Form.Item label={null}>
-                              <Button
-                                type="primary"
-                                block
-                                style={{ height: 50 }}
-                                htmlType="submit"
-                              >
+                              <Button type="primary" block style={{ height: 50 }} htmlType="submit">
                                 Cập nhập bài viết
                               </Button>
                             </Form.Item>
@@ -606,18 +520,13 @@ const ArticleItem = React.memo(function ArticleItem({
                   </Menu.Item>
                 ) : null}
                 {user.role.role_name !== "editor" &&
-                  (article.status.status_name === "Đang chờ" ||
-                    article.status.status_name === "Đã đăng tải") && (
+                  (article.status.status_name === "Đang chờ" || article.status.status_name === "Đã đăng tải") && (
                     <>
                       <Divider className="!my-1" />
 
                       <Menu.Item
                         key="delete"
-                        icon={
-                          <DeleteOutlined
-                            style={{ fontSize: "16px", paddingRight: 8 }}
-                          />
-                        }
+                        icon={<DeleteOutlined style={{ fontSize: "16px", paddingRight: 8 }} />}
                         danger
                         onClick={() =>
                           showModal(
@@ -628,22 +537,15 @@ const ArticleItem = React.memo(function ArticleItem({
                               Xóa bài viết
                             </h3>,
                             <div className="flex flex-col gap-4">
-                              <p className="text-[#71717A] text-[14px]">
-                                Bạn có chắc chắn muốn xóa bài viết?
-                              </p>
+                              <p className="text-[#71717A] text-[14px]">Bạn có chắc chắn muốn xóa bài viết?</p>
                               <div className="border border-[#E5E5E5] p-[14px] rounded-[8px]">
                                 <WarningOutlined style={{ marginRight: 8 }} />
-                                <strong>Cảnh báo:</strong> Hành động này không
-                                thể hoàn tác. Tất cả dữ liệu của bài viết sẽ bị
-                                xóa vĩnh viễn.
+                                <strong>Cảnh báo:</strong> Hành động này không thể hoàn tác. Tất cả dữ liệu của bài viết
+                                sẽ bị xóa vĩnh viễn.
                               </div>
                               <div className="flex gap-3 justify-end">
                                 <Button onClick={handleCancel}>Hủy</Button>
-                                <Button
-                                  variant="solid"
-                                  color="danger"
-                                  onClick={() => handleDelete(article._id)}
-                                >
+                                <Button variant="solid" color="danger" onClick={() => handleDelete(article._id)}>
                                   Xóa bài viết
                                 </Button>
                               </div>
@@ -659,11 +561,7 @@ const ArticleItem = React.memo(function ArticleItem({
               </Menu>
             }
           >
-            <Button
-              type="text"
-              icon={<SettingOutlined />}
-              className="border-none shadow-none hover:bg-transparent"
-            />
+            <Button type="text" icon={<SettingOutlined />} className="border-none shadow-none hover:bg-transparent" />
           </Dropdown>
 
           <Modal
