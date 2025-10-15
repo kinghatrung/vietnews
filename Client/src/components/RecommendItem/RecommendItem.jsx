@@ -5,7 +5,8 @@ import { SettingOutlined, WarningOutlined, CloseOutlined, CheckOutlined } from "
 import dayjs from "dayjs";
 import "dayjs/locale/vi";
 
-import { startLoading, stopLoading } from "~/redux/loadingSlice";
+import { loadingSlice } from "~/redux/slices/loadingSlice";
+import { selectCurrentUser } from "~/redux/slices/authSlice";
 import { deleteRecommendAPI, addRecommendToCategoryAPI, getRecommendAPI, getCategoryAPI } from "~/api";
 
 function RecommendItem({ recommends, setRecommends, setCategories, setListCategories }) {
@@ -14,9 +15,7 @@ function RecommendItem({ recommends, setRecommends, setCategories, setListCatego
   const [modalVisible, setModalVisible] = useState(null);
   const [modalTitle, setModalTitle] = useState("");
 
-  const user = useSelector((state) => {
-    return state.auth.login.currentUser;
-  });
+  const user = useSelector(selectCurrentUser);
 
   const showModal = (title, content, articleId) => {
     setModalTitle(title);
@@ -30,12 +29,12 @@ function RecommendItem({ recommends, setRecommends, setCategories, setListCatego
 
   const handleDeleteRecommend = async (id) => {
     try {
-      dispatch(startLoading());
+      dispatch(loadingSlice.actions.startLoading());
       await deleteRecommendAPI(id);
       const res = await getRecommendAPI();
       setRecommends(res.data.reverse());
       setModalVisible(null);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
       message.success("Từ chối đề xuất thành công!");
     } catch (error) {
       console.error("Lỗi khi từ chối đề xuất:", error);
@@ -44,7 +43,7 @@ function RecommendItem({ recommends, setRecommends, setCategories, setListCatego
 
   const handleAddRecommendToCategory = async (id) => {
     try {
-      dispatch(startLoading());
+      dispatch(loadingSlice.actions.startLoading());
       await addRecommendToCategoryAPI(id);
       const resRecommend = await getRecommendAPI();
       const resCategory = await getCategoryAPI();
@@ -52,12 +51,12 @@ function RecommendItem({ recommends, setRecommends, setCategories, setListCatego
       setListCategories(resCategory.data);
       setRecommends(resRecommend.data.reverse());
       setModalVisible(null);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
       message.success("Duyệt đề xuất và thêm danh mục thành công!");
     } catch (error) {
       console.error("Lỗi khi duyệt đề xuất:", error);
       message.error("Duyệt đề xuất thất bại. Vui lòng thử lại!");
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     }
   };
 

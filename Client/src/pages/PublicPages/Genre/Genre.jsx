@@ -2,9 +2,9 @@ import { memo } from "react";
 import { Empty, Pagination } from "antd";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { startLoading, stopLoading } from "~/redux/loadingSlice";
+import { useDispatch } from "react-redux";
 
+import { loadingSlice } from "~/redux/slices/loadingSlice";
 import { getNewsAPI, getCategoryByIdAPI } from "~/api";
 import News from "~/components/News";
 
@@ -19,13 +19,13 @@ function Genre() {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        dispatch(startLoading());
+        dispatch(loadingSlice.actions.startLoading());
         const res = await getCategoryByIdAPI(id);
         setCategories(res.data);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       } catch (error) {
         console.error("Lỗi khi lấy danh sách người dùng:", error);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       }
     };
 
@@ -35,13 +35,13 @@ function Genre() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        dispatch(startLoading());
+        dispatch(loadingSlice.actions.startLoading());
         const res = await getNewsAPI();
         setNews(res.data);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       } catch (error) {
         console.error("Lỗi khi lấy danh sách tin tức:", error);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       }
     };
 

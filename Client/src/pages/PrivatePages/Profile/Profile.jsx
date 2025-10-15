@@ -1,14 +1,13 @@
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { Divider, notification, Anchor } from "antd";
+import { useNavigate } from "react-router-dom";
+import { Divider, Anchor } from "antd";
 import { LogoutOutlined } from "@ant-design/icons";
+import { selectCurrentUser } from "~/redux/slices/authSlice";
 
 import Info from "~/pages/PrivatePages/Profile/Info";
 
 function Profile() {
-  const user = useSelector((state) => {
-    return state.auth.login.currentUser;
-  });
+  const user = useSelector(selectCurrentUser);
 
   const date = new Date(user.createdAt);
   const day = String(date.getDate()).padStart(2, "0");

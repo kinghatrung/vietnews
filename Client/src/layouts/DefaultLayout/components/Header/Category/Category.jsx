@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { memo, useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
-import { startLoading, stopLoading } from "~/redux/loadingSlice";
+import { loadingSlice } from "~/redux/slices/loadingSlice";
 import { getCategoryAPI } from "~/api";
 
 function Category() {
@@ -12,13 +12,13 @@ function Category() {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        dispatch(startLoading());
+        dispatch(loadingSlice.actions.startLoading());
         const res = await getCategoryAPI();
         setCategories(res.data);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       } catch (error) {
         console.error("Lỗi khi lấy danh sách người dùng:", error);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       }
     };
 

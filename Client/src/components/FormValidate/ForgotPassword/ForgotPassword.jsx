@@ -4,8 +4,8 @@ import { useDispatch } from "react-redux";
 import { Divider, Button, Modal, Form, Input, notification } from "antd";
 
 import { sendOtpForgotPasswordAPI } from "~/api";
-import { restPassword } from "~/redux/apiRequest";
-import { hideLoginModal } from "~/redux/modalSlice";
+import { resetPasswordAPI } from "~/api";
+import { modalSlice } from "~/redux/slices/modalSlice";
 
 function ForgotPassword({
   isModalOpen,
@@ -43,8 +43,8 @@ function ForgotPassword({
       password: newPassword,
       otp: otp,
     };
-    await restPassword(dataUser, dispatch, navigate);
-    dispatch(hideLoginModal());
+    await resetPasswordAPI(dataUser);
+    dispatch(modalSlice.actions.hideLoginModal());
   };
 
   return (
@@ -59,14 +59,7 @@ function ForgotPassword({
         <div className="flex justify-center items-center border-b border-[#E5E5E5]">
           <picture>
             <source srcSet="/image/NEWS.webp" type="image/webp" />
-            <img
-              alt="Logo"
-              loading="lazy"
-              className="h-[50px] w-auto"
-              src="/image/NEWS.png"
-              width="150"
-              height="50"
-            />
+            <img alt="Logo" loading="lazy" className="h-[50px] w-auto" src="/image/NEWS.png" width="150" height="50" />
           </picture>
         </div>
       }
@@ -75,9 +68,7 @@ function ForgotPassword({
       footer={null}
     >
       <div className="px-[24px] pt-[24px] pb-[64px] bg-[#F4F6F8] rounded-[4px]">
-        <h1 className="text-[22px] mb-[24px] font-title text-center font-bold">
-          Quên mật khẩu
-        </h1>
+        <h1 className="text-[22px] mb-[24px] font-title text-center font-bold">Quên mật khẩu</h1>
         <Form name="login" layout="vertical" onFinish={handleResetPassword}>
           <Form.Item
             className="!mb-[16px] !font-bold"
@@ -169,19 +160,11 @@ function ForgotPassword({
               }),
             ]}
           >
-            <Input.Password
-              className="!p-[12px] !rounded-none !font-medium"
-              placeholder="Hãy nhập lại mật khẩu"
-            />
+            <Input.Password className="!p-[12px] !rounded-none !font-medium" placeholder="Hãy nhập lại mật khẩu" />
           </Form.Item>
 
           <Form.Item className="!m-0">
-            <Button
-              block
-              type="primary"
-              htmlType="submit"
-              className="!rounded-none !p-[22px] !bg-[#757575] !font-bold"
-            >
+            <Button block type="primary" htmlType="submit" className="!rounded-none !p-[22px] !bg-[#757575] !font-bold">
               Đặt lại mật khẩu
             </Button>
           </Form.Item>

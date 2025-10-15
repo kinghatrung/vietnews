@@ -1,7 +1,7 @@
 import { memo, useState, useEffect } from "react";
 import { Empty, Pagination } from "antd";
 import { useDispatch } from "react-redux";
-import { startLoading, stopLoading } from "~/redux/loadingSlice";
+import { loadingSlice } from "~/redux/slices/loadingSlice";
 
 import { getNewsAPI } from "~/api";
 import News from "~/components/News";
@@ -15,13 +15,13 @@ function LatestNews() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        dispatch(startLoading());
+        dispatch(loadingSlice.actions.startLoading());
         const res = await getNewsAPI();
         setNews(res.data.reverse());
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       } catch (error) {
         console.error("Lỗi khi lấy danh sách tin tức:", error);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       }
     };
 

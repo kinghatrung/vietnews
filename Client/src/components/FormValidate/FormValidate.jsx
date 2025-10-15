@@ -8,7 +8,7 @@ import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props
 
 import Login from "~/components/FormValidate/Login";
 import Register from "~/components/FormValidate/Register";
-import { loginUserWithGoogle, loginUserWithFacebook } from "~/redux/apiRequest";
+import { loginUserWithGoogle, loginUserWithFacebook } from "~/redux/slices/authSlice";
 
 const fadeSlide = {
   initial: { opacity: 0, x: 0 },
@@ -31,12 +31,12 @@ function FormValidate({
   const navigate = useNavigate();
 
   const handleGoogleSuccess = async (credentialResponse) => {
-    await loginUserWithGoogle(credentialResponse, dispatch, navigate);
+    await loginUserWithGoogle(credentialResponse);
   };
 
   const handleFacebookLogin = async (res) => {
     const tokenFacebook = res.accessToken;
-    await loginUserWithFacebook(tokenFacebook, dispatch, navigate);
+    await loginUserWithFacebook(tokenFacebook);
   };
 
   const handleGoogleError = (err) => {

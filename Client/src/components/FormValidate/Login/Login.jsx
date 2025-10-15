@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Button, Form, Input, notification } from "antd";
 
-import { loginUser } from "~/redux/apiRequest";
+import { loginUser } from "~/redux/slices/authSlice";
 
 function Login({ isChangeForm, setIsChangeForm, isFormForgotPassword, setIsFormForgotPassword }) {
   const [userName, setUserName] = useState("");
@@ -16,7 +16,7 @@ function Login({ isChangeForm, setIsChangeForm, isFormForgotPassword, setIsFormF
       username: userName,
       password: password,
     };
-    await loginUser(newUser, dispatch, navigate);
+    await loginUser(newUser);
   };
 
   return (

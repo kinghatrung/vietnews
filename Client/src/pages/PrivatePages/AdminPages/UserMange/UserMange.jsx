@@ -1,34 +1,12 @@
 import { useSelector, useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Tabs,
-  Modal,
-  Form,
-  Input,
-  Empty,
-  Pagination,
-  message,
-  DatePicker,
-  Select,
-  Badge,
-} from "antd";
-import {
-  UserOutlined,
-  UserSwitchOutlined,
-  UnlockOutlined,
-  LockOutlined,
-  UsergroupAddOutlined,
-} from "@ant-design/icons";
+import { Button, Tabs, Modal, Form, Input, Empty, Pagination, message, DatePicker, Select, Badge } from "antd";
+import { UserOutlined, UnlockOutlined, LockOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 
-import {
-  handleRegisterAPI,
-  getAllUsersWithoutAuth,
-  sendOtpAPI,
-  getAllUsers,
-} from "~/api";
-import { startLoading, stopLoading } from "~/redux/loadingSlice";
+import { registerUser, getAllUsersWithoutAuth, sendOtpAPI, getAllUsers } from "~/api";
 import UserItem from "~/components/UserItem";
+import { loadingSlice } from "~/redux/slices/loadingSlice";
+import { selectCurrentUser } from "~/redux/slices/authSlice";
 
 const { RangePicker } = DatePicker;
 const { Search } = Input;
@@ -47,20 +25,20 @@ function UserMange() {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
 
-  const user = useSelector((state) => state.auth.login?.currentUser);
+  const user = useSelector(selectCurrentUser);
   const startIndex = (currentPage - 1) * pageSize;
   const currentNews = users.slice(startIndex, startIndex + pageSize);
 
   useEffect(() => {
     const fetchAllUsers = async () => {
       try {
-        dispatch(startLoading());
+        dispatch(loadingSlice.actions.startLoading());
         const res = await getAllUsers();
         setAllUsers(res.data.reverse());
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       } catch (error) {
         console.error("Lỗi khi lấy danh sách người dùng:", error);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       }
     };
 
@@ -70,7 +48,7 @@ function UserMange() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        dispatch(startLoading());
+        dispatch(loadingSlice.actions.startLoading());
         let roles = [];
 
         if (activeTab === "2") roles = ["reporter"];
@@ -81,20 +59,13 @@ function UserMange() {
         const startDate = dates?.[0]?.format("YYYY-MM-DD") || "";
         const endDate = dates?.[1]?.format("YYYY-MM-DD") || "";
 
-        const res = await getAllUsersWithoutAuth(
-          user._id,
-          roles,
-          startDate,
-          endDate,
-          searchKey,
-          status
-        );
+        const res = await getAllUsersWithoutAuth(user._id, roles, startDate, endDate, searchKey, status);
 
         setUsers(res.data.reverse());
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       } catch (error) {
         console.error("Lỗi khi lấy danh sách người dùng:", error);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       }
     };
 
@@ -108,12 +79,7 @@ function UserMange() {
       children:
         users.length > 0 ? (
           <>
-            <UserItem
-              setAllUsers={setAllUsers}
-              users={currentNews}
-              setUsers={setUsers}
-              currenUser={user}
-            />
+            <UserItem setAllUsers={setAllUsers} users={currentNews} setUsers={setUsers} currenUser={user} />
             {users.length > pageSize && (
               <Pagination
                 className="!pt-[20px] !pb-[30px] !mt-[10px] custom-pagination"
@@ -127,10 +93,7 @@ function UserMange() {
             )}
           </>
         ) : (
-          <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description="Không có người dùng nào"
-          />
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Không có người dùng nào" />
         ),
     },
     {
@@ -139,12 +102,7 @@ function UserMange() {
       children:
         users.length > 0 ? (
           <>
-            <UserItem
-              users={currentNews}
-              setAllUsers={setAllUsers}
-              setUsers={setUsers}
-              currenUser={user}
-            />
+            <UserItem users={currentNews} setAllUsers={setAllUsers} setUsers={setUsers} currenUser={user} />
             {users.length > pageSize && (
               <Pagination
                 className="!pt-[20px] !pb-[30px] !mt-[10px] custom-pagination"
@@ -158,10 +116,7 @@ function UserMange() {
             )}
           </>
         ) : (
-          <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description="Không có người dùng nào"
-          />
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Không có người dùng nào" />
         ),
     },
     {
@@ -170,12 +125,7 @@ function UserMange() {
       children:
         users.length > 0 ? (
           <>
-            <UserItem
-              users={currentNews}
-              setAllUsers={setAllUsers}
-              setUsers={setUsers}
-              currenUser={user}
-            />
+            <UserItem users={currentNews} setAllUsers={setAllUsers} setUsers={setUsers} currenUser={user} />
             {users.length > pageSize && (
               <Pagination
                 className="!pt-[20px] !pb-[30px] !mt-[10px] custom-pagination"
@@ -189,10 +139,7 @@ function UserMange() {
             )}
           </>
         ) : (
-          <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description="Không có người dùng nào"
-          />
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Không có người dùng nào" />
         ),
     },
     {
@@ -201,12 +148,7 @@ function UserMange() {
       children:
         users.length > 0 ? (
           <>
-            <UserItem
-              users={currentNews}
-              setAllUsers={setAllUsers}
-              setUsers={setUsers}
-              currenUser={user}
-            />
+            <UserItem users={currentNews} setAllUsers={setAllUsers} setUsers={setUsers} currenUser={user} />
             {users.length > pageSize && (
               <Pagination
                 className="!pt-[20px] !pb-[30px] !mt-[10px] custom-pagination"
@@ -220,10 +162,7 @@ function UserMange() {
             )}
           </>
         ) : (
-          <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description="Không có người dùng nào"
-          />
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Không có người dùng nào" />
         ),
     },
     {
@@ -232,12 +171,7 @@ function UserMange() {
       children:
         users.length > 0 ? (
           <>
-            <UserItem
-              users={currentNews}
-              setAllUsers={setAllUsers}
-              setUsers={setUsers}
-              currenUser={user}
-            />
+            <UserItem users={currentNews} setAllUsers={setAllUsers} setUsers={setUsers} currenUser={user} />
             {users.length > pageSize && (
               <Pagination
                 className="!pt-[20px] !pb-[30px] !mt-[10px] custom-pagination"
@@ -251,10 +185,7 @@ function UserMange() {
             )}
           </>
         ) : (
-          <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description="Không có người dùng nào"
-          />
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Không có người dùng nào" />
         ),
     },
   ];
@@ -277,23 +208,23 @@ function UserMange() {
 
   const handleAddUser = async (values) => {
     try {
-      dispatch(startLoading());
+      dispatch(loadingSlice.actions.startLoading());
       const payload = {
         ...values,
         email: email,
       };
 
-      await handleRegisterAPI(payload);
+      await registerUser(payload);
       const res = await getAllUsersWithoutAuth(user._id);
       setUsers(res.data);
       setEmail("");
       form.resetFields();
       setIsModalOpen(false);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
       message.success("Tạo người dùng thành công!");
     } catch (error) {
       console.error("Lỗi khi lưu người dùng:", error);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     }
   };
 
@@ -301,35 +232,15 @@ function UserMange() {
     <section className="grid grid-cols-1 lg:grid-cols-1 gap-[24px] mb-[20px]">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-[#222222] font-[700] text-[24px]">
-            Danh sách người dùng
-          </h2>
-          <p className="text-[14px] text-[#757575]">
-            Quản lý thông tin và quyền hạn của tất cả người dùng
-          </p>
+          <h2 className="text-[#222222] font-[700] text-[24px]">Danh sách người dùng</h2>
+          <p className="text-[14px] text-[#757575]">Quản lý thông tin và quyền hạn của tất cả người dùng</p>
         </div>
 
         <>
-          <Button onClick={() => setIsModalOpen(!isModalOpen)}>
-            Tạo người dùng
-          </Button>
-          <Modal
-            open={isModalOpen}
-            width={600}
-            form={form}
-            onCancel={() => setIsModalOpen(false)}
-            footer={null}
-          >
-            <h2 className="text-[#222222] font-[700] text-[24px] mb-[20px]">
-              Tạo người dùng
-            </h2>
-            <Form
-              form={form}
-              onFinish={handleAddUser}
-              name="register"
-              layout="vertical"
-              className="!mb-4"
-            >
+          <Button onClick={() => setIsModalOpen(!isModalOpen)}>Tạo người dùng</Button>
+          <Modal open={isModalOpen} width={600} form={form} onCancel={() => setIsModalOpen(false)} footer={null}>
+            <h2 className="text-[#222222] font-[700] text-[24px] mb-[20px]">Tạo người dùng</h2>
+            <Form form={form} onFinish={handleAddUser} name="register" layout="vertical" className="!mb-4">
               <Form.Item
                 label="Email"
                 name="email"
@@ -363,16 +274,8 @@ function UserMange() {
                 ]}
               >
                 <div className="flex items-center gap-[10px]">
-                  <Input
-                    style={{ height: 40 }}
-                    type="text"
-                    placeholder="Nhập mã OTP"
-                  />
-                  <Button
-                    style={{ height: 40 }}
-                    type="primary"
-                    onClick={handleSendOtp}
-                  >
+                  <Input style={{ height: 40 }} type="text" placeholder="Nhập mã OTP" />
+                  <Button style={{ height: 40 }} type="primary" onClick={handleSendOtp}>
                     Gửi mã OTP
                   </Button>
                 </div>
@@ -389,11 +292,7 @@ function UserMange() {
                   },
                 ]}
               >
-                <Input
-                  style={{ height: 40 }}
-                  type="text"
-                  placeholder="Nhập họ và tên của bạn"
-                />
+                <Input style={{ height: 40 }} type="text" placeholder="Nhập họ và tên của bạn" />
               </Form.Item>
 
               <Form.Item
@@ -411,11 +310,7 @@ function UserMange() {
                   },
                 ]}
               >
-                <Input
-                  style={{ height: 40 }}
-                  type="text"
-                  placeholder="Nhập tên đăng nhập của bạn"
-                />
+                <Input style={{ height: 40 }} type="text" placeholder="Nhập tên đăng nhập của bạn" />
               </Form.Item>
 
               <Form.Item
@@ -428,10 +323,7 @@ function UserMange() {
                   },
                 ]}
               >
-                <Input.Password
-                  style={{ height: 40 }}
-                  placeholder="Hãy nhập mật khẩu"
-                />
+                <Input.Password style={{ height: 40 }} placeholder="Hãy nhập mật khẩu" />
               </Form.Item>
 
               <Form.Item
@@ -454,19 +346,11 @@ function UserMange() {
                   }),
                 ]}
               >
-                <Input.Password
-                  style={{ height: 40 }}
-                  placeholder="Hãy nhập lại mật khẩu"
-                />
+                <Input.Password style={{ height: 40 }} placeholder="Hãy nhập lại mật khẩu" />
               </Form.Item>
 
               <Form.Item className="!m-0">
-                <Button
-                  block
-                  type="primary"
-                  htmlType="submit"
-                  style={{ height: 50 }}
-                >
+                <Button block type="primary" htmlType="submit" style={{ height: 50 }}>
                   Tạo người dùng mới
                 </Button>
               </Form.Item>
@@ -478,24 +362,16 @@ function UserMange() {
       <div className="flex justify-between items-center w-full gap-[18px]">
         <div className="flex justify-between items-center p-[24px] border border-[#E5E5E5] rounded-[8px] h-[100%] w-full bg-gray-50">
           <div className="mb-[4px]">
-            <h3 className="text-[14px] text-[#222222] font-[500]">
-              Tổng số người dùng
-            </h3>
-            <p className="text-[24px] text-[#222222] font-[600]">
-              {allUsers.length}
-            </p>
+            <h3 className="text-[14px] text-[#222222] font-[500]">Tổng số người dùng</h3>
+            <p className="text-[24px] text-[#222222] font-[600]">{allUsers.length}</p>
           </div>
           <UserOutlined style={{ fontSize: 32 }} />
         </div>
 
         <div className="flex justify-between items-center p-[24px] border border-[#E5E5E5] rounded-[8px] h-[100%] w-full bg-gray-50">
           <div className="mb-[4px]">
-            <h3 className="text-[14px] text-[#222222] font-[500]">
-              Đang hoạt động
-            </h3>
-            <p className="text-[24px] text-[#222222] font-[600]">
-              {activeCount}
-            </p>
+            <h3 className="text-[14px] text-[#222222] font-[500]">Đang hoạt động</h3>
+            <p className="text-[24px] text-[#222222] font-[600]">{activeCount}</p>
           </div>
           <UnlockOutlined style={{ fontSize: 32 }} />
         </div>
@@ -503,21 +379,15 @@ function UserMange() {
         <div className="flex justify-between items-center p-[24px] border border-[#E5E5E5] rounded-[8px] h-[100%] w-full bg-gray-50">
           <div className="mb-[4px]">
             <h3 className="text-[14px] text-[#222222] font-[500]">Đã khóa</h3>
-            <p className="text-[24px] text-[#222222] font-[600]">
-              {inactiveCount}
-            </p>
+            <p className="text-[24px] text-[#222222] font-[600]">{inactiveCount}</p>
           </div>
           <LockOutlined style={{ fontSize: 32 }} />
         </div>
 
         <div className="flex justify-between items-center p-[24px] border border-[#E5E5E5] rounded-[8px] h-[100%] w-full bg-gray-50">
           <div className="mb-[4px]">
-            <h3 className="text-[14px] text-[#222222] font-[500]">
-              Người dùng mới
-            </h3>
-            <p className="text-[24px] text-[#222222] font-[600]">
-              {newUsers.length}
-            </p>
+            <h3 className="text-[14px] text-[#222222] font-[500]">Người dùng mới</h3>
+            <p className="text-[24px] text-[#222222] font-[600]">{newUsers.length}</p>
             <p className="text-[12px] text-[#6b7280]">Tháng này</p>
           </div>
           <UsergroupAddOutlined style={{ fontSize: 32 }} />
@@ -525,9 +395,7 @@ function UserMange() {
       </div>
 
       <div className="p-[24px] border border-[#E5E5E5] rounded-[8px] bg-gray-50">
-        <h3 className="text-[#222222] font-[700] text-[24px] mb-[24px]">
-          Bộ lọc và tìm kiếm
-        </h3>
+        <h3 className="text-[#222222] font-[700] text-[24px] mb-[24px]">Bộ lọc và tìm kiếm</h3>
         <div className="flex items-center gap-[12px]">
           <Search
             className="search-user"

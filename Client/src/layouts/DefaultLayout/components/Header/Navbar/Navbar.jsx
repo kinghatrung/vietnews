@@ -8,9 +8,9 @@ import LazyLoad from "react-lazyload";
 
 import config from "~/config/";
 import FormValidate from "~/components/FormValidate";
-import { logoutUser } from "~/redux/apiRequest";
+import { logoutUser } from "~/redux/slices/authSlice";
 import ForgotPassword from "~/components/FormValidate/ForgotPassword";
-import { showLoginModal, hideLoginModal } from "~/redux/modalSlice";
+import { modalSlice } from "~/redux/slices/modalSlice";
 import { selectLoginModalVisible } from "~/redux/slices/modalSlice";
 import { selectCurrentUser } from "~/redux/slices/authSlice";
 
@@ -19,8 +19,8 @@ function Navbar() {
 
   const isModalOpen = useSelector(selectLoginModalVisible);
 
-  const handleOpen = () => dispatch(showLoginModal());
-  const handleClose = () => dispatch(hideLoginModal());
+  const handleOpen = () => dispatch(modalSlice.actions.showLoginModal());
+  const handleClose = () => dispatch(modalSlice.actions.hideLoginModal());
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -39,8 +39,8 @@ function Navbar() {
   }, []);
 
   const handleLogout = useCallback(async () => {
-    logoutUser(dispatch, navigate);
-  }, [dispatch, navigate]);
+    await logoutUser();
+  }, []);
 
   const handleSearch = useCallback(
     (value) => {

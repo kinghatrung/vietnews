@@ -2,7 +2,7 @@ import React, { useCallback, useState, memo, useEffect, useMemo } from "react";
 import { Button, Divider, Input, Form, message } from "antd";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { startLoading, stopLoading } from "~/redux/loadingSlice";
+import { loadingSlice } from "~/redux/slices/loadingSlice";
 import { ArrowLeftOutlined, LikeFilled, EyeOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import "dayjs/locale/vi";
@@ -21,7 +21,8 @@ import config from "~/config/";
 import CategoryList from "~/components/CategoryList";
 import News from "~/components/News";
 import Comment from "~/components/Comment";
-import { showLoginModal } from "~/redux/modalSlice";
+import { modalSlice } from "~/redux/slices/modalSlice";
+import { selectCurrentUser } from "~/redux/slices/authSlice";
 
 dayjs.locale("vi");
 
@@ -36,14 +37,13 @@ function NewsContent() {
   const [comments, setComments] = useState([]);
 
   const isLoggedIn = useSelector((state) => state.modal.loginModalVisible);
-  const user = useSelector((state) => {
-    return state.auth.login.currentUser;
-  });
+  const user = useSelector(selectCurrentUser);
 
   useEffect(() => {
     const fetchAllData = async () => {
       try {
-        dispatch(startLoading());
+        dispatch(loadingSlice.actions.startLoading());
+
         const [newsRes, categoryRes, newsByIdRes, commentsRes, savedNewsRes] = await Promise.all([
           getNewsAPI(),
           getCategoryAPI(),
@@ -59,10 +59,10 @@ function NewsContent() {
           const isSaved = savedNewsRes.data.some((item) => item._id === id);
           setIsSaved(isSaved);
         }
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       } catch (error) {
         console.error("Lỗi khi lấy dữ liệu:", error);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       }
     };
     fetchAllData();
@@ -84,7 +84,7 @@ function NewsContent() {
   const handleLikeOrUnlikeNews = useCallback(
     async (id) => {
       if (!isLoggedIn) {
-        dispatch(showLoginModal());
+        dispatch(modalSlice.actions.showLoginModal());
         return;
       }
       try {
@@ -116,7 +116,7 @@ function NewsContent() {
   const handleSaveOrUnsaveNews = useCallback(
     async (userId, newsId) => {
       if (!isLoggedIn) {
-        dispatch(showLoginModal());
+        dispatch(modalSlice.actions.showLoginModal());
         return;
       }
       try {
@@ -133,11 +133,12 @@ function NewsContent() {
   const handleSendComment = useCallback(
     async (values) => {
       if (!isLoggedIn) {
-        dispatch(showLoginModal());
+        dispatch(modalSlice.actions.showLoginModal());
         return;
       }
       try {
-        dispatch(startLoading());
+        dispatch(loadingSlice.actions.startLoading());
+
         const dataComment = {
           content: values.comment,
           userId: user?._id,
@@ -146,10 +147,10 @@ function NewsContent() {
         await createComment(dataComment);
         form.resetFields();
         message.success("Gửi bình luận xét duyệt thành công!");
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       } catch (err) {
         console.log(err);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       }
     },
 

@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { Button, Form, Input, notification } from "antd";
+import { Button, Form, Input } from "antd";
 
 import { sendOtpAPI } from "~/api";
-import { registerUser } from "~/redux/apiRequest";
-import { hideLoginModal } from "~/redux/modalSlice";
+import { registerUser } from "~/api";
+import { modalSlice } from "~/redux/slices/modalSlice";
 
 function Register({ isChangeForm, setIsChangeForm }) {
   const [email, setEmail] = useState("");
@@ -14,7 +13,6 @@ function Register({ isChangeForm, setIsChangeForm }) {
   const [password, setPassword] = useState("");
   const [otp, setOtp] = useState("");
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleSendOtp = async () => {
     await sendOtpAPI(email);
@@ -29,15 +27,13 @@ function Register({ isChangeForm, setIsChangeForm }) {
       otp: otp,
     };
 
-    await registerUser(newUser, dispatch, navigate);
-    dispatch(hideLoginModal());
+    await registerUser(newUser);
+    dispatch(modalSlice.actions.hideLoginModal());
   };
 
   return (
     <>
-      <h1 className="text-[22px] mb-[24px] font-title text-center font-bold">
-        Đăng ký
-      </h1>
+      <h1 className="text-[22px] mb-[24px] font-title text-center font-bold">Đăng ký</h1>
       <Form onFinish={handleRegister} name="register" layout="vertical">
         <Form.Item
           className="!mb-[16px] !font-bold"
@@ -173,19 +169,11 @@ function Register({ isChangeForm, setIsChangeForm }) {
             }),
           ]}
         >
-          <Input.Password
-            className="!p-[12px] !rounded-none !font-medium"
-            placeholder="Hãy nhập lại mật khẩu"
-          />
+          <Input.Password className="!p-[12px] !rounded-none !font-medium" placeholder="Hãy nhập lại mật khẩu" />
         </Form.Item>
 
         <Form.Item className="!m-0">
-          <Button
-            block
-            type="primary"
-            htmlType="submit"
-            className="!rounded-none !p-[22px] !bg-[#757575] !font-bold"
-          >
+          <Button block type="primary" htmlType="submit" className="!rounded-none !p-[22px] !bg-[#757575] !font-bold">
             Đăng ký
           </Button>
         </Form.Item>

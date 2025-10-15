@@ -2,7 +2,7 @@ import React, { useCallback, memo, useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Input, Form, Select, Empty } from "antd";
 import { useDispatch } from "react-redux";
-import { startLoading, stopLoading } from "~/redux/loadingSlice";
+import { loadingSlice } from "~/redux/slices/loadingSlice";
 
 import News from "~/components/News";
 import { getSearchNewsAPI } from "~/api";
@@ -14,7 +14,6 @@ function SearchNews() {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [newsResults, setNewsResults] = useState([]);
-  const [isResult, setIsResult] = useState(false);
 
   const [searchParams] = useSearchParams();
   const q = searchParams.get("q");
@@ -24,13 +23,13 @@ function SearchNews() {
     if (!q) return;
     const fetchData = async () => {
       try {
-        dispatch(startLoading());
+        dispatch(loadingSlice.actions.startLoading());
         const res = await getSearchNewsAPI(q);
         setNewsResults(res.data.results);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       } catch (err) {
         console.error("Error fetching search results:", err);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       }
     };
 
@@ -48,13 +47,13 @@ function SearchNews() {
     });
     const fetchData = async () => {
       try {
-        dispatch(startLoading());
+        dispatch(loadingSlice.actions.startLoading());
         const res = await getSearchNewsAPI({ q, time });
         setNewsResults(res.data.results);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       } catch (error) {
         console.error("Search error:", error);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       }
     };
 

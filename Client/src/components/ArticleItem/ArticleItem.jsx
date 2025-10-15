@@ -26,7 +26,7 @@ import {
   imageUploadAPI,
   getArticleByIdAPI,
 } from "~/api";
-import { startLoading, stopLoading } from "~/redux/loadingSlice";
+import { loadingSlice } from "~/redux/slices/loadingSlice";
 const API_URL = import.meta.env.VITE_APP_API_URL;
 
 dayjs.extend(relativeTime);
@@ -108,15 +108,15 @@ function ArticleItem({
   const handleDelete = useCallback(
     async (id) => {
       try {
-        dispatch(startLoading());
+        dispatch(loadingSlice.actions.startLoading());
         await deleteArticleAPI(id);
         const res = await getArticleByIdAPI(user.role.role_name, user._id, searchKey, startDate, endDate, status);
         setArticles(res.data.reverse());
         message.success("Xóa bài viết thành công!");
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       } catch (error) {
         console.error("Lỗi khi xóa bài viết:", error);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       }
     },
     [dispatch, setArticles, user]
@@ -125,7 +125,7 @@ function ArticleItem({
   const handleUpdateArticle = useCallback(
     async (id, values) => {
       try {
-        dispatch(startLoading());
+        dispatch(loadingSlice.actions.startLoading());
         const payload = {
           ...values,
           image: values.image?.file?.response?.link || values.image,
@@ -136,9 +136,9 @@ function ArticleItem({
         setArticles(res.data.reverse());
         form.resetFields();
         message.success("Sửa bài viết thành công!");
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       } catch (error) {
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
         console.error("Lỗi khi lưu bài viết:", error);
         message.error("Lỗi khi sửa bài viết!");
       }
@@ -162,10 +162,10 @@ function ArticleItem({
 
   const handleCheckContent = useCallback(async (content) => {
     try {
-      dispatch(startLoading());
+      dispatch(loadingSlice.actions.startLoading());
       const response = await checkContentArticleAPI({ content });
       setToxic(response.data.toxicSentences);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
       if (!response.data.isToxic) {
         // setIsToxic(false);
         message.success("Nội dung bài viết hợp lệ!");
@@ -174,7 +174,7 @@ function ArticleItem({
         message.error("Tổng số câu có chứa từ toxic trong bài viết: " + response.data.totalToxic);
       }
     } catch (err) {
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
       message.error("Lỗi kiểm tra nội dung!");
     }
   }, []);
@@ -233,7 +233,7 @@ function ArticleItem({
                 cancelText: "Hủy",
                 onOk: async () => {
                   try {
-                    dispatch(startLoading());
+                    dispatch(loadingSlice.actions.startLoading());
                     await changeStatusArticleAPI(article._id, {
                       status_name: newStatus?.status_name,
                     });
@@ -247,11 +247,11 @@ function ArticleItem({
                     );
                     setArticles([...res.data].reverse());
                     message.success("Chuyển trạng thái thành công!");
-                    dispatch(stopLoading());
+                    dispatch(loadingSlice.actions.stopLoading());
                   } catch (error) {
                     console.error("Lỗi chuyển trạng thái:", error);
                     message.error("Chuyển trạng thái thất bại!");
-                    dispatch(stopLoading());
+                    dispatch(loadingSlice.actions.stopLoading());
                   }
                 },
               });

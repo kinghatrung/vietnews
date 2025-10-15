@@ -1,16 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  Button,
-  Empty,
-  Input,
-  DatePicker,
-  notification,
-  Upload,
-  Radio,
-  Form,
-  Pagination,
-  message,
-} from "antd";
+import { Button, Empty, Input, DatePicker, notification, Upload, Radio, Form, Pagination, message } from "antd";
 import dayjs from "dayjs";
 import "dayjs/locale/vi";
 import { InboxOutlined } from "@ant-design/icons";
@@ -25,8 +14,9 @@ import {
   updateEmailUserAPI,
 } from "~/api";
 import News from "~/components/News";
-import { startLoading, stopLoading } from "~/redux/loadingSlice";
-import { setCurrentUser } from "~/redux/authSlice";
+import { loadingSlice } from "~/redux/slices/loadingSlice";
+// import { setCurrentUser } from "~/redux/slices/authSlice";
+import { selectCurrentUser } from "~/redux/slices/authSlice";
 
 function Info() {
   const dispatch = useDispatch();
@@ -46,9 +36,7 @@ function Info() {
     address: "",
   });
 
-  const user = useSelector((state) => {
-    return state.auth.login.currentUser;
-  });
+  const user = useSelector(selectCurrentUser);
 
   const [form] = Form.useForm();
 
@@ -61,13 +49,13 @@ function Info() {
   useEffect(() => {
     const fetchSavedNews = async () => {
       try {
-        dispatch(startLoading());
+        dispatch(loadingSlice.actions.startLoading());
         const res = await getSaveNewsAPI(user._id);
         setIsSavedNews(res.data);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       } catch (error) {
         console.error("Lỗi khi lấy danh sách tin tức:", error);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       }
     };
 
@@ -85,24 +73,25 @@ function Info() {
 
   const handleSave = async (field) => {
     try {
-      dispatch(startLoading());
+      dispatch(loadingSlice.actions.startLoading());
       setEditingField(null);
       const updatedUser = {
         [field]: tempValue,
       };
       const res = await updateUserAPI(user._id, updatedUser);
-      dispatch(
-        setCurrentUser({
-          ...updatedUser,
-          ...res.data.user,
-        })
-      );
+      // dispatch(
+      //   setCurrentUser({
+      //     ...updatedUser,
+      //     ...res.data.user,
+      //   })
+      // );
       setUserInfo((prev) => ({
         ...prev,
         [field]: tempValue,
       }));
       setTempValue("");
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
+
       notification.success({
         message: "Cập nhập thông tin thành công!",
         description: "Hãy xem ở Profile",
@@ -110,7 +99,7 @@ function Info() {
       });
     } catch (error) {
       console.error("Lỗi khi cập nhật thông tin người dùng:", error);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     }
   };
 
@@ -138,46 +127,44 @@ function Info() {
 
   const handleUpdatePassword = async (values) => {
     try {
-      dispatch(startLoading());
+      dispatch(loadingSlice.actions.startLoading());
       await updatePasswordUserAPI(user._id, values);
       message.success("Đổi mật khẩu thành công");
       handleCancel();
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     } catch (error) {
       message.error("Có lỗi xảy ra, vui lòng thử lại");
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     }
   };
 
   const handleUpdateEmail = async () => {
     try {
-      dispatch(startLoading());
+      dispatch(loadingSlice.actions.startLoading());
       const payload = {
         email: email,
         password: password,
         otp: otp,
       };
       const res = await updateEmailUserAPI(user._id, payload);
-      dispatch(setCurrentUser(res.data.user));
+      // dispatch(setCurrentUser(res.data.user));
       handleCancel();
       notification.success({
         message: "Đổi Email thành công",
         description: "Hãy kiểm tra lại thông tin mới",
         duration: 3,
       });
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     } catch (err) {
       console.log(err);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     }
   };
 
   return (
     <section className="flex flex-col gap-[20px]">
       <div id="info" className="flex flex-col">
-        <h1 className="mb-[24px] font-title text-[24px] font-[700]">
-          Thông tin tài khoản
-        </h1>
+        <h1 className="mb-[24px] font-title text-[24px] font-[700]">Thông tin tài khoản</h1>
         <div className="border-b border-[#E5E5E5] flex flex-col pb-[20px] mb-[20px]">
           <div className="flex justify-between items-center">
             <p className="text-[16px]">Ảnh đại diện</p>
@@ -194,9 +181,7 @@ function Info() {
           </div>
           {editingField === "avatar" ? (
             <div className="mt-[30px] p-[18px] border border-[#e5e5e5] bg-[#fcfaf6] rounded-[6px]">
-              <p className="text-[16px] text-[#222222] mb-2">
-                Đổi ảnh đại diện
-              </p>
+              <p className="text-[16px] text-[#222222] mb-2">Đổi ảnh đại diện</p>
               <Upload.Dragger
                 customRequest={handleImageUpload}
                 maxCount={1}
@@ -301,11 +286,7 @@ function Info() {
           </div>
           {editingField === "email" ? (
             <div className="mt-[30px] p-[18px] border border-[#e5e5e5] bg-[#fcfaf6] rounded-[6px]">
-              <Form
-                id="changeEmailForm"
-                onFinish={handleUpdateEmail}
-                layout="vertical"
-              >
+              <Form id="changeEmailForm" onFinish={handleUpdateEmail} layout="vertical">
                 <Form.Item label="Nhập email" type="email">
                   <Input
                     onChange={(e) => setEmail(e.target.value)}
@@ -390,12 +371,7 @@ function Info() {
           {editingField === "password" ? (
             <div className="mt-[30px] p-[18px] border border-[#e5e5e5] bg-[#fcfaf6] rounded-[6px]">
               <p className="text-[16px] text-[#222222] mb-2">Đổi mật khẩu</p>
-              <Form
-                layout="vertical"
-                id="changePasswordForm"
-                form={form}
-                onFinish={handleUpdatePassword}
-              >
+              <Form layout="vertical" id="changePasswordForm" form={form} onFinish={handleUpdatePassword}>
                 <Form.Item label="Mật khẩu cũ" name="password">
                   <Input.Password
                     style={{ height: 50, borderRadius: 0 }}
@@ -437,9 +413,7 @@ function Info() {
         </div>
       </div>
       <div>
-        <h1 className="mb-[24px] font-title text-[24px] font-[700]">
-          Thông tin cá nhân
-        </h1>
+        <h1 className="mb-[24px] font-title text-[24px] font-[700]">Thông tin cá nhân</h1>
         <div className="border-b border-[#E5E5E5] flex flex-col pb-[20px] mb-[20px]">
           <div className="flex justify-between items-center">
             <p className="text-[16px] text-[#222222]">Ngày sinh</p>
@@ -461,9 +435,7 @@ function Info() {
                 format="DD/MM/YYYY"
                 style={{ height: 50, borderRadius: 0 }}
                 className="text-[16px] text-[#757575] w-full"
-                onChange={(date, dateString) =>
-                  setTempValue(date.format("YYYY-MM-DD"))
-                }
+                onChange={(date, dateString) => setTempValue(date.format("YYYY-MM-DD"))}
                 placeholder="Nhập ngày sinh"
               />
               <div className="flex justify-between mt-5">
@@ -487,9 +459,7 @@ function Info() {
             </div>
           ) : (
             <p className="text-[16px] text-[#757575]">
-              {user.birth_date
-                ? dayjs(user.birth_date).format("DD/MM/YYYY")
-                : "Chưa có thông tin"}
+              {user.birth_date ? dayjs(user.birth_date).format("DD/MM/YYYY") : "Chưa có thông tin"}
             </p>
           )}
         </div>
@@ -540,9 +510,7 @@ function Info() {
               </div>
             </div>
           ) : (
-            <p className="text-[16px] text-[#757575]">
-              {user.gender ? user.gender : "Chưa có thông tin"}
-            </p>
+            <p className="text-[16px] text-[#757575]">{user.gender ? user.gender : "Chưa có thông tin"}</p>
           )}
         </div>
         <div className="border-b border-[#E5E5E5] flex flex-col pb-[20px] mb-[20px]">
@@ -561,9 +529,7 @@ function Info() {
           </div>
           {editingField === "phone" ? (
             <div className="mt-[30px] p-[18px] border border-[#e5e5e5] bg-[#fcfaf6] rounded-[6px]">
-              <p className="text-[16px] text-[#222222] mb-2">
-                Nhập số điện thoại
-              </p>
+              <p className="text-[16px] text-[#222222] mb-2">Nhập số điện thoại</p>
               <Input
                 style={{ height: 50, borderRadius: 0 }}
                 value={tempValue}
@@ -591,9 +557,7 @@ function Info() {
               </div>
             </div>
           ) : (
-            <p className="text-[16px] text-[#757575]">
-              {user.phone ? user.phone : "Chưa có thông tin"}
-            </p>
+            <p className="text-[16px] text-[#757575]">{user.phone ? user.phone : "Chưa có thông tin"}</p>
           )}
         </div>
         <div className="border-b border-[#E5E5E5] flex flex-col pb-[20px] mb-[20px]">
@@ -640,29 +604,17 @@ function Info() {
               </div>
             </div>
           ) : (
-            <p className="text-[16px] text-[#757575]">
-              {user.address ? user.address : "Chưa có thông tin"}
-            </p>
+            <p className="text-[16px] text-[#757575]">{user.address ? user.address : "Chưa có thông tin"}</p>
           )}
         </div>
       </div>
       {user.role?.role_name === "user" && (
         <div id="saved">
-          <h1 className="mb-[24px] font-title text-[24px] font-[700]">
-            Tin đã lưu
-          </h1>
+          <h1 className="mb-[24px] font-title text-[24px] font-[700]">Tin đã lưu</h1>
           {isSavedNews.length > 0 ? (
             <div>
               {currentSavedNews?.map((item) => (
-                <News
-                  key={item._id}
-                  {...item}
-                  heading={item.title}
-                  title
-                  semiMedium
-                  sizeSemiSmall
-                  noTime
-                />
+                <News key={item._id} {...item} heading={item.title} title semiMedium sizeSemiSmall noTime />
               ))}
               {isSavedNews.length > pageSize && (
                 <Pagination
