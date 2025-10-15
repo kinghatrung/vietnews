@@ -1,7 +1,6 @@
 import { memo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Divider, Button, Modal, notification } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Divider, Button, Modal } from "antd";
 import { useDispatch } from "react-redux";
 import { GoogleLogin } from "@react-oauth/google";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
@@ -28,15 +27,14 @@ function FormValidate({
   setIsFormForgotPassword,
 }) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleGoogleSuccess = async (credentialResponse) => {
-    await loginUserWithGoogle(credentialResponse);
+    await dispatch(loginUserWithGoogle(credentialResponse.credential)).unwrap();
   };
 
   const handleFacebookLogin = async (res) => {
     const tokenFacebook = res.accessToken;
-    await loginUserWithFacebook(tokenFacebook);
+    await dispatch(loginUserWithFacebook(tokenFacebook)).unwrap();
   };
 
   const handleGoogleError = (err) => {

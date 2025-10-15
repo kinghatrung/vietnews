@@ -39,7 +39,7 @@ function Navbar() {
   }, []);
 
   const handleLogout = useCallback(async () => {
-    await logoutUser();
+    await dispatch(logoutUser());
   }, []);
 
   const handleSearch = useCallback(

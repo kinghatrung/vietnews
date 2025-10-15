@@ -51,7 +51,6 @@ const Wrapper = ({ layout }) => {
 
 function App() {
   const user = useSelector(selectCurrentUser);
-  console.log(user);
 
   return (
     <div className="App">

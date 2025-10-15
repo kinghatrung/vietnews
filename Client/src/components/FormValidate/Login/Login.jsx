@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { Button, Form, Input, notification } from "antd";
+import { Button, Form, Input } from "antd";
 
 import { loginUser } from "~/redux/slices/authSlice";
 
@@ -9,14 +8,13 @@ function Login({ isChangeForm, setIsChangeForm, isFormForgotPassword, setIsFormF
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleLogin = async () => {
     const newUser = {
       username: userName,
       password: password,
     };
-    await loginUser(newUser);
+    await dispatch(loginUser(newUser));
   };
 
   return (

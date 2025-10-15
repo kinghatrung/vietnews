@@ -1,6 +1,13 @@
 import axios from "axios";
 import { notification } from "antd";
 import { refreshTokenAPI } from "~/api";
+import { logoutUser } from "~/redux/slices/authSlice";
+
+let axiosReduxStore;
+
+export const injectStore = (mainStore) => {
+  axiosReduxStore = mainStore;
+};
 
 let authorizedAxiosInstance = axios.create();
 
@@ -17,6 +24,8 @@ authorizedAxiosInstance.interceptors.request.use(
   }
 );
 
+let refreshTokenPromise = null;
+
 // Can thiệp vào giữa những res nhận về từ API
 authorizedAxiosInstance.interceptors.response.use(
   (response) => {
@@ -26,30 +35,46 @@ authorizedAxiosInstance.interceptors.response.use(
     const originalRequest = error.config;
 
     if (error.response?.status === 401) {
-      // await logoutFromInterceptor();
-      return Promise.reject(error);
+      axiosReduxStore.dispatch(logoutUser(false));
     }
 
+    const originalRequests = error.config;
     if (error.response?.status === 410 && !originalRequest._retry) {
       originalRequest._retry = true;
-      return refreshTokenAPI()
-        .then(() => {
-          return authorizedAxiosInstance(originalRequest);
-        })
-        .catch((err) => {
-          // logoutFromInterceptor();
-          return Promise.reject(err);
-        });
-    }
+      if (!refreshTokenPromise) {
+        refreshTokenPromise = refreshTokenAPI()
+          .then((data) => {
+            // đồng thời accessToken đã nằm trong httpOnly cookie (xử lý phía be)
+            return data?.accessToken;
+          })
+          .catch((_error) => {
+            // Bất kì lỗi nào từ api refresh token thì logout luôn
+            axiosReduxStore.dispatch(logoutUser(false));
+            return Promise.reject(_error);
+          })
+          .finally(() => {
+            //  Dù Api có ok hay lỗi thì vẫn luôn gán lại cái refreshTokenPromise = null như ban đầu
+            refreshTokenPromise = null;
+          });
+      }
 
-    // Làm thông báo cho các status khác 410
-    // if (error.response?.status !== 410) {
-    //   console.error("API Error:", error.response?.data || error.message);
-    // }
+      return refreshTokenPromise.then((accessToken) => {
+        // Gọi lại các Api ban đầu bị lỗi
+        return authorizedAxiosInstance(originalRequests);
+      });
+    }
 
     if (error.response?.status === 403) {
       notification.error({
         message: "Tài khoản bị khóa",
+        description: error.response.data.message || "Tài khoản của bạn đã bị khóa.",
+        duration: 5,
+      });
+    }
+
+    if (error.response?.status !== 410 || error.response?.status !== 401) {
+      notification.error({
+        message: "Tài khoản bị khósadasdasda",
         description: error.response.data.message || "Tài khoản của bạn đã bị khóa.",
         duration: 5,
       });
