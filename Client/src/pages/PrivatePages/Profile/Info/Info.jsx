@@ -15,8 +15,7 @@ import {
 } from "~/api";
 import News from "~/components/News";
 import { loadingSlice } from "~/redux/slices/loadingSlice";
-// import { setCurrentUser } from "~/redux/slices/authSlice";
-import { selectCurrentUser } from "~/redux/slices/authSlice";
+import { selectCurrentUser, authSlice } from "~/redux/slices/authSlice";
 
 function Info() {
   const dispatch = useDispatch();
@@ -79,12 +78,12 @@ function Info() {
         [field]: tempValue,
       };
       const res = await updateUserAPI(user._id, updatedUser);
-      // dispatch(
-      //   setCurrentUser({
-      //     ...updatedUser,
-      //     ...res.data.user,
-      //   })
-      // );
+      dispatch(
+        authSlice.actions.setCurrentUser({
+          ...updatedUser,
+          ...res.data.user,
+        })
+      );
       setUserInfo((prev) => ({
         ...prev,
         [field]: tempValue,

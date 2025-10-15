@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Divider, Anchor } from "antd";
 import { LogoutOutlined } from "@ant-design/icons";
 import { selectCurrentUser } from "~/redux/slices/authSlice";
+import { logoutUser } from "~/redux/slices/authSlice";
 
 import Info from "~/pages/PrivatePages/Profile/Info";
 
@@ -15,10 +16,9 @@ function Profile() {
   const formattedDate = `${day}/${month}`;
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleLogout = async () => {
-    // logoutUser(dispatch, navigate);
+    await dispatch(logoutUser());
   };
 
   return (

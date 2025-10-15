@@ -33,7 +33,18 @@ export const authSlice = createSlice({
     currentUser: null,
   },
 
-  reducers: {},
+  reducers: {
+    setCurrentUser: (state, action) => {
+      if (state.currentUser) {
+        state.currentUser = {
+          ...state.currentUser,
+          ...action.payload,
+        };
+      } else {
+        state.currentUser = action.payload;
+      }
+    },
+  },
 
   extraReducers: (builder) => {
     builder.addCase(loginUser.fulfilled, (state, action) => {

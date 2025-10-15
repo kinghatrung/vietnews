@@ -68,7 +68,9 @@ function App() {
 
           {/* Private */}
           <Route element={<ProtectedRoute user={user} />}>
-            <Route path={`/${config.routes.profile}`} element={<Profile />} />
+            <Route element={<Wrapper layout={DefaultLayout} user={user} />}>
+              <Route path={`/${config.routes.profile}`} element={<Profile />} />
+            </Route>
 
             <Route element={<Wrapper layout={ReporterLayout} user={user} />}>
               <Route element={<RbacRouter requiredPermission={config.permissions.VIEW_DASHBOARD_REPORTER} />}>
