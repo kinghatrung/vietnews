@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/vi";
 
 import { deleteCategoryAPI, updateCategoryAPI, getCategoryAPI } from "~/api";
-import { startLoading, stopLoading } from "~/redux/loadingSlice";
+import { loadingSlice } from "~/redux/slices/loadingSlice";
 
 function CategoryItem({ categories, setCategories, setListCategories }) {
   const dispatch = useDispatch();
@@ -28,34 +28,34 @@ function CategoryItem({ categories, setCategories, setListCategories }) {
 
   const handleDeleteCategory = async (id) => {
     try {
-      dispatch(startLoading());
+      dispatch(loadingSlice.actions.startLoading());
       await deleteCategoryAPI(id);
       const res = await getCategoryAPI();
       setCategories(res.data.reverse());
       setListCategories(res.data);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
       setModalVisible(null);
       message.success("Xóa người dùng thành công!");
     } catch (error) {
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
       message.error("Cập nhật danh mục thất bại!");
     }
   };
 
   const handleUpdateCategory = async (id) => {
     try {
-      dispatch(startLoading());
+      dispatch(loadingSlice.actions.startLoading());
       const values = await form.validateFields();
       const payload = { ...values };
       await updateCategoryAPI(id, payload);
       const res = await getCategoryAPI();
       setCategories(res.data.reverse());
       form.resetFields();
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
       setModalVisible(null);
       message.success("Cập nhật danh mục thành công!");
     } catch (error) {
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
       message.error("Cập nhật danh mục thất bại!");
     }
   };

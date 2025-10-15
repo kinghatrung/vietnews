@@ -1,20 +1,12 @@
 import { useSelector, useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
-import {
-  Tabs,
-  Empty,
-  Modal,
-  Form,
-  Input,
-  Button,
-  message,
-  Pagination,
-} from "antd";
+import { Tabs, Empty, Modal, Form, Input, Button, message, Pagination } from "antd";
 
 import { addRecommendAPI, getRecommendAPI } from "~/api";
-import { startLoading, stopLoading } from "~/redux/loadingSlice";
+import { loadingSlice } from "~/redux/slices/loadingSlice";
 import RecommendItem from "~/components/RecommendItem";
 import NotificationBell from "~/components/NotificationBell";
+import { selectCurrentUser } from "~/redux/slices/authSlice";
 
 function ProposeMange() {
   const dispatch = useDispatch();
@@ -27,20 +19,18 @@ function ProposeMange() {
   const startIndex = (currentPage - 1) * pageSize;
   const currentNews = recommends.slice(startIndex, startIndex + pageSize);
 
-  const user = useSelector((state) => {
-    return state.auth.login.currentUser;
-  });
+  const user = useSelector(selectCurrentUser);
 
   useEffect(() => {
     const fetchRecommend = async () => {
       try {
-        dispatch(startLoading());
+        dispatch(loadingSlice.actions.startLoading());
         const res = await getRecommendAPI();
         setRecommends(res.data);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       } catch (error) {
         console.error("Lỗi khi lấy danh sách đề xuất:", error);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       }
     };
 
@@ -68,17 +58,14 @@ function ProposeMange() {
             )}
           </>
         ) : (
-          <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description="Không có đề xuất nào"
-          />
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Không có đề xuất nào" />
         ),
     },
   ];
 
   const handleSendRecommend = async (values) => {
     try {
-      dispatch(startLoading());
+      dispatch(loadingSlice.actions.startLoading());
       const payload = {
         ...values,
         editor: user._id,
@@ -88,12 +75,13 @@ function ProposeMange() {
       const updatedList = await getRecommendAPI();
       setRecommends(updatedList.data);
       setIsModalOpen(false);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
+
       message.success("Gửi đề xuất thành công!");
     } catch (error) {
       console.error("Lỗi khi gửi đề xuất:", error);
       message.error("Lỗi khi gửi đề xuất!");
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     }
   };
 
@@ -101,37 +89,17 @@ function ProposeMange() {
     <section className="grid grid-cols-1 lg:grid-cols-1 gap-[10px] mb-[20px]">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-[#222222] font-[700] text-[24px]">
-            Quản lý đề xuất danh mục
-          </h2>
-          <p className="text-[14px] text-[#757575]">
-            Gửi các đề xuất tới danh mục cho Tổng biên tập
-          </p>
+          <h2 className="text-[#222222] font-[700] text-[24px]">Quản lý đề xuất danh mục</h2>
+          <p className="text-[14px] text-[#757575]">Gửi các đề xuất tới danh mục cho Tổng biên tập</p>
         </div>
         <>
           <div className="inline-flex gap-2">
             <NotificationBell id={user._id} />
-            <Button onClick={() => setIsModalOpen(!isModalOpen)}>
-              Tạo đề xuất
-            </Button>
+            <Button onClick={() => setIsModalOpen(!isModalOpen)}>Tạo đề xuất</Button>
           </div>
-          <Modal
-            open={isModalOpen}
-            width={600}
-            form={form}
-            onCancel={() => setIsModalOpen(false)}
-            footer={null}
-          >
-            <h2 className="text-[#222222] font-[700] text-[24px] mb-[20px]">
-              Tạo đề xuất
-            </h2>
-            <Form
-              form={form}
-              onFinish={handleSendRecommend}
-              name="register"
-              layout="vertical"
-              className="!mb-4"
-            >
+          <Modal open={isModalOpen} width={600} form={form} onCancel={() => setIsModalOpen(false)} footer={null}>
+            <h2 className="text-[#222222] font-[700] text-[24px] mb-[20px]">Tạo đề xuất</h2>
+            <Form form={form} onFinish={handleSendRecommend} name="register" layout="vertical" className="!mb-4">
               <Form.Item
                 layout="vertical"
                 label="Thể loại"
@@ -143,11 +111,7 @@ function ProposeMange() {
                   },
                 ]}
               >
-                <Input
-                  style={{ height: 40 }}
-                  type="text"
-                  placeholder="Nhập thể loại"
-                />
+                <Input style={{ height: 40 }} type="text" placeholder="Nhập thể loại" />
               </Form.Item>
 
               <Form.Item
@@ -161,20 +125,11 @@ function ProposeMange() {
                   },
                 ]}
               >
-                <Input
-                  style={{ height: 40 }}
-                  type="text"
-                  placeholder="Nhập mô tả"
-                />
+                <Input style={{ height: 40 }} type="text" placeholder="Nhập mô tả" />
               </Form.Item>
 
               <Form.Item className="!m-0">
-                <Button
-                  block
-                  type="primary"
-                  htmlType="submit"
-                  style={{ height: 50 }}
-                >
+                <Button block type="primary" htmlType="submit" style={{ height: 50 }}>
                   Gửi đề xuất
                 </Button>
               </Form.Item>

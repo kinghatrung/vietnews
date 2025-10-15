@@ -2,7 +2,7 @@ import { memo, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { startLoading, stopLoading } from "~/redux/loadingSlice";
+import { loadingSlice } from "~/redux/slices/loadingSlice";
 import { getCategoryAPI } from "~/api";
 
 function Footer() {
@@ -12,14 +12,14 @@ function Footer() {
 
   useEffect(() => {
     const fetchCategory = async () => {
-      dispatch(startLoading());
       try {
+        dispatch(loadingSlice.actions.startLoading());
         const res = await getCategoryAPI();
         setCategories(res.data);
       } catch (err) {
         console.error("Lỗi khi lấy dữ liệu danh mục:", err);
+        dispatch(loadingSlice.actions.stopLoading());
       }
-      dispatch(stopLoading());
     };
 
     fetchCategory();

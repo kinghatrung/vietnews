@@ -1,15 +1,6 @@
 import { useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Divider,
-  Modal,
-  Dropdown,
-  Menu,
-  Tag,
-  Empty,
-  message,
-} from "antd";
+import { Button, Divider, Modal, Dropdown, Menu, Tag, Empty, message } from "antd";
 import {
   EyeOutlined,
   LikeFilled,
@@ -24,7 +15,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/vi";
 
 import { deleteNewsAPI, getNewsAPI } from "~/api";
-import { startLoading, stopLoading } from "~/redux/loadingSlice";
+import { loadingSlice } from "~/redux/slices/loadingSlice";
 import Comment from "~/components/Comment";
 
 function NewsItem({ news, setNews }) {
@@ -64,15 +55,15 @@ function NewsItem({ news, setNews }) {
 
   const handleDeleteNews = async (id) => {
     try {
-      dispatch(startLoading());
+      dispatch(loadingSlice.actions.startLoading());
       await deleteNewsAPI(id);
       const res = await getNewsAPI();
       setNews(res.data.reverse());
       message.success("Xóa tin tức thành công!");
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     } catch (error) {
       console.error("Lỗi khi xóa tin tức:", error);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     }
   };
 
@@ -85,21 +76,12 @@ function NewsItem({ news, setNews }) {
         >
           <div className="flex gap-[20px] w-[600px]">
             <div className="w-[180px] h-[100px] aspect-[5/3 ">
-              <img
-                loading="lazy"
-                alt="Ảnh bài viết"
-                className="size-full object-cover"
-                src={n.image}
-              />
+              <img loading="lazy" alt="Ảnh bài viết" className="size-full object-cover" src={n.image} />
             </div>
             <div className="flex flex-col justify-between w-[400px]">
               <div>
-                <h3 className="text-[#222222] font-[600] text-[16px] line-clamp-1">
-                  {n.title}
-                </h3>
-                <p className="line-clamp-2 text-[14px] text-[#757575]">
-                  {n.describe}
-                </p>
+                <h3 className="text-[#222222] font-[600] text-[16px] line-clamp-1">{n.title}</h3>
+                <p className="line-clamp-2 text-[14px] text-[#757575]">{n.describe}</p>
               </div>
               <div className="flex gap-[16px]">
                 <p className="!text-[#757575]">
@@ -131,8 +113,7 @@ function NewsItem({ news, setNews }) {
           </div>
 
           <p className="text-[14px]">
-            <strong>Ngày đăng:</strong>{" "}
-            {dayjs(n.createdAt).format("DD/MM/YYYY HH:mm")}
+            <strong>Ngày đăng:</strong> {dayjs(n.createdAt).format("DD/MM/YYYY HH:mm")}
           </p>
 
           <div className="flex flex-col gap-[6px]">
@@ -143,11 +124,7 @@ function NewsItem({ news, setNews }) {
                 <Menu>
                   <Menu.Item
                     key="view"
-                    icon={
-                      <EyeOutlined
-                        style={{ fontSize: "16px", paddingRight: 8 }}
-                      />
-                    }
+                    icon={<EyeOutlined style={{ fontSize: "16px", paddingRight: 8 }} />}
                     onClick={() =>
                       showModal(
                         null,
@@ -172,9 +149,7 @@ function NewsItem({ news, setNews }) {
                             </p>
                           </div>
                           <div className="border border-[#E5E5E5] p-[20px] rounded-[8px]">
-                            <p className="text-[16px] font-[600]">
-                              {n.describe}
-                            </p>
+                            <p className="text-[16px] font-[600]">{n.describe}</p>
 
                             <div
                               dangerouslySetInnerHTML={{
@@ -183,23 +158,15 @@ function NewsItem({ news, setNews }) {
                             />
                           </div>
                           <div className="flex flex-col gap-[10px] border border-[#E5E5E5] p-[20px] rounded-[8px]">
-                            <h3 className="text-[18px] text-[#333] font-[600]">
-                              Tất cả các bình luận
-                            </h3>
+                            <h3 className="text-[18px] text-[#333] font-[600]">Tất cả các bình luận</h3>
                             {n.comment?.length > 0 ? (
-                              <div
-                                className="flex flex-col gap-[10px]"
-                                key={n._id}
-                              >
+                              <div className="flex flex-col gap-[10px]" key={n._id}>
                                 {n.comment.map((item) => (
                                   <Comment key={item._id} comment={item} />
                                 ))}
                               </div>
                             ) : (
-                              <Empty
-                                image={Empty.PRESENTED_IMAGE_SIMPLE}
-                                description="Không có bình luận nào"
-                              />
+                              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Không có bình luận nào" />
                             )}
                           </div>
                         </div>,
@@ -214,11 +181,7 @@ function NewsItem({ news, setNews }) {
 
                   <Menu.Item
                     key="delete"
-                    icon={
-                      <DeleteOutlined
-                        style={{ fontSize: "16px", paddingRight: 8 }}
-                      />
-                    }
+                    icon={<DeleteOutlined style={{ fontSize: "16px", paddingRight: 8 }} />}
                     danger
                     onClick={() =>
                       showModal(
@@ -229,22 +192,15 @@ function NewsItem({ news, setNews }) {
                           Xóa tin tức
                         </h3>,
                         <div className="flex flex-col gap-4">
-                          <p className="text-[#71717A] text-[14px]">
-                            Bạn có chắc chắn muốn xóa tin tức?
-                          </p>
+                          <p className="text-[#71717A] text-[14px]">Bạn có chắc chắn muốn xóa tin tức?</p>
                           <div className="border border-[#E5E5E5] p-[14px] rounded-[8px]">
                             <WarningOutlined style={{ marginRight: 8 }} />
-                            <strong>Cảnh báo:</strong> Hành động này không thể
-                            hoàn tác. Tất cả dữ liệu của tin tức sẽ bị xóa vĩnh
-                            viễn.
+                            <strong>Cảnh báo:</strong> Hành động này không thể hoàn tác. Tất cả dữ liệu của tin tức sẽ
+                            bị xóa vĩnh viễn.
                           </div>
                           <div className="flex gap-3 justify-end">
                             <Button onClick={handleCancel}>Hủy</Button>
-                            <Button
-                              variant="solid"
-                              color="danger"
-                              onClick={() => handleDeleteNews(n._id)}
-                            >
+                            <Button variant="solid" color="danger" onClick={() => handleDeleteNews(n._id)}>
                               Xóa tin tức
                             </Button>
                           </div>
@@ -258,11 +214,7 @@ function NewsItem({ news, setNews }) {
                 </Menu>
               }
             >
-              <Button
-                type="text"
-                icon={<SettingOutlined />}
-                className="border-none shadow-none hover:bg-transparent"
-              />
+              <Button type="text" icon={<SettingOutlined />} className="border-none shadow-none hover:bg-transparent" />
             </Dropdown>
             <Modal
               width={800}

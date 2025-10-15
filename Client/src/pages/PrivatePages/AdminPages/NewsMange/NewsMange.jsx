@@ -1,16 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useSelector, useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
 import { Tabs, Empty, Pagination, Select, DatePicker, Input } from "antd";
-import {
-  FileTextOutlined,
-  BarChartOutlined,
-  LikeOutlined,
-  EyeOutlined,
-  CommentOutlined,
-} from "@ant-design/icons";
+import { FileTextOutlined, BarChartOutlined, LikeOutlined, EyeOutlined, CommentOutlined } from "@ant-design/icons";
 
 import { postNewsAPI, getCategoryAPI, getAllReporters } from "~/api";
-import { startLoading, stopLoading } from "~/redux/loadingSlice";
+import { selectLoading, loadingSlice } from "~/redux/slices/loadingSlice";
 import NewsItem from "~/pages/PrivatePages/AdminPages/NewsMange/NewsItem";
 
 const { Option } = Select;
@@ -36,22 +31,16 @@ function NewsMange() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        dispatch(startLoading());
+        dispatch(loadingSlice.actions.startLoading());
         const startDate = dates?.[0]?.format("YYYY-MM-DD") || "";
         const endDate = dates?.[1]?.format("YYYY-MM-DD") || "";
 
-        const res = await postNewsAPI(
-          searchKey,
-          startDate,
-          endDate,
-          selectCategories,
-          selectAuthorId
-        );
+        const res = await postNewsAPI(searchKey, startDate, endDate, selectCategories, selectAuthorId);
         setNews(res.data.reverse());
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       } catch (error) {
         console.error("Lỗi khi lấy danh sách tin tức:", error);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       }
     };
 
@@ -61,13 +50,13 @@ function NewsMange() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        dispatch(startLoading());
+        dispatch(loadingSlice.actions.startLoading());
         const res = await getCategoryAPI();
         setCategories(res.data.reverse());
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       } catch (err) {
         console.error("Lỗi lấy danh sách thể loại:", err);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       }
     };
     fetchCategories();
@@ -76,13 +65,13 @@ function NewsMange() {
   useEffect(() => {
     const fetchAuthor = async () => {
       try {
-        dispatch(startLoading());
+        dispatch(loadingSlice.actions.startLoading());
         const res = await getAllReporters();
         setAuthors(res.data.reporters.reverse());
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       } catch (err) {
         console.error("Lỗi lấy danh sách người dùng:", err);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       }
     };
     fetchAuthor();
@@ -112,10 +101,7 @@ function NewsMange() {
             )}
           </>
         ) : (
-          <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description="Không có tin tức nào"
-          />
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Không có tin tức nào" />
         ),
     },
   ];
@@ -124,69 +110,47 @@ function NewsMange() {
     <section className="grid grid-cols-1 lg:grid-cols-1 gap-[20px] mb-[20px]">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-[#222222] font-[700] text-[24px]">
-            Quản lý tin tức đã đăng tải
-          </h2>
-          <p className="text-[14px] text-[#757575]">
-            Quản lý và theo dõi tin tức trong hệ thống.
-          </p>
+          <h2 className="text-[#222222] font-[700] text-[24px]">Quản lý tin tức đã đăng tải</h2>
+          <p className="text-[14px] text-[#757575]">Quản lý và theo dõi tin tức trong hệ thống.</p>
         </div>
       </div>
 
       <div className="flex justify-between items-center w-full gap-[18px]">
         <div className="flex justify-between items-center p-[24px] border border-[#E5E5E5] rounded-[8px] h-[100%] w-full bg-gray-50">
           <div className="mb-[4px]">
-            <h3 className="text-[14px] text-[#222222] font-[500]">
-              Tổng số tin đã đăng
-            </h3>
-            <p className="text-[24px] text-[#222222] font-[600]">
-              {news.length}
-            </p>
+            <h3 className="text-[14px] text-[#222222] font-[500]">Tổng số tin đã đăng</h3>
+            <p className="text-[24px] text-[#222222] font-[600]">{news.length}</p>
           </div>
           <FileTextOutlined style={{ fontSize: 32 }} />
         </div>
 
         <div className="flex justify-between items-center p-[24px] border border-[#E5E5E5] rounded-[8px] h-[100%] w-full bg-gray-50">
           <div className="mb-[4px]">
-            <h3 className="text-[14px] text-[#222222] font-[500]">
-              Tổng số lượt xem
-            </h3>
-            <p className="text-[24px] text-[#222222] font-[600]">
-              {totalViews}
-            </p>
+            <h3 className="text-[14px] text-[#222222] font-[500]">Tổng số lượt xem</h3>
+            <p className="text-[24px] text-[#222222] font-[600]">{totalViews}</p>
           </div>
           <EyeOutlined style={{ fontSize: 32 }} />
         </div>
 
         <div className="flex justify-between items-center p-[24px] border border-[#E5E5E5] rounded-[8px] h-[100%] w-full bg-gray-50">
           <div className="mb-[4px]">
-            <h3 className="text-[14px] text-[#222222] font-[500]">
-              Tổng bình luận
-            </h3>
-            <p className="text-[24px] text-[#222222] font-[600]">
-              {totalComment}
-            </p>
+            <h3 className="text-[14px] text-[#222222] font-[500]">Tổng bình luận</h3>
+            <p className="text-[24px] text-[#222222] font-[600]">{totalComment}</p>
           </div>
           <CommentOutlined style={{ fontSize: 32 }} />
         </div>
 
         <div className="flex justify-between items-center p-[24px] border border-[#E5E5E5] rounded-[8px] h-[100%] w-full bg-gray-50">
           <div className="mb-[4px]">
-            <h3 className="text-[14px] text-[#222222] font-[500]">
-              Tổng lượt thích
-            </h3>
-            <p className="text-[24px] text-[#222222] font-[600]">
-              {totalLikes}
-            </p>
+            <h3 className="text-[14px] text-[#222222] font-[500]">Tổng lượt thích</h3>
+            <p className="text-[24px] text-[#222222] font-[600]">{totalLikes}</p>
           </div>
           <LikeOutlined style={{ fontSize: 32 }} />
         </div>
       </div>
 
       <div className="p-[24px] border border-[#E5E5E5] rounded-[8px] bg-gray-50">
-        <h3 className="text-[#222222] font-[700] text-[24px] mb-[24px]">
-          Bộ lọc và tìm kiếm
-        </h3>
+        <h3 className="text-[#222222] font-[700] text-[24px] mb-[24px]">Bộ lọc và tìm kiếm</h3>
 
         <div className="flex items-center gap-[12px]">
           <Search

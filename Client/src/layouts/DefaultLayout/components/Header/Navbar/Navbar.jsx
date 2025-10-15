@@ -1,25 +1,26 @@
 import { useCallback, memo, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
-import { Divider, Button, notification, Input, Dropdown } from "antd";
+import { Divider, Button, Input, Dropdown } from "antd";
 import { SearchOutlined, UserOutlined, CaretDownOutlined, LogoutOutlined } from "@ant-design/icons";
 import { AnimatePresence, motion } from "framer-motion";
 import LazyLoad from "react-lazyload";
 
 import config from "~/config/";
 import FormValidate from "~/components/FormValidate";
-import { logoutUser } from "~/redux/apiRequest";
+import { logoutUser } from "~/redux/slices/authSlice";
 import ForgotPassword from "~/components/FormValidate/ForgotPassword";
-import { showLoginModal, hideLoginModal } from "~/redux/modalSlice";
+import { modalSlice } from "~/redux/slices/modalSlice";
+import { selectLoginModalVisible } from "~/redux/slices/modalSlice";
+import { selectCurrentUser } from "~/redux/slices/authSlice";
 
 function Navbar() {
-  const user = useSelector((state) => {
-    return state.auth.login.currentUser;
-  });
-  const isModalOpen = useSelector((state) => state.modal.loginModalVisible);
+  const user = useSelector(selectCurrentUser);
 
-  const handleOpen = () => dispatch(showLoginModal());
-  const handleClose = () => dispatch(hideLoginModal());
+  const isModalOpen = useSelector(selectLoginModalVisible);
+
+  const handleOpen = () => dispatch(modalSlice.actions.showLoginModal());
+  const handleClose = () => dispatch(modalSlice.actions.hideLoginModal());
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,8 +39,8 @@ function Navbar() {
   }, []);
 
   const handleLogout = useCallback(async () => {
-    logoutUser(dispatch, navigate);
-  }, [dispatch, navigate]);
+    await dispatch(logoutUser());
+  }, []);
 
   const handleSearch = useCallback(
     (value) => {

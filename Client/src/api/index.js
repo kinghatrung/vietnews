@@ -6,16 +6,12 @@ export const loginAPI = async (user) => {
   return await authorizedAxiosInstance.post(`${API_URL}/api/auth/login`, user);
 };
 
-export const handleRegisterAPI = async (user) => {
+export const registerUser = async (user) => {
   return await authorizedAxiosInstance.post(`${API_URL}/api/auth/register`, user);
 };
 
-export const resetPasswordAPI = async ({ email, password, otp }) => {
-  return await authorizedAxiosInstance.post(`${API_URL}/api/auth/forgot_pass`, {
-    email,
-    password,
-    otp,
-  });
+export const resetPasswordAPI = async (dataUser) => {
+  return await authorizedAxiosInstance.post(`${API_URL}/api/auth/forgot_pass`, dataUser);
 };
 
 export const sendOtpAPI = async (email) => {

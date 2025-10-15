@@ -35,7 +35,7 @@ import {
 import dayjs from "dayjs";
 import "dayjs/locale/vi";
 
-import { startLoading, stopLoading } from "~/redux/loadingSlice";
+import { loadingSlice } from "~/redux/slices/loadingSlice";
 import {
   deleteUser,
   banUserAPI,
@@ -94,22 +94,22 @@ function UserItem({ users, setUsers, currenUser, setAllUsers }) {
 
   const handleDeleteUser = async (id) => {
     try {
-      dispatch(startLoading());
+      dispatch(loadingSlice.actions.startLoading());
       await deleteUser(id);
       const res = await getAllUsersWithoutAuth(currenUser._id);
       setUsers(res.data);
       setModalVisible(false);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
       message.success("Xóa người dùng thành công!");
     } catch (error) {
       console.error("Lỗi khi xóa người dùng:", error);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     }
   };
 
   const handleBanUser = async (userId, values) => {
     try {
-      dispatch(startLoading());
+      dispatch(loadingSlice.actions.startLoading());
       const payload = {
         days: 1,
         ...values,
@@ -120,50 +120,50 @@ function UserItem({ users, setUsers, currenUser, setAllUsers }) {
       setUsers(res.data);
       setAllUsers(resAllUser.data);
       setModalVisible(false);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
       message.success("Cấm người dùng thành công!");
     } catch (error) {
       console.error("Lỗi khi cấm người dùng:", error);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     }
   };
 
   const handleUnbanUser = async (userId) => {
     try {
-      dispatch(startLoading());
+      dispatch(loadingSlice.actions.startLoading());
       await unbanUserAPI(userId);
       const res = await getAllUsersWithoutAuth(currenUser._id);
       const resAllUser = await getAllUsers();
       setAllUsers(resAllUser.data);
       setUsers(res.data);
       setModalVisible(false);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
       message.success("Mở tài khoản người dùng thành công!");
     } catch (err) {
       console.error("Lỗi khi mở tài khoản người dùng:", err);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     }
   };
 
   const handleUpdateRole = async (userId, values) => {
     try {
-      dispatch(startLoading());
+      dispatch(loadingSlice.actions.startLoading());
       const payload = { ...values };
       await updateRoleUser(userId, payload);
       const res = await getAllUsersWithoutAuth(currenUser._id);
       setUsers(res.data);
       setModalVisible(false);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
       message.success("Cập nhập vai trò thành công!");
     } catch (error) {
       console.error("Lỗi khi cập nhật vai trò:", error);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     }
   };
 
   const handleUpdateUser = async (userId, values) => {
     try {
-      dispatch(startLoading());
+      dispatch(loadingSlice.actions.startLoading());
       const payload = {
         ...values,
         birth_date: values.birth_date ? values.birth_date.format("YYYY-MM-DD") : undefined,
@@ -172,11 +172,11 @@ function UserItem({ users, setUsers, currenUser, setAllUsers }) {
       const res = await getAllUsersWithoutAuth(currenUser._id);
       setUsers(res.data);
       setModalVisible(false);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
       message.success("Cập nhật thông tin người dùng thành công!");
     } catch (error) {
       console.error("Lỗi khi cập nhật thông tin người dùng:", error);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     }
   };
 

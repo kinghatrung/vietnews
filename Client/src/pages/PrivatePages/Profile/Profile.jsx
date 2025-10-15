@@ -1,16 +1,14 @@
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { Divider, notification, Anchor } from "antd";
+import { useNavigate } from "react-router-dom";
+import { Divider, Anchor } from "antd";
 import { LogoutOutlined } from "@ant-design/icons";
+import { selectCurrentUser } from "~/redux/slices/authSlice";
+import { logoutUser } from "~/redux/slices/authSlice";
 
-import config from "~/config/";
-import { logoutUser } from "~/redux/apiRequest";
 import Info from "~/pages/PrivatePages/Profile/Info";
 
 function Profile() {
-  const user = useSelector((state) => {
-    return state.auth.login.currentUser;
-  });
+  const user = useSelector(selectCurrentUser);
 
   const date = new Date(user.createdAt);
   const day = String(date.getDate()).padStart(2, "0");
@@ -18,10 +16,9 @@ function Profile() {
   const formattedDate = `${day}/${month}`;
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleLogout = async () => {
-    logoutUser(dispatch, navigate);
+    await dispatch(logoutUser());
   };
 
   return (
@@ -36,12 +33,8 @@ function Profile() {
               className="w-[48px] h-[48px] rounded-full object-cover"
             />
             <div>
-              <p className="ml-2 text-[14px] text-color font-title font-[700]">
-                {user.full_name}
-              </p>
-              <p className="ml-2 text-[14px] text-[#9f9f9f9f]">
-                Tham gia ngày: {formattedDate}
-              </p>
+              <p className="ml-2 text-[14px] text-color font-title font-[700]">{user.full_name}</p>
+              <p className="ml-2 text-[14px] text-[#9f9f9f9f]">Tham gia ngày: {formattedDate}</p>
             </div>
           </div>
           <Divider className="!m-0" />

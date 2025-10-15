@@ -1,20 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
-import {
-  Tabs,
-  Empty,
-  Modal,
-  Form,
-  Input,
-  Button,
-  message,
-  Pagination,
-} from "antd";
+import { Tabs, Empty, Modal, Form, Input, Button, message, Pagination } from "antd";
 
 import { getAllComment } from "~/api";
-import Loading from "~/components/Loading";
-import { startLoading, stopLoading } from "~/redux/loadingSlice";
-import NotificationBell from "~/components/NotificationBell";
+import { loadingSlice } from "~/redux/slices/loadingSlice";
 import CommentItem from "~/components/CommentItem";
 
 function CommentMange() {
@@ -48,10 +37,7 @@ function CommentMange() {
             )}
           </>
         ) : (
-          <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description="Không có bình luận nào"
-          />
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Không có bình luận nào" />
         ),
     },
   ];
@@ -59,13 +45,13 @@ function CommentMange() {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        dispatch(startLoading());
+        dispatch(loadingSlice.actions.startLoading());
         const res = await getAllComment();
         setComments(res.data.reverse());
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       } catch (error) {
         console.error("Lỗi khi lấy danh sách người dùng:", error);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       }
     };
 
@@ -76,12 +62,8 @@ function CommentMange() {
     <section className="grid grid-cols-1 lg:grid-cols-1 gap-[10px] mb-[20px]">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-[#222222] font-[700] text-[24px]">
-            Quản lý bình luận chờ xét duyệt
-          </h2>
-          <p className="text-[14px] text-[#757575]">
-            Bình luận được người dùng gửi đến
-          </p>
+          <h2 className="text-[#222222] font-[700] text-[24px]">Quản lý bình luận chờ xét duyệt</h2>
+          <p className="text-[14px] text-[#757575]">Bình luận được người dùng gửi đến</p>
         </div>
       </div>
       <Tabs defaultActiveKey="1" items={items} />

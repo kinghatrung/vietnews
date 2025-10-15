@@ -1,18 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useSelector, useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Tabs,
-  Modal,
-  Form,
-  Input,
-  Select,
-  Empty,
-  Upload,
-  message,
-  Pagination,
-  DatePicker,
-} from "antd";
+import { Button, Tabs, Modal, Form, Input, Select, Empty, Upload, message, Pagination, DatePicker } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import FroalaEditor from "react-froala-wysiwyg";
 import axios from "axios";
@@ -26,8 +15,9 @@ import {
   getArticleByIdAPI,
   getAllReporters,
 } from "~/api";
-import { startLoading, stopLoading } from "~/redux/loadingSlice";
+import { loadingSlice } from "~/redux/slices/loadingSlice";
 const API_URL = import.meta.env.VITE_APP_API_URL;
+import { selectCurrentUser } from "~/redux/slices/authSlice";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -35,6 +25,7 @@ const { Search } = Input;
 
 function ArticleCommon() {
   const dispatch = useDispatch();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [content, setContent] = useState("");
   const [categories, setCategories] = useState("");
@@ -55,14 +46,12 @@ function ArticleCommon() {
 
   const startIndex = (currentPage - 1) * pageSize;
   const currentNews = articles.slice(startIndex, startIndex + pageSize);
-  const user = useSelector((state) => {
-    return state.auth.login.currentUser;
-  });
+  const user = useSelector(selectCurrentUser);
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        dispatch(startLoading());
+        dispatch(loadingSlice.actions.startLoading());
         const startDate = dates?.[0]?.format("YYYY-MM-DD") || "";
         const endDate = dates?.[1]?.format("YYYY-MM-DD") || "";
 
@@ -77,10 +66,10 @@ function ArticleCommon() {
         );
 
         setArticles(resArticle.data.reverse());
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       } catch (err) {
         console.error("Lỗi khi lấy dữ liệu bài viết:", err);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       }
     };
 
@@ -89,7 +78,7 @@ function ArticleCommon() {
 
   useEffect(() => {
     const fetchData = async () => {
-      dispatch(startLoading());
+      dispatch(loadingSlice.actions.startLoading());
       try {
         const resStatus = await getAllStatusAPI();
         const resEditors = await getAllEditors();
@@ -101,7 +90,7 @@ function ArticleCommon() {
         setStatuses(resStatus.data);
       } catch (err) {
         console.error("Lỗi khi lấy dữ liệu:", err);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       }
     };
 
@@ -135,17 +124,14 @@ function ArticleCommon() {
             )}
           </>
         ) : (
-          <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description="Không có bài viết nào"
-          />
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Không có bài viết nào" />
         ),
     },
   ];
 
   const handleAddArticle = async (values) => {
     try {
-      dispatch(startLoading());
+      dispatch(loadingSlice.actions.startLoading());
       const payload = {
         ...values,
         content: content,
@@ -168,11 +154,11 @@ function ArticleCommon() {
       }
 
       message.success("Tạo bài viết thành công!");
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     } catch (error) {
       console.error("Lỗi khi lưu bài viết:", error);
       message.error("Lỗi khi tạo bài viết!");
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     }
   };
 
@@ -183,15 +169,11 @@ function ArticleCommon() {
     formData.append("upload_preset", "your_upload_preset");
 
     try {
-      const res = await axios.post(
-        `${API_URL}/api/upload/image_upload`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const res = await axios.post(`${API_URL}/api/upload/image_upload`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       onSuccess(res.data);
       setUploadedImageUrl(res.data.link);
     } catch (err) {
@@ -204,27 +186,14 @@ function ArticleCommon() {
     <section className="grid grid-cols-1 lg:grid-cols-1 gap-[20px] mb-[20px]">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-[#222222] font-[700] text-[24px]">
-            Quản lý bài viết
-          </h2>
-          <p className="text-[14px] text-[#757575]">
-            Tạo hoặc theo dõi trạng thái bài viết
-          </p>
+          <h2 className="text-[#222222] font-[700] text-[24px]">Quản lý bài viết</h2>
+          <p className="text-[14px] text-[#757575]">Tạo hoặc theo dõi trạng thái bài viết</p>
         </div>
         {user.role.role_name === "reporter" && (
           <>
-            <Button onClick={() => setIsModalOpen(!isModalOpen)}>
-              Tạo bài viết
-            </Button>
-            <Modal
-              open={isModalOpen}
-              width={900}
-              onCancel={() => setIsModalOpen(false)}
-              footer={null}
-            >
-              <h2 className="text-[#222222] font-[700] text-[24px] mb-[10px]">
-                Tạo bài viết
-              </h2>
+            <Button onClick={() => setIsModalOpen(!isModalOpen)}>Tạo bài viết</Button>
+            <Modal open={isModalOpen} width={900} onCancel={() => setIsModalOpen(false)} footer={null}>
+              <h2 className="text-[#222222] font-[700] text-[24px] mb-[10px]">Tạo bài viết</h2>
               <Form
                 form={form}
                 layout="vertical"
@@ -269,9 +238,7 @@ function ArticleCommon() {
                 <Form.Item
                   name="editor"
                   label="Chọn biên tập viên"
-                  rules={[
-                    { required: true, message: "Vui lòng chọn biên tập viên" },
-                  ]}
+                  rules={[{ required: true, message: "Vui lòng chọn biên tập viên" }]}
                 >
                   <Select
                     style={{ height: 40 }}
@@ -291,9 +258,7 @@ function ArticleCommon() {
                 <Form.Item
                   name="category"
                   label="Chọn danh mục bài viết"
-                  rules={[
-                    { required: true, message: "Vui lòng chọn danh mục" },
-                  ]}
+                  rules={[{ required: true, message: "Vui lòng chọn danh mục" }]}
                 >
                   <Select
                     style={{ height: 40 }}
@@ -312,19 +277,11 @@ function ArticleCommon() {
                 </Form.Item>
 
                 <Form.Item label="Lời nhắc (Nếu có)" name="note">
-                  <Input
-                    style={{ height: 40 }}
-                    name="note"
-                    placeholder="Để lại lời nhắc cần thiết"
-                  />
+                  <Input style={{ height: 40 }} name="note" placeholder="Để lại lời nhắc cần thiết" />
                 </Form.Item>
 
                 <Form.Item label="Nguồn tham khảo" name="source">
-                  <Input
-                    style={{ height: 40 }}
-                    name="source"
-                    placeholder="Để lại link nguồn tham khảo nếu có"
-                  />
+                  <Input style={{ height: 40 }} name="source" placeholder="Để lại link nguồn tham khảo nếu có" />
                 </Form.Item>
 
                 <Form.Item label="Thêm ảnh bìa" name="image">
@@ -337,22 +294,13 @@ function ArticleCommon() {
                     <p className="ant-upload-drag-icon">
                       <InboxOutlined />
                     </p>
-                    <p className="ant-upload-text">
-                      Nhấp hoặc kéo tệp vào khu vực này để tải lên
-                    </p>
-                    <p className="ant-upload-hint">
-                      Hỗ trợ tải lên một lần hoặc hàng loạt.
-                    </p>
+                    <p className="ant-upload-text">Nhấp hoặc kéo tệp vào khu vực này để tải lên</p>
+                    <p className="ant-upload-hint">Hỗ trợ tải lên một lần hoặc hàng loạt.</p>
                   </Upload.Dragger>
                 </Form.Item>
 
                 <Form.Item label={null}>
-                  <Button
-                    type="primary"
-                    block
-                    style={{ height: 50 }}
-                    htmlType="submit"
-                  >
+                  <Button type="primary" block style={{ height: 50 }} htmlType="submit">
                     Tạo bài viết
                   </Button>
                 </Form.Item>
@@ -413,9 +361,7 @@ function ArticleCommon() {
       </div> */}
 
       <div className="p-[24px] border border-[#E5E5E5] rounded-[8px] bg-gray-50">
-        <h3 className="text-[#222222] font-[700] text-[24px] mb-[24px]">
-          Bộ lọc và tìm kiếm
-        </h3>
+        <h3 className="text-[#222222] font-[700] text-[24px] mb-[24px]">Bộ lọc và tìm kiếm</h3>
         <div className="flex items-center gap-[12px]">
           <Search
             className="search-user"
@@ -437,8 +383,7 @@ function ArticleCommon() {
                   Đang chờ
                 </Option>
               )}
-              {(user.role.role_name === "reporter" ||
-                user.role.role_name === "editor") && (
+              {(user.role.role_name === "reporter" || user.role.role_name === "editor") && (
                 <Option key="Chờ chỉnh sửa" value="Chờ chỉnh sửa">
                   Chờ chỉnh sửa
                 </Option>
@@ -448,8 +393,7 @@ function ArticleCommon() {
                   Đang chỉnh sửa
                 </Option>
               )}
-              {(user.role.role_name === "editor" ||
-                user.role.role_name === "admin") && (
+              {(user.role.role_name === "editor" || user.role.role_name === "admin") && (
                 <Option key="Chờ phê duyệt" value="Chờ phê duyệt">
                   Chờ phê duyệt
                 </Option>

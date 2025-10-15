@@ -5,7 +5,7 @@ import { ClockCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import "dayjs/locale/vi";
 
-import { startLoading, stopLoading } from "~/redux/loadingSlice";
+import { loadingSlice } from "~/redux/slices/loadingSlice";
 import { deleteComment, approveComment, banUserAPI, unbanUserAPI, checkContentArticleAPI } from "~/api";
 
 function CommentItem({ comments, setComments }) {
@@ -16,33 +16,33 @@ function CommentItem({ comments, setComments }) {
 
   const handleDeleteUComment = async (id) => {
     try {
-      dispatch(startLoading());
+      dispatch(loadingSlice.actions.startLoading());
       await deleteComment(id);
       setComments((prev) => prev.filter((comment) => comment._id !== id));
       message.success("Xóa bình luận thành công!");
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     } catch (error) {
       console.error("Lỗi khi xóa bình luận:", error);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     }
   };
 
   const handleAddCommentByNews = async (id) => {
     try {
-      dispatch(startLoading());
+      dispatch(loadingSlice.actions.startLoading());
       await approveComment(id);
       setComments((prev) => prev.filter((comment) => comment._id !== id));
       message.success("Duyệt bình luận thành công!");
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     } catch (error) {
       console.error("Lỗi khi duyệt bình luận:", error);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     }
   };
 
   const handleBanUser = async (userId, commentId) => {
     try {
-      dispatch(startLoading());
+      dispatch(loadingSlice.actions.startLoading());
       const payload = {
         days: 1,
         reason: "Người dùng bị cấm 1 ngày vì vi phạm nội dung bình luận",
@@ -63,16 +63,16 @@ function CommentItem({ comments, setComments }) {
           return comment;
         })
       );
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     } catch (error) {
       console.error("Lỗi khi cấm người dùng:", error);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     }
   };
 
   const handleUnbanUser = async (userId) => {
     try {
-      dispatch(startLoading());
+      dispatch(loadingSlice.actions.startLoading());
       await unbanUserAPI(userId);
       message.success("Mở tài khoản người dùng thành công!");
       setComments((prevComments) =>
@@ -89,10 +89,10 @@ function CommentItem({ comments, setComments }) {
           return comment;
         })
       );
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     } catch (err) {
       console.error("Lỗi khi mở tài khoản người dùng:", err);
-      dispatch(stopLoading());
+      dispatch(loadingSlice.actions.stopLoading());
     }
   };
 

@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 
 import CategoryList from "~/components/CategoryList";
 import { getCategoryAPI, getNewsAPI } from "~/api";
-import { startLoading, stopLoading } from "~/redux/loadingSlice";
+import { loadingSlice } from "~/redux/slices/loadingSlice";
 
 const News = lazy(() => import("~/components/News"));
 
@@ -16,13 +16,13 @@ function ContentDaily() {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        dispatch(startLoading());
+        dispatch(loadingSlice.actions.startLoading());
         const res = await getCategoryAPI();
         setCategories(res.data);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       } catch (error) {
         console.error("Lỗi khi lấy danh sách người dùng:", error);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       }
     };
 
@@ -32,13 +32,13 @@ function ContentDaily() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        dispatch(startLoading());
+        dispatch(loadingSlice.actions.startLoading());
         const res = await getNewsAPI();
         setNews(res.data);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       } catch (error) {
         console.error("Lỗi khi lấy danh sách tin tức:", error);
-        dispatch(stopLoading());
+        dispatch(loadingSlice.actions.stopLoading());
       }
     };
 
@@ -52,10 +52,7 @@ function ContentDaily() {
     <section className="grid grid-cols-1 lg:grid-cols-24 border-b border-[#E5E5E5] pb-[20px] mb-[20px]">
       <div className="lg:col-span-9 col-span-full pr-0 lg:pr-[20px] border-r-0 lg:border-r border-[#E5E5E5]">
         {subNews.map((item) => (
-          <article
-            key={item._id}
-            className="border-b border-[#E5E5E5] pb-[20px] mb-[20px] last:lg:border-b-0"
-          >
+          <article key={item._id} className="border-b border-[#E5E5E5] pb-[20px] mb-[20px] last:lg:border-b-0">
             <h3 className="text-[18px] sm:text-[15px] font-title font-bold mb-2 ms:mb-0">
               <Link to={`/news/${item._id}`} style={{ color: "#222222" }}>
                 {item.title}
@@ -64,12 +61,7 @@ function ContentDaily() {
             <div className="flex flex-col md:flex-row gap-[10px] mt-0 sm:mt-2">
               <Link to={`/news/${item._id}`} className="order-2 md:order-1">
                 <div className="md:w-[145px] md:h-[87px] aspect-[5/3]">
-                  <img
-                    loading="lazy"
-                    alt="Ảnh bài viết"
-                    className="size-full object-cover"
-                    src={item.image}
-                  />
+                  <img loading="lazy" alt="Ảnh bài viết" className="size-full object-cover" src={item.image} />
                 </div>
               </Link>
               <p className="order-1 md:order-2 text-[17px] sm:text-[14px] line-clamp-4">
@@ -87,10 +79,7 @@ function ContentDaily() {
             key={item._id}
             className="border-b border-b-[#bdbdbd] border-[#E5E5E5] pb-[20px] mb-[20px] last:pb-0 last:mb-0 last:border-b-0"
           >
-            <CategoryList
-              category={item?.category_name}
-              categoryId={item?._id}
-            />
+            <CategoryList category={item?.category_name} categoryId={item?._id} />
             <div className="flex flex-col lg:flex-row gap-0 md:gap-[20px] border-b border-[#E5E5E5] pb-[20px]">
               {item.news.slice(-1).map((itemNews) => (
                 <News
