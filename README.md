@@ -1,3 +1,5 @@
+<img src="vietnews.png" alt="Trọ Ơi Banner" width="100%" />
+
 # 🚀 News Website with AI Content Moderation
 
 Dự án xây dựng một **website tin tức** với kiến trúc tách biệt **Frontend (ReactJS)**, **Backend (ExpressJS)** và **Machine Learning (Flask/Python)** để kiểm duyệt nội dung tự động.
